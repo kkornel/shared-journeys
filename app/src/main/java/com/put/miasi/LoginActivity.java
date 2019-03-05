@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO wywalic
         Intent loginIntent = new Intent(this, MainActivity.class);
         startActivity(loginIntent);
-        
+
         if (!validateForm()) {
             return;
         }
