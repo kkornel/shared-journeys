@@ -1,19 +1,15 @@
 package com.put.miasi;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,25 +20,21 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.FetchURL;
 import com.put.miasi.utils.TaskLoadedCallback;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
-    private static final String TAG = "MainActivity";
+public class MainActivity3 extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
+    private static final String TAG = "MainActivity3";
 
     private static final String API_KEY = "AIzaSyC7Odnoubb_yC1QvUiy0AOm8eafjJUx-UE";
 
@@ -51,17 +43,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private Button routeButton;
+    private Button mRouteButton;
+    private Button mNextButton;
 
-    private LatLng startLatLng;
-    private LatLng destLatLng;
+    private LatLng mStartLatLng;
+    private LatLng mDestLatLng;
 
     private List<Marker> mMarkersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main3);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -90,7 +83,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 String location = place.getName();
                 List<Address> addressList = null;
 
-                Geocoder geocoder = new Geocoder(MainActivity.this);
+                Geocoder geocoder = new Geocoder(MainActivity3.this);
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
 
@@ -104,7 +97,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "onPlaceSelected: " + address.toString());
                 Log.d(TAG, "onPlaceSelected: " + latLng.toString());
 
-                startLatLng = latLng;
+                mStartLatLng = latLng;
             }
 
             @Override
@@ -128,7 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 String location = place.getName();
                 List<Address> addressList = null;
 
-                Geocoder geocoder = new Geocoder(MainActivity.this);
+                Geocoder geocoder = new Geocoder(MainActivity3.this);
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
 
@@ -142,7 +135,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "onPlaceSelected: " + address.toString());
                 Log.d(TAG, "onPlaceSelected: " + latLng.toString());
 
-                destLatLng = latLng;
+                mDestLatLng = latLng;
             }
 
             @Override
@@ -151,21 +144,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        routeButton = findViewById(R.id.route_button);
-        routeButton.setOnClickListener(new View.OnClickListener() {
+        mRouteButton = findViewById(R.id.route_button);
+        mRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (startLatLng == null  || destLatLng == null) {
+                if (mStartLatLng == null  || mDestLatLng == null) {
                     return;
                 }
 
                 Marker startMarker = mMap.addMarker(new MarkerOptions()
-                        .position(startLatLng)
+                        .position(mStartLatLng)
                         .title("Start"));
 
                 Marker destMarker = mMap.addMarker(new MarkerOptions()
-                        .position(destLatLng)
+                        .position(mDestLatLng)
                         .title("Destination"));
 
 
@@ -179,7 +172,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_MAP_PADDING));
 
 
-                new FetchURL(MainActivity.this).execute(getUrl(startLatLng, destLatLng, "driving"), "driving");
+                new FetchURL(MainActivity3.this).execute(getUrl(mStartLatLng, mDestLatLng, "driving"), "driving");
+            }
+        });
+
+        mNextButton = findViewById(R.id.next_button);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity3.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
