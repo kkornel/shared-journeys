@@ -13,6 +13,7 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 
 import com.put.miasi.R;
+import com.put.miasi.utils.DateUtils;
 
 import java.util.Locale;
 
@@ -21,6 +22,8 @@ public class DatePickerActivity extends AppCompatActivity {
 
     private CalendarView mCalendarView;
     private Button mNextButton;
+
+    private long mTimePickedMilliSecs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,18 @@ public class DatePickerActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Log.d(TAG, "onSelectedDayChange: " + dayOfMonth + "/" + month + "/" + year);
-                Log.d(TAG, "onSelectedDayChange: " + view.getDate());
-                Log.d(TAG, "onSelectedDayChange: " + view.getDateTextAppearance());
+
+                String d = (dayOfMonth < 10) ? DateUtils.convertSingleDateToDouble(dayOfMonth) : String.valueOf(dayOfMonth);
+                String m = (month < 10) ? DateUtils.convertSingleDateToDouble(month) : String.valueOf(month);
+                String y = String.valueOf(year);
+
+                long timePickedMilliSecs = DateUtils.getMilliSecondsFromDate(dayOfMonth, month, year);
+
+                Log.d(TAG, "onSelectedDayChange: " + DateUtils.getDate(timePickedMilliSecs, "dd/MM/yyyy hh:mm:ss.SSS"));
+
+                mTimePickedMilliSecs = timePickedMilliSecs;
+
+                mNextButton.setEnabled(true);
             }
         });
 
@@ -59,7 +72,7 @@ public class DatePickerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Add extras to intent
-                Intent intent = new Intent(DatePickerActivity.this, DatePicker.class);
+                Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);
                 startActivity(intent);
             }
         });
