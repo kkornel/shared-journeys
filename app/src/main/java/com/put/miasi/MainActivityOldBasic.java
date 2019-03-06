@@ -123,7 +123,7 @@ public class MainActivityOldBasic extends FragmentActivity implements OnMapReady
                 Geocoder geocoder = new Geocoder(MainActivityOldBasic.this);
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
-
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

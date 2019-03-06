@@ -7,7 +7,7 @@
     tools:context=".main.offer.DatePickerActivity">
 
     <TextView
-        android:id="@+id/dateTextView"
+        android:id="@+id/destinationTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toTopOf="@+id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/destinationTextView" />
 
     <Button
         android:id="@+id/nextButton"
