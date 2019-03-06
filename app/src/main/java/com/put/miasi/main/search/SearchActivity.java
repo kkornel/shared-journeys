@@ -19,14 +19,14 @@ import com.put.miasi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RidesActivity extends AppCompatActivity
+public class SearchActivity extends AppCompatActivity
 {
     private ArrayList<String> data = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rides);
+        setContentView(R.layout.activity_search);
 
         ListView lv = (ListView) findViewById(R.id.listview);
         generateListContent();
@@ -34,7 +34,7 @@ public class RidesActivity extends AppCompatActivity
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(RidesActivity.this, "List items was clicked "+ position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "List items was clicked "+ position, Toast.LENGTH_SHORT).show();
             }
         });
     }
