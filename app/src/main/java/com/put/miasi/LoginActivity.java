@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -168,9 +167,9 @@ public class LoginActivity extends AppCompatActivity {
         Utils.hideKeyboard(this);
 
         // TODO wywalic
-        Intent loginIntent = new Intent(this, MainActivity.class);
+        Intent loginIntent = new Intent(this, MainActivity3.class);
         startActivity(loginIntent);
-        
+
         if (!validateForm()) {
             return;
         }
@@ -209,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(FirebaseUser user) {
-        Intent loginIntent = new Intent(this, MainActivity.class);
+        Intent loginIntent = new Intent(this, MainActivity3.class);
         loginIntent.putExtra(INTENT_EXTRA_FIREBASE_USER, user);
         startActivity(loginIntent);
     }
