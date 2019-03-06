@@ -111,16 +111,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
-        map:layout_constraintBottom_toTopOf="@+id/next_button"
+        map:layout_constraintBottom_toTopOf="@+id/nextButton"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/route_button"
+        map:layout_constraintTop_toBottomOf="@+id/routeButton"
         map:layout_constraintVertical_bias="1.0"
         tools:context=".MapsActivity" />
 
     <Button
-        android:id="@+id/route_button"
+        android:id="@+id/routeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -134,7 +134,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <Button
-        android:id="@+id/next_button"
+        android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

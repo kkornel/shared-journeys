@@ -143,7 +143,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
-        mRouteButton = findViewById(R.id.route_button);
+        mRouteButton = findViewById(R.id.routeButton);
         mRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +175,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
-        mNextButton = findViewById(R.id.next_button);
+        mNextButton = findViewById(R.id.nextButton);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

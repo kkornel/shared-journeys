@@ -33,7 +33,7 @@ public class RidesFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_rides, container, false);
 
-        mOfferButton = rootView.findViewById(R.id.offer_button);
+        mOfferButton = rootView.findViewById(R.id.offerButton);
         mOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +43,7 @@ public class RidesFragment extends Fragment {
             }
         });
 
-        mSearchButton = rootView.findViewById(R.id.search_button);
+        mSearchButton = rootView.findViewById(R.id.searchButton);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

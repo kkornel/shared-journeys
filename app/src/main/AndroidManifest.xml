@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.offer.FromActivity"></activity>
+        <activity android:name=".main.offer.DatePickerActivity"></activity>
+        <activity android:name=".main.offer.DestinationActivity" />
+        <activity android:name=".main.offer.FromActivity" />
         <activity
             android:name=".main.MainActivity"
             android:label="@string/title_activity_main" />
