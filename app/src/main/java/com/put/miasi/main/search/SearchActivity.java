@@ -1,6 +1,7 @@
 package com.put.miasi.main.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.put.miasi.MainActivityOldBasic;
 import com.put.miasi.R;
 
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public class SearchActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(SearchActivity.this, "List items was clicked "+ position, Toast.LENGTH_SHORT).show();
+                Intent rideDetailsIntent = new Intent(SearchActivity.this, RideDetailsActivity.class);
+                startActivity(rideDetailsIntent);
             }
         });
     }
@@ -70,7 +74,8 @@ public class SearchActivity extends AppCompatActivity
                 viewHolder.from = (TextView) convertView.findViewById(R.id.list_item_from);
                 viewHolder.to = (TextView) convertView.findViewById(R.id.list_item_to);
                 viewHolder.price = (TextView) convertView.findViewById(R.id.list_item_price);
-
+                viewHolder.hour_begin = (TextView) convertView.findViewById(R.id.list_item_hour_begin);
+                viewHolder.hour_end = (TextView) convertView.findViewById(R.id.list_item_hour_end);
                 convertView.setTag(viewHolder);
             }
             mainViewholder = (ViewHolder) convertView.getTag();
