@@ -621,6 +621,12 @@
     <string name="title_activity_destination">Destination</string>
     <string name="title_activity_datePicker">Pick a date</string>
     <string name="title_activity_timePicker">Pick a time</string>
+    <string name="title_activity_carDetails">Provide car details</string>
+    <string name="title_activity_messagePrice">Ride details</string>
+    <string name="title_activity_offerSummary">Offer summary</string>
+
+
+    <string name="required">Required</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
