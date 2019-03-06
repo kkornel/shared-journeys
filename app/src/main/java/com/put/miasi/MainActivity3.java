@@ -36,7 +36,6 @@ import java.util.List;
 public class MainActivity3 extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "MainActivity3";
 
-    private static final String API_KEY = "AIzaSyC7Odnoubb_yC1QvUiy0AOm8eafjJUx-UE";
 
     private static final float ZOOM_LEVEL = 17.0f;
     private static final int MARKER_MAP_PADDING = 200;
@@ -62,7 +61,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         // Initialize Places.
-        Places.initialize(getApplicationContext(), API_KEY);
+        Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
 
         // Create a new Places client instance.
         final PlacesClient placesClient = Places.createClient(this);
@@ -144,7 +143,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
-        mRouteButton = findViewById(R.id.route_button);
+        mRouteButton = findViewById(R.id.routeButton);
         mRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +175,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
-        mNextButton = findViewById(R.id.next_button);
+        mNextButton = findViewById(R.id.nextButton);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

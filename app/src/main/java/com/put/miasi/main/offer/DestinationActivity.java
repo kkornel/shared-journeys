@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,12 +22,14 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.put.miasi.MainActivity3;
 import com.put.miasi.R;
+import com.put.miasi.main.MainActivity;
 
 import java.util.Arrays;
 
-public class FromActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private static final String TAG = "FromActivity";
+public class DestinationActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private static final String TAG = "DestinationActivity";
 
     private static final float ZOOM_LEVEL = 17.0f;
     private static final float VERTICAL_BIAS = 1.0f;
@@ -48,7 +51,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getSupportActionBar().setTitle(getString(R.string.title_activity_from));
+        getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -107,7 +110,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mNextButton = findViewById(R.id.nextButton);
-
         // TODO uncomment
         // mNextButton.setEnabled(false);
 
@@ -115,8 +117,8 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 // TODO Add extras to intent
-               Intent intent = new Intent(FromActivity.this, DestinationActivity.class);
-               startActivity(intent);
+                Intent intent = new Intent(DestinationActivity.this, DatePickerActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -9,7 +9,7 @@
 
 
     <Button
-        android:id="@+id/offer_button"
+        android:id="@+id/offerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/search_button"
+        android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,5 +35,5 @@
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/offer_button" />
+        app:layout_constraintTop_toBottomOf="@+id/offerButton" />
 </android.support.constraint.ConstraintLayout>
