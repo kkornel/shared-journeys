@@ -3,6 +3,8 @@ package com.put.miasi.main.search;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.put.miasi.R;
+
 public class RideDetailsActivity extends AppCompatActivity {
 
     @Override

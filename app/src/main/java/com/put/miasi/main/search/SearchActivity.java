@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,29 +65,29 @@ public class SearchActivity extends AppCompatActivity
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout,parent,false);
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
-                viewHolder.button = (Button) convertView.findViewById(R.id.list_item_btn);
-                viewHolder.button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getContext(), "Button was clicked for list item "+ position, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                viewHolder.avatar = (ImageView) convertView.findViewById(R.id.list_item_avatar);
+                viewHolder.nick = (TextView) convertView.findViewById(R.id.list_item_nick);
+                viewHolder.from = (TextView) convertView.findViewById(R.id.list_item_from);
+                viewHolder.to = (TextView) convertView.findViewById(R.id.list_item_to);
+                viewHolder.price = (TextView) convertView.findViewById(R.id.list_item_price);
+
                 convertView.setTag(viewHolder);
             }
-            else
-            {
-                mainViewholder = (ViewHolder) convertView.getTag();
-                mainViewholder.title.setText(getItem(position));
-            }
+            mainViewholder = (ViewHolder) convertView.getTag();
+            mainViewholder.nick.setText(getItem(position));
+
             return convertView;
         }
     }
     public class ViewHolder
     {
-        ImageView thumbnail;
-        TextView title;
-        Button button;
+        ImageView avatar;
+        TextView nick;
+        TextView from;
+        TextView to;
+        TextView price;
+        TextView hour_begin;
+        TextView hour_end;
+
     }
 }

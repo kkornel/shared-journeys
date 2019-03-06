@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/list_item_thumbnail"
+        android:id="@+id/list_item_avatar"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:src="@mipmap/ic_launcher" />
@@ -16,14 +16,58 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is row number 15"
-        android:id="@+id/list_item_text"
-        android:layout_toEndOf="@+id/list_item_thumbnail" />
+        android:text="Nickname"
+        android:id="@+id/list_item_nick"
+        android:textSize="16dp"
+        android:layout_toEndOf="@+id/list_item_avatar" />
 
-    <Button
+    <TextView
+        android:id="@+id/list_item_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:layout_alignParentRight="true"
-        android:id="@+id/list_item_btn"/>
+
+        android:layout_toEndOf="@+id/list_item_hour_begin"
+        android:layout_below="@id/list_item_nick"
+        android:textSize="16dp"
+        android:text="From: " />
+
+    <TextView
+        android:id="@+id/list_item_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/list_item_hour_end"
+        android:layout_below="@id/list_item_from"
+        android:textSize="16dp"
+        android:text="To: " />
+
+    <TextView
+        android:id="@+id/list_item_hour_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/list_item_avatar"
+        android:layout_below="@id/list_item_nick"
+        android:textSize="16dp"
+        android:text="15:00 " />
+
+    <TextView
+        android:id="@+id/list_item_hour_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/list_item_avatar"
+        android:layout_below="@id/list_item_from"
+        android:textSize="16dp"
+        android:text="18:00 " />
+
+    <TextView
+        android:id="@+id/list_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/list_item_nick"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:textSize="20dp"
+        android:text="Price" />
+
+
 </RelativeLayout>
