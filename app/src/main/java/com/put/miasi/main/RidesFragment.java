@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.put.miasi.R;
 import com.put.miasi.main.offer.FromActivity;
+import com.put.miasi.main.search.SearchActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +49,8 @@ public class RidesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Search", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
 

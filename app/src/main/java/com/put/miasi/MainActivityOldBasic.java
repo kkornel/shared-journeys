@@ -33,8 +33,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity3 extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
-    private static final String TAG = "MainActivity3";
+public class MainActivityOldBasic extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
+    private static final String TAG = "MainActivityOldBasic";
 
 
     private static final float ZOOM_LEVEL = 17.0f;
@@ -53,7 +53,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_main_old_basic);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -82,7 +82,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
                 String location = place.getName();
                 List<Address> addressList = null;
 
-                Geocoder geocoder = new Geocoder(MainActivity3.this);
+                Geocoder geocoder = new Geocoder(MainActivityOldBasic.this);
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
 
@@ -120,7 +120,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
                 String location = place.getName();
                 List<Address> addressList = null;
 
-                Geocoder geocoder = new Geocoder(MainActivity3.this);
+                Geocoder geocoder = new Geocoder(MainActivityOldBasic.this);
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
 
@@ -171,7 +171,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_MAP_PADDING));
 
 
-                new FetchURL(MainActivity3.this).execute(getUrl(mStartLatLng, mDestLatLng, "driving"), "driving");
+                new FetchURL(MainActivityOldBasic.this).execute(getUrl(mStartLatLng, mDestLatLng, "driving"), "driving");
             }
         });
 
@@ -179,7 +179,7 @@ public class MainActivity3 extends FragmentActivity implements OnMapReadyCallbac
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity3.this, MainActivity.class);
+                Intent intent = new Intent(MainActivityOldBasic.this, MainActivity.class);
                 startActivity(intent);
             }
         });

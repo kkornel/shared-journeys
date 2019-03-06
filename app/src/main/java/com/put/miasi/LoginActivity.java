@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
         Utils.hideKeyboard(this);
 
         // TODO wywalic
-        Intent loginIntent = new Intent(this, MainActivity3.class);
+        Intent loginIntent = new Intent(this, MainActivityOldBasic.class);
         startActivity(loginIntent);
 
         if (!validateForm()) {
@@ -208,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(FirebaseUser user) {
-        Intent loginIntent = new Intent(this, MainActivity3.class);
+        Intent loginIntent = new Intent(this, MainActivityOldBasic.class);
         loginIntent.putExtra(INTENT_EXTRA_FIREBASE_USER, user);
         startActivity(loginIntent);
     }

@@ -60,18 +60,17 @@ public class DatePickerActivity extends AppCompatActivity {
 
                 mTimePickedMilliSecs = timePickedMilliSecs;
 
-                mNextButton.setEnabled(true);
             }
         });
 
         mNextButton = findViewById(R.id.nextButton);
 
-        mNextButton.setEnabled(false);
-
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Add extras to intent
+                mTimePickedMilliSecs = mCalendarView.getDate();
+
                 Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);
                 startActivity(intent);
             }
