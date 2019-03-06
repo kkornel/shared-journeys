@@ -6,6 +6,11 @@
     <color name="bgBottomNavigation">#fe485a</color>
 
     <color name="colorBlack">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="colorWhite">#dfdfdf</color>
     <color name="cardviewColor">#DEDEDE</color>
+
+
+    <color name="colorText">#054451</color>
+    <color name="colorSearchBackground">#ededed</color>
 </resources>

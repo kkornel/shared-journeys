@@ -29,21 +29,24 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
     private static final String TAG = "DestinationActivity";
 
     private static final float ZOOM_LEVEL = 17.0f;
-    private static final float VERTICAL_BIAS = 1.0f;
+    private static final float VERTICAL_BIAS = 0.5f;
     private static final int MARKER_MAP_PADDING = 200;
-    private static final int MARGIN_TOP = 8;
-    private static final int MARGIN_BOTTOM = 16;
+    private static final int MARGIN_TOP = 64;
+    private static final int MARGIN_BOTTOM = 32;
+
+    private static String SEARCH_COUNTRY = "PL";
+    private static String SEARCH_HINT = "e.g. Warszawa Żoliborz";
 
     private GoogleMap mMap;
 
     private Button mNextButton;
 
-    private LatLng mStartLatLng;
+    private LatLng mDestinationLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_from);
+        setContentView(R.layout.activity_destination);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -71,18 +74,24 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
 
+        // TODO: colors
+        autocompleteFragment.setCountry(SEARCH_COUNTRY);
+        autocompleteFragment.setHint(SEARCH_HINT);
+        autocompleteFragment.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
+
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 Log.d(TAG, "Place: " + place.getName() + ", " + place.getLatLng());
 
-                mStartLatLng = place.getLatLng();
+                mDestinationLatLng = place.getLatLng();
 
-                mMap.addMarker(new MarkerOptions().position(mStartLatLng)
+                mMap.addMarker(new MarkerOptions().position(mDestinationLatLng)
                         .title(place.getName()));
 
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mStartLatLng, ZOOM_LEVEL));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDestinationLatLng, ZOOM_LEVEL));
 
                 mapFragment.getView().setVisibility(View.VISIBLE);
 

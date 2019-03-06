@@ -29,10 +29,13 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "FromActivity";
 
     private static final float ZOOM_LEVEL = 17.0f;
-    private static final float VERTICAL_BIAS = 1.0f;
+    private static final float VERTICAL_BIAS = 0.5f;
     private static final int MARKER_MAP_PADDING = 200;
-    private static final int MARGIN_TOP = 8;
-    private static final int MARGIN_BOTTOM = 16;
+    private static final int MARGIN_TOP = 64;
+    private static final int MARGIN_BOTTOM = 32;
+
+    private static String SEARCH_COUNTRY = "PL";
+    private static String SEARCH_HINT = "e.g. Poznań Rondo Rataje";
 
     private GoogleMap mMap;
 
@@ -70,6 +73,12 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+
+        // TODO: colors
+        autocompleteFragment.setCountry(SEARCH_COUNTRY);
+        autocompleteFragment.setHint(SEARCH_HINT);
+        autocompleteFragment.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
