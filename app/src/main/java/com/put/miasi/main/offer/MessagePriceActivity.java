@@ -38,21 +38,18 @@ public class MessagePriceActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         getSupportActionBar().setTitle(getString(R.string.title_activity_messagePrice));
 
         mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
-        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         mMessageEditText = findViewById(R.id.messageEditText);
         mPriceEditText = findViewById(R.id.priceEditText);
-        mNextButton = findViewById(R.id.nextButton);
 
+        mNextButton = findViewById(R.id.nextButton);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!areFormsValid()) {
                     Toast.makeText(getApplicationContext(), "Provide all details!", Toast.LENGTH_LONG).show();
                     return;
@@ -70,7 +67,6 @@ public class MessagePriceActivity extends AppCompatActivity {
                 mRideOffer.setMessage(msg);
                 mRideOffer.setPrice(pricePerSeat);
 
-                // TODO Add extras to intent
                 Intent intent = new Intent(MessagePriceActivity.this, OfferSummaryActivity.class);
                 intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
@@ -80,7 +76,6 @@ public class MessagePriceActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO Add extras to bundle
         onBackPressed();
         return true;
     }

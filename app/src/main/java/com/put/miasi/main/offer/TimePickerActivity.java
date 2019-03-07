@@ -26,7 +26,6 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
     private Button mNextButton;
 
     private RideOffer mRideOffer;
-
     private int mHour;
     private int mMin;
 
@@ -37,16 +36,14 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         getSupportActionBar().setTitle(getString(R.string.title_activity_timePicker));
 
         mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
-        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
         OfferLog.d(TAG, "onCreate: " + mRideOffer.toString());
 
         mSelectedTimeTextView = findViewById(R.id.selectedTimeTextView);
-        mSelectTimeButton = findViewById(R.id.selectTimeButton);
 
+        mSelectTimeButton = findViewById(R.id.selectTimeButton);
         mSelectTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,14 +52,11 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         });
 
         mNextButton = findViewById(R.id.nextButton);
-
-
-
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cl = Calendar.getInstance();
-                cl.setTimeInMillis(mRideOffer.getDate());  //here your time in miliseconds
+                cl.setTimeInMillis(mRideOffer.getDate());
 
                 int year = cl.get(Calendar.YEAR);
                 int month = cl.get(Calendar.MONTH) + 1;
@@ -72,14 +66,8 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
 
                 cl.set(year, month, day, hour, min);
 
-                String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
-                String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND);
-                OfferLog.d(date);
-                OfferLog.d(time);
-
                 mRideOffer.setDate(cl.getTime().getTime());
 
-                // TODO Add extras to intent
                 Intent intent = new Intent(TimePickerActivity.this, CarDetailsActivity.class);
                 intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
@@ -108,17 +96,13 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         String m = (minute < 10) ? DateUtils.convertSingleDateToDouble(minute) : String.valueOf(minute);
 
         String time = h + ":" + m;
-
         mHour = hourOfDay;
         mMin = minute;
-
         mSelectedTimeTextView.setText(time);
-
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO Add extras to bundle
         onBackPressed();
         return true;
     }

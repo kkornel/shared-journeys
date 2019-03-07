@@ -5,7 +5,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -42,7 +41,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static String SEARCH_HINT = "e.g. Poznań Rondo Rataje";
 
     private GoogleMap mMap;
-
     private Button mNextButton;
 
     private LatLng mStartLatLng;
@@ -54,7 +52,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         getSupportActionBar().setTitle(getString(R.string.title_activity_from));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -77,11 +74,9 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
 
-        // TODO: colors
         autocompleteFragment.setCountry(SEARCH_COUNTRY);
         autocompleteFragment.setHint(SEARCH_HINT);
         autocompleteFragment.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
-        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -93,19 +88,16 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 mMap.addMarker(new MarkerOptions().position(mStartLatLng)
                         .title(place.getName()));
-
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mStartLatLng, ZOOM_LEVEL));
 
                 mapFragment.getView().setVisibility(View.VISIBLE);
 
                 ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
-
                 ConstraintSet constraintSet = new ConstraintSet();
                 constraintSet.clone(constraintLayout);
                 constraintSet.connect(R.id.map, ConstraintSet.TOP, R.id.cardView, ConstraintSet.BOTTOM, MARGIN_TOP);
                 constraintSet.connect(R.id.map, ConstraintSet.BOTTOM, R.id.nextButton, ConstraintSet.TOP, MARGIN_BOTTOM);
                 constraintSet.setVerticalBias(R.id.map, VERTICAL_BIAS);
-
                 constraintSet.applyTo(constraintLayout);
 
                 mNextButton.setEnabled(true);
@@ -117,19 +109,14 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
         mNextButton = findViewById(R.id.nextButton);
-
-        // TODO uncomment
-        // mNextButton.setEnabled(false);
-
+        mNextButton.setEnabled(false);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RideOffer rideOffer = new RideOffer();
                 rideOffer.setStartPoint(new LatLon(mStartLatLng));
 
-                // TODO Add extras to intent
                 Intent intent = new Intent(FromActivity.this, DestinationActivity.class);
                 intent.putExtra(RIDE_OFFER_INTENT, rideOffer);
                 startActivity(intent);
@@ -139,7 +126,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO Add extras to bundle
         onBackPressed();
         return true;
     }

@@ -3,7 +3,6 @@ package com.put.miasi.main.offer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +17,6 @@ import com.put.miasi.utils.RideOffer;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class CarDetailsActivity extends AppCompatActivity {
-
     private static final String TAG = "CarDetailsActivity";
 
     private EditText mBrandEditText;
@@ -37,11 +35,9 @@ public class CarDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         getSupportActionBar().setTitle(getString(R.string.title_activity_carDetails));
 
         mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
-        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         mBrandEditText = findViewById(R.id.brandEditText);
@@ -50,15 +46,14 @@ public class CarDetailsActivity extends AppCompatActivity {
 
         mSpaceSpinner = findViewById(R.id.spaceSpinner);
         mSpaceSpinner.setSelection(2);
+
         mLuggageSpinner = findViewById(R.id.luggageSpinner);
         mLuggageSpinner.setSelection(2);
 
         mNextButton = findViewById(R.id.nextButton);
-
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!areFormsValid()) {
                     Toast.makeText(getApplicationContext(), "Provide all details!", Toast.LENGTH_LONG).show();
                     return;
@@ -72,7 +67,7 @@ public class CarDetailsActivity extends AppCompatActivity {
                 mRideOffer.setCar(car);
                 mRideOffer.setSeats(Integer.valueOf(mSpaceSpinner.getSelectedItem().toString()));
                 mRideOffer.setLuggage(mLuggageSpinner.getSelectedItem().toString());
-                // TODO Add extras to intent
+
                 Intent intent = new Intent(CarDetailsActivity.this, MessagePriceActivity.class);
                 intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
@@ -82,7 +77,6 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO Add extras to bundle
         onBackPressed();
         return true;
     }

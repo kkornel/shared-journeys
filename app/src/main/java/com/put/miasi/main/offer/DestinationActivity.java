@@ -5,7 +5,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -42,12 +41,10 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
     private static String SEARCH_HINT = "e.g. Warszawa Żoliborz";
 
     private GoogleMap mMap;
-
     private Button mNextButton;
 
-    private LatLng mDestinationLatLng;
-
     private RideOffer mRideOffer;
+    private LatLng mDestinationLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,21 +53,16 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
 
-
         mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
-        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         mapFragment.getView().setVisibility(View.INVISIBLE);
-
 
         // Initialize Places.
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
@@ -85,11 +77,9 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
 
-        // TODO: colors
         autocompleteFragment.setCountry(SEARCH_COUNTRY);
         autocompleteFragment.setHint(SEARCH_HINT);
         autocompleteFragment.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
-        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.white));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -107,13 +97,11 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
                 mapFragment.getView().setVisibility(View.VISIBLE);
 
                 ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
-
                 ConstraintSet constraintSet = new ConstraintSet();
                 constraintSet.clone(constraintLayout);
                 constraintSet.connect(R.id.map, ConstraintSet.TOP, R.id.cardView, ConstraintSet.BOTTOM, MARGIN_TOP);
                 constraintSet.connect(R.id.map, ConstraintSet.BOTTOM, R.id.nextButton, ConstraintSet.TOP, MARGIN_BOTTOM);
                 constraintSet.setVerticalBias(R.id.map, VERTICAL_BIAS);
-
                 constraintSet.applyTo(constraintLayout);
 
                 mNextButton.setEnabled(true);
@@ -125,17 +113,13 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
-
         mNextButton = findViewById(R.id.nextButton);
-        // TODO uncomment
-        // mNextButton.setEnabled(false);
-
+        mNextButton.setEnabled(false);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRideOffer.setDestinationPoint(new LatLon(mDestinationLatLng));
 
-                // TODO Add extras to intent
                 Intent intent = new Intent(DestinationActivity.this, DatePickerActivity.class);
                 intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
@@ -145,7 +129,6 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO Add extras to bundle
         onBackPressed();
         return true;
     }

@@ -23,7 +23,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.put.miasi.MainActivityOldBasic;
 import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.Car;
@@ -44,8 +43,6 @@ import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "OfferSummaryActivity";
 
-    private static final float ZOOM_LEVEL = 17.0f;
-    private static final float VERTICAL_BIAS = 0.5f;
     private static final int MARKER_MAP_PADDING = 200;
 
     private TextView mStartTextView;
@@ -59,10 +56,12 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
     private TextView mMessageTextView;
 
     private GoogleMap mMap;
-
     private Button mPublishButton;
 
     private RideOffer mRideOffer;
+    private LatLng mStartLatLng;
+    private LatLng mDestLatLng;
+    private Polyline currentPolyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +70,9 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         getSupportActionBar().setTitle(getString(R.string.title_activity_offerSummary));
 
         mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
-        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -93,27 +90,19 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mPriceTextView = findViewById(R.id.priceTextView);
         mMessageTextView = findViewById(R.id.messageTextView);
 
-
-
         unpackIntentSummary();
 
         mPublishButton = findViewById(R.id.publishButton);
-
         mPublishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 publish();
-                // TODO Add extras to intent
-
             }
         });
-
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO Add extras to bundle
         onBackPressed();
         return true;
     }
@@ -130,9 +119,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
                 .position(mDestLatLng)
                 .title("Destination"));
 
-
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
 
         builder.include(startMarker.getPosition());
         builder.include(destMarker.getPosition());
@@ -140,12 +127,13 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         LatLngBounds bounds = builder.build();
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_MAP_PADDING));
 
-
         new FetchURL(OfferSummaryActivity.this).execute(getUrl(mStartLatLng, mDestLatLng, "driving"), "driving");
     }
 
     private void publish() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+        // TODO add driver uid
 
         String key = database.child(Database.RIDES).push().getKey();
         database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -156,11 +144,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
                 startActivity(intent);
             }
         });
-
     }
-
-    private LatLng mStartLatLng;
-    private LatLng mDestLatLng;
 
     private void unpackIntentSummary() {
         LatLon startPoint = mRideOffer.getStartPoint();
@@ -202,13 +186,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         String startCity = startAddress.getLocality();
         String destCity = destAddress.getLocality();
 
-
-
         OfferLog.d("onPlaceSelected: " + startAddress.toString());
-
-
-
-
 
         mStartTextView.setText(startCity);
         mDestinationTextView.setText(destCity);
@@ -224,8 +202,6 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         } else {
             mMessageTextView.setText(message);
         }
-
-
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
@@ -250,6 +226,4 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
-
-    private Polyline currentPolyline;
 }
