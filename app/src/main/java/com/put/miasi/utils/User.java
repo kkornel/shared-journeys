@@ -3,12 +3,16 @@ package com.put.miasi.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User implements Parcelable {
     private String avatarUrl;
     private String firstName;
     private String surname;
     private String email;
     private String phone;
+    private List<String> offeredRides;
 
     public User() {
     }
@@ -19,6 +23,15 @@ public class User implements Parcelable {
         this.surname = surname;
         this.email = email;
         this.phone = phone;
+    }
+
+    public User(String avatarUrl, String firstName, String surname, String email, String phone, List<String> offeredRides) {
+        this.avatarUrl = avatarUrl;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.offeredRides = offeredRides;
     }
 
     public String getAvatarUrl() {
@@ -61,12 +74,34 @@ public class User implements Parcelable {
         this.phone = phone;
     }
 
+    public List<String> getOfferedRides() {
+        return offeredRides;
+    }
+
+    public void setOfferedRides(List<String> offeredRides) {
+        this.offeredRides = offeredRides;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "\navatarUrl='" + avatarUrl + '\'' +
+                "\n, firstName='" + firstName + '\'' +
+                "\n, surname='" + surname + '\'' +
+                "\n, email='" + email + '\'' +
+                "\n, phone='" + phone + '\'' +
+                "\n, offeredRides=" + offeredRides +
+                '}';
+    }
+
     public User(Parcel in) {
         this.avatarUrl = in.readString();
         this.firstName = in.readString();
         this.surname = in.readString();
         this.email = in.readString();
         this.phone = in.readString();
+        this.offeredRides = new ArrayList<>();
+        in.readList(this.offeredRides, String.class.getClassLoader());
     }
 
     @Override
@@ -81,6 +116,7 @@ public class User implements Parcelable {
         dest.writeString(this.surname);
         dest.writeString(this.email);
         dest.writeString(this.phone);
+        dest.writeList(this.offeredRides);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

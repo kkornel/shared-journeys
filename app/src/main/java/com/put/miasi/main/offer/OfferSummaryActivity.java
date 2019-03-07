@@ -3,6 +3,7 @@ package com.put.miasi.main.offer;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.Car;
+import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.FetchURL;
@@ -35,12 +39,15 @@ import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
+import com.put.miasi.utils.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
+import static com.put.miasi.utils.Database.OFFERED_RIDES;
 
 public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "OfferSummaryActivity";
@@ -133,22 +140,48 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void publish() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final String key = database.child(Database.RIDES).push().getKey();
 
-        // TODO add driver uid
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        String userUid = user.getUid();
+        List<String> offeredRides = CurrentUserProfile.offeredRides;
+        if (offeredRides == null) {
+            offeredRides = new ArrayList<>();
+        }
+        offeredRides.add(key);
 
-        mRideOffer.setDriverUid(userUid);
+        mRideOffer.setDriverUid(CurrentUserProfile.uid);
 
-        String key = database.child(Database.RIDES).push().getKey();
-        database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnSuccessListener(new OnSuccessListener<Void>() {
+        final DatabaseReference userRef = database.child(Database.USERS).child(CurrentUserProfile.uid);
+
+        // userRef.child(OFFERED_RIDES).setValue(offeredRides).addOnSuccessListener(new OnSuccessListener<Void>() {
+        //     @Override
+        //     public void onSuccess(Void aVoid) {
+        //         database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnSuccessListener(new OnSuccessListener<Void>() {
+        //             @Override
+        //             public void onSuccess(Void aVoid) {
+        //                 Toast.makeText(getApplicationContext(), "Published!", Toast.LENGTH_SHORT).show();
+        //                 Intent intent = new Intent(OfferSummaryActivity.this, MainActivity.class);
+        //                 startActivity(intent);
+        //             }
+        //         });
+        //     }
+        // });
+
+        userRef.child(OFFERED_RIDES).setValue(offeredRides).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Published!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(OfferSummaryActivity.this, MainActivity.class);
-                startActivity(intent);
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Published!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(OfferSummaryActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                }
             }
         });
     }
