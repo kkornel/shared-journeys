@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TimePickerFragment;
@@ -28,6 +30,26 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
     private RideOffer mRideOffer;
     private int mHour;
     private int mMin;
+
+    // TODO remove
+    void tests() {
+        Calendar cl = Calendar.getInstance();
+        cl.setTimeInMillis(mRideOffer.getDate());
+
+        int year = cl.get(Calendar.YEAR);
+        int month = cl.get(Calendar.MONTH) + 1;
+        int day = cl.get(Calendar.DAY_OF_MONTH);
+        int hour = mHour;
+        int min = mMin;
+
+        cl.set(year, month, day, hour, min);
+
+        mRideOffer.setDate(cl.getTime().getTime());
+
+        Intent intent = new Intent(TimePickerActivity.this, CarDetailsActivity.class);
+        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +105,9 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         String h = (hour < 10) ? DateUtils.convertSingleDateToDouble(hour) : String.valueOf(hour);
 
         mSelectedTimeTextView.setText(h + ":00");
+
+        // TODO remove
+        tests();
     }
 
     public void showTimePickerDialog(View v) {

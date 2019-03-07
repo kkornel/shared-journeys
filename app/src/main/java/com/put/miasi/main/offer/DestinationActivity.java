@@ -27,15 +27,14 @@ import com.put.miasi.utils.RideOffer;
 
 import java.util.Arrays;
 
+import static com.put.miasi.main.offer.FromActivity.MARGIN_BOTTOM;
+import static com.put.miasi.main.offer.FromActivity.MARGIN_TOP;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
+import static com.put.miasi.main.offer.FromActivity.VERTICAL_BIAS;
+import static com.put.miasi.main.offer.FromActivity.ZOOM_LEVEL;
 
 public class DestinationActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "DestinationActivity";
-
-    private static final float ZOOM_LEVEL = 17.0f;
-    private static final float VERTICAL_BIAS = 0.5f;
-    private static final int MARGIN_TOP = 64;
-    private static final int MARGIN_BOTTOM = 32;
 
     private static String SEARCH_COUNTRY = "PL";
     private static String SEARCH_HINT = "e.g. Warszawa Żoliborz";
@@ -45,6 +44,17 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
 
     private RideOffer mRideOffer;
     private LatLng mDestinationLatLng;
+
+    // TODO remove
+    void tests() {
+        double lat = 52.2296756, lon = 21.0122287;
+
+        mRideOffer.setDestinationPoint(new LatLon(new LatLng(lat, lon)));
+
+        Intent intent = new Intent(DestinationActivity.this, DatePickerActivity.class);
+        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +135,9 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
                 startActivity(intent);
             }
         });
+
+        // TODO remove
+        tests();
     }
 
     @Override

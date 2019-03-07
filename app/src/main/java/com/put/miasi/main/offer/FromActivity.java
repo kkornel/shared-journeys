@@ -32,10 +32,10 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static String RIDE_OFFER_INTENT = "ride_offer_intent";
 
-    private static final float ZOOM_LEVEL = 17.0f;
-    private static final float VERTICAL_BIAS = 0.5f;
-    private static final int MARGIN_TOP = 64;
-    private static final int MARGIN_BOTTOM = 32;
+    public static final float ZOOM_LEVEL = 15.0f;
+    public static final float VERTICAL_BIAS = 0.5f;
+    public static final int MARGIN_TOP = 64;
+    public static final int MARGIN_BOTTOM = 32;
 
     private static String SEARCH_COUNTRY = "PL";
     private static String SEARCH_HINT = "e.g. Poznań Rondo Rataje";
@@ -44,6 +44,17 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button mNextButton;
 
     private LatLng mStartLatLng;
+
+    // TODO remove
+    void tests() {
+        double lat = 52.406374, lon = 16.9251681;
+        RideOffer rideOffer = new RideOffer();
+        rideOffer.setStartPoint(new LatLon(new LatLng(lat, lon)));
+
+        Intent intent = new Intent(FromActivity.this, DestinationActivity.class);
+        intent.putExtra(RIDE_OFFER_INTENT, rideOffer);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +133,9 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+
+        // TODO remove
+        tests();
     }
 
     @Override

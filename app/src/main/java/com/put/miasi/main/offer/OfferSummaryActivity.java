@@ -22,10 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.put.miasi.R;
@@ -39,7 +36,6 @@ import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
-import com.put.miasi.utils.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +52,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
     private TextView mStartTextView;
     private TextView mDestinationTextView;
+    private TextView mDistanceTextView;
     private TextView mDateTextView;
     private TextView mTimeTextView;
     private TextView mCarDetailsTextView;
@@ -71,6 +68,8 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
     private LatLng mStartLatLng;
     private LatLng mDestLatLng;
     private Polyline currentPolyline;
+
+    public static String DISTANCE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +90,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
         mStartTextView = findViewById(R.id.startTextView);
         mDestinationTextView = findViewById(R.id.destinationTextView);
+        mDistanceTextView = findViewById(R.id.distanceTextView);
         mDateTextView = findViewById(R.id.dateTextView);
         mTimeTextView = findViewById(R.id.timeTextView);
         mCarDetailsTextView = findViewById(R.id.carDetailsTextView);
@@ -150,6 +150,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         offeredRides.add(key);
 
         mRideOffer.setDriverUid(CurrentUserProfile.uid);
+        mRideOffer.setDistance(DISTANCE);
 
         final DatabaseReference userRef = database.child(Database.USERS).child(CurrentUserProfile.uid);
 
@@ -257,11 +258,13 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         String output = "json";
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        OfferLog.d(url);
         return url;
     }
 
     @Override
     public void onTaskDone(Object... values) {
+        mDistanceTextView.setText(DISTANCE);
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);

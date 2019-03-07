@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
+import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
@@ -24,11 +26,18 @@ public class MessagePriceActivity extends AppCompatActivity {
 
     private RideOffer mRideOffer;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-        OfferLog.d(mRideOffer.toString());
+    // TODO remove
+    void tests() {
+        String msg = "Ride or die";
+        String price = "39";
+        int pricePerSeat = Integer.valueOf(price);
+
+        mRideOffer.setMessage(msg);
+        mRideOffer.setPrice(pricePerSeat);
+
+        Intent intent = new Intent(MessagePriceActivity.this, OfferSummaryActivity.class);
+        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
+        startActivity(intent);
     }
 
     @Override
@@ -72,6 +81,16 @@ public class MessagePriceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // TODO remove
+        tests();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        OfferLog.d(mRideOffer.toString());
     }
 
     @Override

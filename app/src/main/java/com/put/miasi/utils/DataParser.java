@@ -1,6 +1,7 @@
 package com.put.miasi.utils;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.put.miasi.main.offer.OfferSummaryActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,21 @@ public class DataParser {
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
+
+        // TODO is it worth?
+        try {
+            JSONArray mjRoutes = jObject.getJSONArray("routes");
+            JSONArray mjLegs = ((JSONObject) mjRoutes.get(0)).getJSONArray("legs");
+            JSONObject jdes = ((JSONObject) mjLegs.get(0)).getJSONObject("distance");
+            String s = jdes.getString("text");
+            OfferLog.d("kornel", jdes.toString());
+            OfferLog.d(s);
+            OfferSummaryActivity.DISTANCE = s;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+        }
+
         try {
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
