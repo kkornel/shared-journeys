@@ -20,10 +20,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.put.miasi.MainActivityOldBasic;
 import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.Car;
+import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.FetchURL;
 import com.put.miasi.utils.LatLon;
@@ -98,10 +102,10 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mPublishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                publish();
                 // TODO Add extras to intent
-                Toast.makeText(getApplicationContext(), "Published!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(OfferSummaryActivity.this, MainActivity.class);
-                startActivity(intent);
+
             }
         });
 
@@ -138,6 +142,21 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
 
         new FetchURL(OfferSummaryActivity.this).execute(getUrl(mStartLatLng, mDestLatLng, "driving"), "driving");
+    }
+
+    private void publish() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+        String key = database.child(Database.RIDES).push().getKey();
+        database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Published!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(OfferSummaryActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private LatLng mStartLatLng;
@@ -200,7 +219,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mLuggageTextView.setText(luggage);
         mPriceTextView.setText(String.valueOf(price));
 
-        if (message.equals("")) {
+        if (message == null || message.equals("")) {
             mMessageTextView.setText("No message for passengers.");
         } else {
             mMessageTextView.setText(message);
