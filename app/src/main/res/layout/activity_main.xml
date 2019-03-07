@@ -20,10 +20,23 @@
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
         android:foreground="?attr/selectableItemBackground"
-        app:itemBackground="@color/bgBottomNavigation"
+        app:itemBackground="@color/colorPrimaryDark"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         app:menu="@menu/navigation" />
+
+    <!--<android.support.design.widget.BottomNavigationView-->
+        <!--android:id="@+id/navigation"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:background="?android:attr/windowBackground"-->
+        <!--android:foreground="?attr/selectableItemBackground"-->
+        <!--app:itemBackground="@color/bgBottomNavigation"-->
+        <!--app:itemHorizontalTranslationEnabled="false"-->
+        <!--app:itemIconTint="@android:color/white"-->
+        <!--app:itemTextColor="@android:color/white"-->
+        <!--app:menu="@menu/navigation" />-->
 
 </android.support.design.widget.CoordinatorLayout>

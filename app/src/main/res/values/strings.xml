@@ -17,6 +17,7 @@
     <string name="you">You</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="email">Email</string>
     <string name="confirm">Confirm</string>
     <string name="refresh">Refreshing</string>
     <string name="change">Change</string>
@@ -130,7 +131,7 @@
     <string name="still_want_to_exit">Still want to go back?</string>
     <string name="photo_will_be_deleted_after_saving">Photo will be deleted after saving</string>
 
-    
+
     <!-- MiASI -->
 
     <string name="profile">Profile</string>

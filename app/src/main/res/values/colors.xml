@@ -3,6 +3,7 @@
     <color name="colorPrimary">#7b4bff</color>
     <color name="colorPrimaryDark">#6539ba</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="bgBottomNavigation">#fe485a</color>
 
     <color name="colorBlack">#000000</color>
@@ -13,4 +14,24 @@
 
     <color name="colorText">#054451</color>
     <color name="colorSearchBackground">#ededed</color>
+
+    <!--<color name="colorPrimary">#0347ff</color>-->
+    <!--<color name="colorPrimaryDark">#3e01a6</color>-->
+    <!--<color name="colorAccent">#0390ce</color>-->
+
+    <!--<color name="colorPrimary">#fbbb03</color>-->
+    <!--<color name="colorPrimaryDark">#fc9904</color>-->
+    <!--<color name="colorAccent">#fffe35</color>-->
+
+    <!--<color name="colorPrimary">#fe2612</color>-->
+    <!--<color name="colorPrimaryDark">#a7184c</color>-->
+    <!--<color name="colorAccent">#ff530a</color>-->
+
+    <!--<color name="colorPrimary">#d0e92c</color>-->
+    <!--<color name="colorPrimaryDark">#68b033</color>-->
+    <!--<color name="colorAccent">#fffe35</color>-->
+
+
+    <!--<color name="colorAccent">#fc9904</color>-->
+    <!--<color name="colorAccent">#8601b0</color>-->
 </resources>
