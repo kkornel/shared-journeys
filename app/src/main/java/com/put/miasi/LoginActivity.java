@@ -1,6 +1,5 @@
 package com.put.miasi;
 
-
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,9 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.NetworkUtils;
 import com.put.miasi.utils.Utils;
-
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -141,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -157,7 +155,8 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             if (user != null) {
                 if (user.isEmailVerified()) {
-                    login(user);
+                    // TODO uncomment
+                    // login(user);
                 }
             }
         }
@@ -165,10 +164,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signIn(String email, String password) {
         Utils.hideKeyboard(this);
-
-        // TODO wywalic
-        Intent loginIntent = new Intent(this, MainActivityOldBasic.class);
-        startActivity(loginIntent);
 
         if (!validateForm()) {
             return;
@@ -208,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(FirebaseUser user) {
-        Intent loginIntent = new Intent(this, MainActivityOldBasic.class);
+        Intent loginIntent = new Intent(this, MainActivity.class);
         loginIntent.putExtra(INTENT_EXTRA_FIREBASE_USER, user);
         startActivity(loginIntent);
     }

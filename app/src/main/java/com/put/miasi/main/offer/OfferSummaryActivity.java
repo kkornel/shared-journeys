@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.put.miasi.R;
@@ -134,6 +136,11 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         // TODO add driver uid
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        String userUid = user.getUid();
+
+        mRideOffer.setDriverUid(userUid);
 
         String key = database.child(Database.RIDES).push().getKey();
         database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnSuccessListener(new OnSuccessListener<Void>() {

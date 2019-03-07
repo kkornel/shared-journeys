@@ -57,8 +57,6 @@ public class Car implements Parcelable {
         this.color = in.readString();
     }
 
-
-
     @Override
     public int describeContents() {
         return 0;

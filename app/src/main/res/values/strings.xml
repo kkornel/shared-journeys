@@ -84,6 +84,9 @@
     <!--<string name="register_invalid_email">Niepoprawny adres email</string>-->
     <string name="register_invalid_email">Invalid email address</string>
 
+    <!--<string name="register_invalid_email">Niepoprawny adres email</string>-->
+    <string name="register_invalid_phone">Invalid phone number</string>
+
     <!--<string name="register_passwords_not_match">Hasła nie są identyczne!</string>-->
     <string name="register_passwords_not_match">Passwords do not match</string>
 
