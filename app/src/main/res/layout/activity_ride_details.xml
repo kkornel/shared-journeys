@@ -10,9 +10,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         tools:context=".main.search.RideDetailsActivity">
 
@@ -27,7 +27,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="dostępnych miejsc: 5"
+            android:text="Available seats: 5"
             android:textSize="16dp" />
 
         <ImageView
@@ -111,7 +111,7 @@
             android:layout_below="@id/tv_hour_end"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:text="Odległość: 151 km"
+            android:text="Distance: 151 km"
             android:textSize="16dp" />
 
         <TextView
@@ -124,7 +124,7 @@
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/iv_avatar"
             android:layout_toRightOf="@+id/iv_avatar"
-            android:text="czarny" />
+            android:text="black" />
 
         <TextView
             android:id="@+id/tv_rating"
@@ -194,7 +194,7 @@
             android:layout_marginTop="20dp"
             android:layout_toEndOf="@+id/iv_luggage_icon"
             android:layout_toRightOf="@+id/iv_luggage_icon"
-            android:text="Bagaż: duży" />
+            android:text="Luggage: duży" />
 
         <TextView
             android:id="@+id/tv_message"
@@ -228,7 +228,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="Sr. 06 Marca"
+            android:text="Mon. 06 March"
             android:textSize="30dp" />
 
         <TextView
@@ -250,10 +250,10 @@
             android:layout_below="@+id/tv_price"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="za miejsce"
+            android:text="for seat"
             android:textSize="16dp" />
 
         <TextView
@@ -264,9 +264,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="19dp"
-            android:layout_marginRight="19dp"
-            android:text="41 zł"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="15 zł"
             android:textSize="20dp" />
 
         <View
@@ -321,6 +321,22 @@
             android:padding="10dp"
             android:text="Rezerwuj"
             android:textColor="#ffffff" />
+
+        <ImageButton
+            android:id="@+id/btn_location"
+            android:layout_width="37dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/tv_date"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@+id/tv_from"
+            android:layout_toRightOf="@+id/tv_from"
+            android:adjustViewBounds="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/marker" />
 
 
     </RelativeLayout>
