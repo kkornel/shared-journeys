@@ -11,8 +11,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.put.miasi.R;
+import com.put.miasi.utils.Car;
+import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.RideOffer;
+
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class CarDetailsActivity extends AppCompatActivity {
+
+    private static final String TAG = "CarDetailsActivity";
 
     private EditText mBrandEditText;
     private EditText mModelEditText;
@@ -20,6 +27,8 @@ public class CarDetailsActivity extends AppCompatActivity {
     private Spinner mSpaceSpinner;
     private Spinner mLuggageSpinner;
     private Button mNextButton;
+
+    private RideOffer mRideOffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,10 @@ public class CarDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setTitle(getString(R.string.title_activity_carDetails));
+
+        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
+        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         mBrandEditText = findViewById(R.id.brandEditText);
         mModelEditText = findViewById(R.id.modelEditText);
@@ -51,8 +64,17 @@ public class CarDetailsActivity extends AppCompatActivity {
                     return;
                 }
 
+                String brand = mBrandEditText.getText().toString();
+                String model = mModelEditText.getText().toString();
+                String color = mColorEditText.getText().toString();
+
+                Car car = new Car(brand, model, color);
+                mRideOffer.setCar(car);
+                mRideOffer.setSeats(Integer.valueOf(mSpaceSpinner.getSelectedItem().toString()));
+                mRideOffer.setLuggage(mLuggageSpinner.getSelectedItem().toString());
                 // TODO Add extras to intent
                 Intent intent = new Intent(CarDetailsActivity.this, MessagePriceActivity.class);
+                intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
             }
         });

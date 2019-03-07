@@ -14,7 +14,7 @@ public class TimePickerFragment extends DialogFragment
     private TimePickedListener listener;
 
     public static interface TimePickedListener {
-        void onTimePicked(String time);
+        void onTimePicked(int hour, int min);
     }
 
     @Override
@@ -32,9 +32,6 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        String h = (hourOfDay < 10) ? DateUtils.convertSingleDateToDouble(hourOfDay) : String.valueOf(hourOfDay);
-        String m = (minute < 10) ? DateUtils.convertSingleDateToDouble(minute) : String.valueOf(minute);
-
-        listener.onTimePicked(hourOfDay + ":" + minute);
+        listener.onTimePicked(hourOfDay, minute);
     }
 }

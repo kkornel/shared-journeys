@@ -1,6 +1,8 @@
 package com.put.miasi.main.offer;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,13 +10,34 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.put.miasi.MainActivityOldBasic;
 import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
+import com.put.miasi.utils.Car;
+import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.FetchURL;
+import com.put.miasi.utils.LatLon;
+import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.RideOffer;
+import com.put.miasi.utils.TaskLoadedCallback;
 
-public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback {
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
+
+public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "OfferSummaryActivity";
 
     private static final float ZOOM_LEVEL = 17.0f;
@@ -35,6 +58,8 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
     private Button mPublishButton;
 
+    private RideOffer mRideOffer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +69,10 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setTitle(getString(R.string.title_activity_offerSummary));
+
+        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
+        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -60,15 +89,9 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mPriceTextView = findViewById(R.id.priceTextView);
         mMessageTextView = findViewById(R.id.messageTextView);
 
-        mStartTextView.setText("Poznan");
-        mDestinationTextView.setText("Wawa");
-        mDateTextView.setText("16/03/19");
-        mTimeTextView.setText("16:30");
-        mCarDetailsTextView.setText("Opel Corsa Silver");
-        mSeatsTextView.setText("3");
-        mLuggageTextView.setText("Small");
-        mPriceTextView.setText("40");
-        mMessageTextView.setText("Ride or die");
+
+
+        unpackIntentSummary();
 
         mPublishButton = findViewById(R.id.publishButton);
 
@@ -94,5 +117,120 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        Marker startMarker = mMap.addMarker(new MarkerOptions()
+                .position(mStartLatLng)
+                .title("Start"));
+
+        Marker destMarker = mMap.addMarker(new MarkerOptions()
+                .position(mDestLatLng)
+                .title("Destination"));
+
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+
+        builder.include(startMarker.getPosition());
+        builder.include(destMarker.getPosition());
+
+        LatLngBounds bounds = builder.build();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_MAP_PADDING));
+
+
+        new FetchURL(OfferSummaryActivity.this).execute(getUrl(mStartLatLng, mDestLatLng, "driving"), "driving");
     }
+
+    private LatLng mStartLatLng;
+    private LatLng mDestLatLng;
+
+    private void unpackIntentSummary() {
+        LatLon startPoint = mRideOffer.getStartPoint();
+        mStartLatLng = startPoint.toLatLng();
+        LatLon destinationPoint = mRideOffer.getDestinationPoint();
+        mDestLatLng = destinationPoint.toLatLng();
+        long date = mRideOffer.getDate();
+        Calendar calendar = DateUtils.getCalendarFromMilliSecs(date);
+        String year = DateUtils.getYearFromCalendar(calendar);
+        String month = DateUtils.getMonthFromCalendar(calendar);
+        String day = DateUtils.getDayFromCalendar(calendar);
+        String hour = DateUtils.getHourFromCalendar(calendar);
+        String min = DateUtils.getMinFromCalendar(calendar);
+
+        Car car = mRideOffer.getCar();
+        String carString = car.getBrand() + " " + car.getModel() + " " + car.getColor();
+
+        int seats = mRideOffer.getSeats();
+        String luggage = mRideOffer.getLuggage();
+        int price = mRideOffer.getPrice();
+        String message = mRideOffer.getMessage();
+
+
+        List<Address> startAddressList = null;
+        List<Address> destAddressList = null;
+
+        Geocoder startGeocoder = new Geocoder(OfferSummaryActivity.this);
+        Geocoder destGeocoder = new Geocoder(OfferSummaryActivity.this);
+        try {
+            startAddressList = startGeocoder.getFromLocation(startPoint.getLatitude(), startPoint.getLongitude(), 1);
+            destAddressList = destGeocoder.getFromLocation(destinationPoint.getLatitude(), destinationPoint.getLongitude(), 1);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Address startAddress = startAddressList.get(0);
+        Address destAddress = destAddressList.get(0);
+
+        String startCity = startAddress.getLocality();
+        String destCity = destAddress.getLocality();
+
+
+
+        OfferLog.d("onPlaceSelected: " + startAddress.toString());
+
+
+
+
+
+        mStartTextView.setText(startCity);
+        mDestinationTextView.setText(destCity);
+        mDateTextView.setText(day + "/" + month + "/" + year);
+        mTimeTextView.setText(hour + ":" + min);
+        mCarDetailsTextView.setText(carString);
+        mSeatsTextView.setText(String.valueOf(seats));
+        mLuggageTextView.setText(luggage);
+        mPriceTextView.setText(String.valueOf(price));
+
+        if (message.equals("")) {
+            mMessageTextView.setText("No message for passengers.");
+        } else {
+            mMessageTextView.setText(message);
+        }
+
+
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        return url;
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
+
+    private Polyline currentPolyline;
 }

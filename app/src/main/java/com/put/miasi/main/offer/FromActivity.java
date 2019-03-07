@@ -22,15 +22,19 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.LatLon;
+import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.RideOffer;
 
 import java.util.Arrays;
 
 public class FromActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "FromActivity";
 
+    public static String RIDE_OFFER_INTENT = "ride_offer_intent";
+
     private static final float ZOOM_LEVEL = 17.0f;
     private static final float VERTICAL_BIAS = 0.5f;
-    private static final int MARKER_MAP_PADDING = 200;
     private static final int MARGIN_TOP = 64;
     private static final int MARGIN_BOTTOM = 32;
 
@@ -60,7 +64,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mapFragment.getView().setVisibility(View.INVISIBLE);
 
-
         // Initialize Places.
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
 
@@ -84,7 +87,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.d(TAG, "Place: " + place.getName() + ", " + place.getLatLng());
+                OfferLog.d("Place: " + place.getName() + ", " + place.getLatLng());
 
                 mStartLatLng = place.getLatLng();
 
@@ -110,7 +113,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onError(Status status) {
-                Log.d(TAG, "An error occurred: " + status);
+                OfferLog.d("An error occurred: " + status);
             }
         });
 
@@ -123,9 +126,13 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                RideOffer rideOffer = new RideOffer();
+                rideOffer.setStartPoint(new LatLon(mStartLatLng));
+
                 // TODO Add extras to intent
-               Intent intent = new Intent(FromActivity.this, DestinationActivity.class);
-               startActivity(intent);
+                Intent intent = new Intent(FromActivity.this, DestinationActivity.class);
+                intent.putExtra(RIDE_OFFER_INTENT, rideOffer);
+                startActivity(intent);
             }
         });
     }

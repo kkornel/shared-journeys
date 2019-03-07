@@ -13,8 +13,12 @@ import android.widget.CalendarView;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.RideOffer;
 
 import java.util.Locale;
+
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class DatePickerActivity extends AppCompatActivity {
     private static final String TAG = "DatePickerActivity";
@@ -23,6 +27,8 @@ public class DatePickerActivity extends AppCompatActivity {
     private Button mNextButton;
 
     private long mTimePickedMilliSecs;
+
+    private RideOffer mRideOffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,9 @@ public class DatePickerActivity extends AppCompatActivity {
 
         mCalendarView = findViewById(R.id.calendarView);
 
+        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        OfferLog.d( "onCreate: " + mRideOffer.toString());
+
         //Initialize calendar with date
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
 
@@ -47,15 +56,15 @@ public class DatePickerActivity extends AppCompatActivity {
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                Log.d(TAG, "onSelectedDayChange: " + dayOfMonth + "/" + month + "/" + year);
+                OfferLog.d("onSelectedDayChange: " + dayOfMonth + "/" + month + "/" + year);
 
-                String d = (dayOfMonth < 10) ? DateUtils.convertSingleDateToDouble(dayOfMonth) : String.valueOf(dayOfMonth);
-                String m = (month < 10) ? DateUtils.convertSingleDateToDouble(month) : String.valueOf(month);
+                String d = DateUtils.getWithLeadingZero(dayOfMonth);
+                String m = DateUtils.getWithLeadingZero(month);
                 String y = String.valueOf(year);
 
                 long timePickedMilliSecs = DateUtils.getMilliSecondsFromDate(dayOfMonth, month, year);
 
-                Log.d(TAG, "onSelectedDayChange: " + DateUtils.getDate(timePickedMilliSecs, "dd/MM/yyyy hh:mm:ss.SSS"));
+                OfferLog.d( "onSelectedDayChange: " + DateUtils.getDate(timePickedMilliSecs, "dd/MM/yyyy hh:mm:ss.SSS"));
 
                 mTimePickedMilliSecs = timePickedMilliSecs;
 
@@ -68,9 +77,16 @@ public class DatePickerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Add extras to intent
-                mTimePickedMilliSecs = mCalendarView.getDate();
+
+                if (mTimePickedMilliSecs == 0) {
+                    mTimePickedMilliSecs = mCalendarView.getDate();
+                }
+
+                mRideOffer.setDate(mTimePickedMilliSecs);
+
 
                 Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);
+                intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
             }
         });

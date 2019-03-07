@@ -22,6 +22,11 @@ public class LatLon implements Parcelable {
         this.longitude = longitude;
     }
 
+    public LatLon(LatLng latLng) {
+        this.latitude = latLng.latitude;
+        this.longitude = latLng.longitude;
+    }
+
     public double getLatitude() {
         return latitude;
     }

@@ -22,15 +22,19 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.LatLon;
+import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.RideOffer;
 
 import java.util.Arrays;
+
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class DestinationActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "DestinationActivity";
 
     private static final float ZOOM_LEVEL = 17.0f;
     private static final float VERTICAL_BIAS = 0.5f;
-    private static final int MARKER_MAP_PADDING = 200;
     private static final int MARGIN_TOP = 64;
     private static final int MARGIN_BOTTOM = 32;
 
@@ -43,6 +47,8 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
 
     private LatLng mDestinationLatLng;
 
+    private RideOffer mRideOffer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,11 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
+
+
+        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRiderOffer = (RideOffer) getIntent().getExtras().getParcelable(RIDE_OFFER_INTENT);
+        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -84,7 +95,7 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                Log.d(TAG, "Place: " + place.getName() + ", " + place.getLatLng());
+                OfferLog.d("Place: " + place.getName() + ", " + place.getLatLng());
 
                 mDestinationLatLng = place.getLatLng();
 
@@ -110,7 +121,7 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
 
             @Override
             public void onError(Status status) {
-                Log.d(TAG, "An error occurred: " + status);
+                OfferLog.d("An error occurred: " + status);
             }
         });
 
@@ -122,8 +133,11 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mRideOffer.setDestinationPoint(new LatLon(mDestinationLatLng));
+
                 // TODO Add extras to intent
                 Intent intent = new Intent(DestinationActivity.this, DatePickerActivity.class);
+                intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
                 startActivity(intent);
             }
         });
