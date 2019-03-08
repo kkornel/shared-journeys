@@ -16,6 +16,7 @@ public class User implements Parcelable {
     private String email;
     private String phone;
     private List<String> offeredRides;
+    private List<String> participatedRides;
 
     public User() {
     }
@@ -26,15 +27,6 @@ public class User implements Parcelable {
         this.surname = surname;
         this.email = email;
         this.phone = phone;
-    }
-
-    public User(String avatarUrl, String firstName, String surname, String email, String phone, List<String> offeredRides) {
-        this.avatarUrl = avatarUrl;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.email = email;
-        this.phone = phone;
-        this.offeredRides = offeredRides;
     }
 
     @Exclude
@@ -95,6 +87,14 @@ public class User implements Parcelable {
         this.offeredRides = offeredRides;
     }
 
+    public List<String> getParticipatedRides() {
+        return participatedRides;
+    }
+
+    public void setParticipatedRides(List<String> participatedRides) {
+        this.participatedRides = participatedRides;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -105,6 +105,7 @@ public class User implements Parcelable {
                 "\n, email='" + email + '\'' +
                 "\n, phone='" + phone + '\'' +
                 "\n, offeredRides=" + offeredRides +
+                "\n, participatedRides=" + participatedRides +
                 '}';
     }
 
@@ -117,6 +118,8 @@ public class User implements Parcelable {
         this.phone = in.readString();
         this.offeredRides = new ArrayList<>();
         in.readList(this.offeredRides, String.class.getClassLoader());
+        this.participatedRides = new ArrayList<>();
+        in.readList(this.participatedRides, String.class.getClassLoader());
     }
 
     @Override
@@ -133,6 +136,7 @@ public class User implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.phone);
         dest.writeList(this.offeredRides);
+        dest.writeList(this.participatedRides);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
