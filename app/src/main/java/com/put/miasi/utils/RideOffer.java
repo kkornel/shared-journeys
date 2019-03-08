@@ -12,7 +12,8 @@ public class RideOffer implements Parcelable {
     public long date;
     public LatLon startPoint;
     public LatLon destinationPoint;
-    public String distance;
+    public long distance;
+    public long duration;
     public Car car;
     public int seats;
     public String luggage;
@@ -64,12 +65,20 @@ public class RideOffer implements Parcelable {
         this.destinationPoint = destinationPoint;
     }
 
-    public String getDistance() {
+    public long getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(long distance) {
         this.distance = distance;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public Car getCar() {
@@ -129,6 +138,7 @@ public class RideOffer implements Parcelable {
                 ",\n startPoint=" + startPoint +
                 ",\n destinationPoint=" + destinationPoint +
                 ",\n distance=" + distance +
+                ",\n duration=" + duration +
                 ",\n car='" + car + '\'' +
                 ",\n seats=" + seats +
                 ",\n luggage='" + luggage + '\'' +
@@ -146,7 +156,8 @@ public class RideOffer implements Parcelable {
         this.date = in.readLong();
         this.startPoint = in.readParcelable(LatLon.class.getClassLoader());
         this.destinationPoint = in.readParcelable(LatLon.class.getClassLoader());
-        this.distance = in.readString();
+        this.distance = in.readLong();
+        this.duration = in.readLong();
         this.car = in.readParcelable(Car.class.getClassLoader());
         this.seats = in.readInt();
         this.luggage = in.readString();
@@ -167,7 +178,8 @@ public class RideOffer implements Parcelable {
         dest.writeLong(this.date);
         dest.writeParcelable(this.startPoint, flags);
         dest.writeParcelable(this.destinationPoint, flags);
-        dest.writeString(this.distance);
+        dest.writeLong(this.distance);
+        dest.writeLong(this.duration);
         dest.writeParcelable(this.car, flags);
         dest.writeInt(this.seats);
         dest.writeString(this.luggage);

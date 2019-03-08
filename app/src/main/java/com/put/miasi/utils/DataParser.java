@@ -24,10 +24,28 @@ public class DataParser {
             JSONArray mjRoutes = jObject.getJSONArray("routes");
             JSONArray mjLegs = ((JSONObject) mjRoutes.get(0)).getJSONArray("legs");
             JSONObject jdes = ((JSONObject) mjLegs.get(0)).getJSONObject("distance");
-            String s = jdes.getString("text");
+            // String s = jdes.getString("text");
+            long distance = jdes.getLong("value");
             OfferLog.d("kornel", jdes.toString());
-            OfferLog.d(s);
-            OfferSummaryActivity.DISTANCE = s;
+            OfferLog.d(String.valueOf(distance));
+            // OfferSummaryActivity.DISTANCE = s;
+            OfferSummaryActivity.DISTANCE = distance;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+        }
+
+        // TODO is it worth?
+        try {
+            JSONArray mjRoutes = jObject.getJSONArray("routes");
+            JSONArray mjLegs = ((JSONObject) mjRoutes.get(0)).getJSONArray("legs");
+            JSONObject jdes = ((JSONObject) mjLegs.get(0)).getJSONObject("duration");
+            // String s = jdes.getString("text");
+            long duration = jdes.getLong("value");
+            OfferLog.d("kornel", jdes.toString());
+            OfferLog.d(String.valueOf(duration));
+            // OfferSummaryActivity.DISTANCE = s;
+            OfferSummaryActivity.DURATION = duration;
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (Exception e) {
