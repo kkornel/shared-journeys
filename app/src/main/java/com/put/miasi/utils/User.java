@@ -3,10 +3,13 @@ package com.put.miasi.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Parcelable {
+    private String uid;
     private String avatarUrl;
     private String firstName;
     private String surname;
@@ -32,6 +35,16 @@ public class User implements Parcelable {
         this.email = email;
         this.phone = phone;
         this.offeredRides = offeredRides;
+    }
+
+    @Exclude
+    public String getUid() {
+        return uid;
+    }
+
+    @Exclude
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getAvatarUrl() {
@@ -85,7 +98,8 @@ public class User implements Parcelable {
     @Override
     public String toString() {
         return "User{" +
-                "\navatarUrl='" + avatarUrl + '\'' +
+                "\nuid='" + uid + '\'' +
+                "\n, avatarUrl='" + avatarUrl + '\'' +
                 "\n, firstName='" + firstName + '\'' +
                 "\n, surname='" + surname + '\'' +
                 "\n, email='" + email + '\'' +
@@ -95,6 +109,7 @@ public class User implements Parcelable {
     }
 
     public User(Parcel in) {
+        this.uid = in.readString();
         this.avatarUrl = in.readString();
         this.firstName = in.readString();
         this.surname = in.readString();
@@ -111,6 +126,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uid);
         dest.writeString(this.avatarUrl);
         dest.writeString(this.firstName);
         dest.writeString(this.surname);

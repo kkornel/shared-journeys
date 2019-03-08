@@ -36,8 +36,10 @@ import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
+import com.put.miasi.utils.Utils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,6 +55,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
     private TextView mStartTextView;
     private TextView mDestinationTextView;
     private TextView mDistanceTextView;
+    private TextView mDurationTextView;
     private TextView mDateTextView;
     private TextView mTimeTextView;
     private TextView mCarDetailsTextView;
@@ -69,7 +72,9 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
     private LatLng mDestLatLng;
     private Polyline currentPolyline;
 
-    public static String DISTANCE;
+    // public static String DISTANCE;
+    public static long DISTANCE;
+    public static long DURATION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mStartTextView = findViewById(R.id.startTextView);
         mDestinationTextView = findViewById(R.id.destinationTextView);
         mDistanceTextView = findViewById(R.id.distanceTextView);
+        mDurationTextView = findViewById(R.id.durationTextView);
         mDateTextView = findViewById(R.id.dateTextView);
         mTimeTextView = findViewById(R.id.timeTextView);
         mCarDetailsTextView = findViewById(R.id.carDetailsTextView);
@@ -151,6 +157,8 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
         mRideOffer.setDriverUid(CurrentUserProfile.uid);
         mRideOffer.setDistance(DISTANCE);
+        mRideOffer.setDuration(DURATION);
+
 
         final DatabaseReference userRef = database.child(Database.USERS).child(CurrentUserProfile.uid);
 
@@ -264,7 +272,12 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onTaskDone(Object... values) {
-        mDistanceTextView.setText(DISTANCE);
+        String distance = Utils.getStringDistanceFromLongMeters(DISTANCE);
+        String duration = Utils.getStringDuartionFromLongSeconds(DURATION);
+
+        mDistanceTextView.setText(distance);
+        mDurationTextView.setText(duration);
+
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
