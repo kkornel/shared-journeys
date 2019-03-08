@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.offer.OfferSummaryActivity"></activity>
+        <activity android:name=".main.profile.EditProfileActivity"></activity>
+        <activity android:name=".main.offer.OfferSummaryActivity" />
         <activity android:name=".main.offer.MessagePriceActivity" />
         <activity android:name=".main.offer.CarDetailsActivity" />
         <activity android:name=".main.offer.TimePickerActivity" />
@@ -25,19 +26,21 @@
         <activity android:name=".main.search.SearchActivity" />
         <activity
             android:name=".main.MainActivity"
-            android:label="@string/title_activity_main">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar">
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivityOldBasic" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

@@ -1,5 +1,6 @@
 package com.put.miasi.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +30,10 @@ import com.put.miasi.utils.User;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private ActionBar mToolbar;
+    // private ActionBar mToolbar;
+    private Toolbar mToolbar;
+
+    private BottomNavigationView mNavigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -37,21 +44,33 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_history:
                     mToolbar.setTitle(getString(R.string.title_history));
+                    resetNavIcon();
                     fragment = new HistoryFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_rides:
                     mToolbar.setTitle(getString(R.string.title_rides));
+                    resetNavIcon();
                     fragment = new RidesFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_notifications:
                     mToolbar.setTitle(getString(R.string.title_notifications));
+                    resetNavIcon();
                     fragment = new NotificationFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_options:
                     mToolbar.setTitle(getString(R.string.title_options));
+                    mToolbar.setNavigationIcon(R.drawable.ic_edit_white_24dp);
+                    mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getApplicationContext(), "dasdas", Toast.LENGTH_SHORT).show();
+                            // Intent intent = new Intent(MainActivity.this, ProfileDetailsActivity.class);
+                            // startActivity(intent);
+                        }
+                    });
                     fragment = new OptionsFragment();
                     loadFragment(fragment);
                     return true;
@@ -60,18 +79,26 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private void resetNavIcon() {
+        mToolbar.setNavigationIcon(null);
+        mToolbar.setNavigationOnClickListener(null);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = getSupportActionBar();
+        // mToolbar = getSupportActionBar();
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_rides);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(getString(R.string.title_rides));
 
-        mToolbar.setTitle(getString(R.string.title_rides));
+        mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mNavigation.setSelectedItemId(R.id.navigation_rides);
+
         loadFragment(new RidesFragment());
     }
 
@@ -112,5 +139,18 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
+
+        if (mNavigation.getSelectedItemId() == R.id.navigation_history
+                || mNavigation.getSelectedItemId() == R.id.navigation_rides
+                || mNavigation.getSelectedItemId() == R.id.navigation_notifications) {
+            MenuItem item = menu.findItem(R.id.settings_menu_item);
+            item.setVisible(false);
+        }
+        return true;
     }
 }
