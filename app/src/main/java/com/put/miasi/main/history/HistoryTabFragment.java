@@ -1,8 +1,8 @@
 package com.put.miasi.main.history;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +37,7 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
     private FirebaseUser mUser;
     private String mUserUid;
     private DatabaseReference mRootRef;
-    private DatabaseReference mWorkoutsRef;
+    private DatabaseReference mRidesRef;
     private DatabaseReference mUsersRef;
 
     private List<String> mFriendsIds;
@@ -58,31 +58,9 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_recycler_view_swipe_refresh, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recycler_view_empty, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        mSwipeRefresh = rootView.findViewById(R.id.swipeRefresh);
-        mSwipeRefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        Toast.makeText(getActivity(), getString(R.string.refresh), Toast.LENGTH_SHORT).show();
-
-                        if (mDataChanged) {
-                            readFriendsWorkouts(mFriendsIds);
-                            mDataChanged = false;
-                        } else {
-                            if (mNewData) {
-                                mFragmentJustStarted = false;
-                                // loadNewData(mFeedFriendsList);
-                                mNewData = false;
-                            }
-                        }
-                        mSwipeRefresh.setRefreshing(false);
-                    }
-                }
-        );
 
         mNoDataInfoTextView = rootView.findViewById(R.id.noDataInfoTextView);
 
@@ -116,12 +94,16 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
 
         mFriendsIds = new ArrayList<>();
 
-
+        // TODO download all data
     }
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
+        // TODO start new activity for details
 
+        // Intent i = new Intent(getActivity(), WorkoutGpsDetailsFriend.class);
+        // i.putExtra(FRIEND_WORKOUT_INTENT_EXTRA, mFeedFriendsList.get(clickedItemIndex));
+        // startActivity(i);
     }
 
     public void setFeedFriendsList(List<RideOffer> feedFriendsList) {

@@ -15,11 +15,11 @@ import com.put.miasi.R;
 import com.put.miasi.main.history.HistoryTabFragment;
 
 public class HistoryFragment extends Fragment {
-    private FeedPagerAdapter mFeedPagerAdapter;
+    private HistoryPagerAdapter mHistoryPagerAdapter;
     private ViewPager mViewPager;
 
-    private HistoryTabFragment mFeedFriendsFragment;
-    private HistoryTabFragment mFeedYouFragment;
+    private HistoryTabFragment mParticipatedFragment;
+    private HistoryTabFragment mOfferedFragment;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -29,10 +29,10 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
-        mFeedPagerAdapter = new FeedPagerAdapter(getActivity().getSupportFragmentManager());
+        mHistoryPagerAdapter = new HistoryPagerAdapter(getActivity().getSupportFragmentManager());
 
         mViewPager = rootView.findViewById(R.id.historyContainer);
-        mViewPager.setAdapter(mFeedPagerAdapter);
+        mViewPager.setAdapter(mHistoryPagerAdapter);
 
         TabLayout tabLayout = rootView.findViewById(R.id.history_tabs);
 
@@ -42,19 +42,19 @@ public class HistoryFragment extends Fragment {
         return rootView;
     }
 
-    public class FeedPagerAdapter extends FragmentPagerAdapter {
-        public FeedPagerAdapter(FragmentManager fm) {
+    public class HistoryPagerAdapter extends FragmentPagerAdapter {
+        public HistoryPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                mFeedFriendsFragment = new HistoryTabFragment();
-                return mFeedFriendsFragment;
+                mParticipatedFragment = new HistoryTabFragment();
+                return mParticipatedFragment;
             } else {
-                mFeedYouFragment = new HistoryTabFragment();
-                return mFeedYouFragment;
+                mOfferedFragment = new HistoryTabFragment();
+                return mOfferedFragment;
             }
         }
 
