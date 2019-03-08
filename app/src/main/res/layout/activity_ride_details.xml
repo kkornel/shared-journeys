@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.search.RideDetailsActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        tools:context=".main.search.RideDetailsActivity">
+
+
+        <TextView
+            android:id="@+id/tv_available_seats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_price_text"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Available seats: 5"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/iv_message"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter4"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:drawable/ic_menu_edit" />
+
+        <ImageView
+            android:id="@+id/iv_luggage_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter3"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_assignment_black_24dp" />
+
+        <ImageView
+            android:id="@+id/iv_car"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_directions_car_black_24dp" />
+
+        <ImageView
+            android:id="@+id/iv_green_vertical_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_date"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="63dp"
+            android:layout_toEndOf="@+id/tv_hour_begin"
+            android:layout_toRightOf="@+id/tv_hour_begin"
+            android:rotation="90"
+            android:scaleX="2.5"
+            app:srcCompat="@android:drawable/button_onoff_indicator_on" />
+
+        <ImageView
+            android:id="@+id/iv_star"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:drawable/btn_star_big_on" />
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_account_circle_black_24dp" />
+
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_hour_end"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:text="Distance: 151 km"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_car_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_car"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/iv_avatar"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:text="black" />
+
+        <TextView
+            android:id="@+id/tv_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splitter"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_toStartOf="@+id/iv_star"
+            android:layout_toLeftOf="@+id/iv_star"
+            android:text="4,4"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_hour_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_hour_begin"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="60dp"
+            android:text="18:00"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_date"
+            android:layout_alignBaseline="@id/tv_hour_end"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/iv_green_vertical_line"
+            android:layout_toRightOf="@+id/iv_green_vertical_line"
+            android:text="Poznan"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splitter2"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/iv_avatar"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:text="Opel Insignia" />
+
+        <TextView
+            android:id="@+id/tv_hour_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_date"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="15:00"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_luggage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splitter3"
+            android:layout_marginStart="21dp"
+            android:layout_marginLeft="21dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/iv_luggage_icon"
+            android:layout_toRightOf="@+id/iv_luggage_icon"
+            android:text="Luggage: duży" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="315dp"
+            android:layout_height="47dp"
+            android:layout_below="@+id/splitter4"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="9dp"
+            android:layout_toEndOf="@+id/iv_luggage_icon"
+            android:layout_toRightOf="@+id/iv_luggage_icon"
+            android:text="Tutaj wiadomość od Janusza ze w samochodzie nie można palić :)" />
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_date"
+            android:layout_alignBaseline="@id/tv_hour_begin"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/iv_green_vertical_line"
+            android:layout_toRightOf="@+id/iv_green_vertical_line"
+
+            android:text="Bydgoszcz"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Mon. 06 March"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/tv_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splitter"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/iv_avatar"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:text="Janusz" />
+
+        <TextView
+            android:id="@+id/tv_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_price"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="for seat"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_date"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="15 zł"
+            android:textSize="20dp" />
+
+        <View
+            android:id="@+id/splitter"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@id/tv_distance"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
+        <View
+            android:id="@+id/splitter2"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@id/iv_avatar"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
+        <View
+            android:id="@+id/splitter3"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@+id/iv_car"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
+        <View
+            android:id="@+id/splitter4"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@+id/iv_luggage_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
+        <Button
+            android:id="@+id/btn_reservation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_rounded_edges"
+            android:padding="10dp"
+            android:text="Rezerwuj"
+            android:textColor="#ffffff" />
+
+        <ImageButton
+            android:id="@+id/btn_location"
+            android:layout_width="37dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/tv_date"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@+id/tv_from"
+            android:layout_toRightOf="@+id/tv_from"
+            android:adjustViewBounds="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/marker" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

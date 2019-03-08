@@ -20,6 +20,10 @@
         <activity android:name=".main.offer.MessagePriceActivity" />
         <activity android:name=".main.offer.CarDetailsActivity" />
         <activity android:name=".main.offer.TimePickerActivity" />
+        <activity android:name=".main.search.SeatsReservationActivity"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity android:name=".main.search.RideDetailsActivity" />
+        <activity android:name=".main.offer.TimePickerActivity" />
         <activity android:name=".main.offer.DatePickerActivity" />
         <activity android:name=".main.offer.DestinationActivity" />
         <activity android:name=".main.offer.FromActivity" />
