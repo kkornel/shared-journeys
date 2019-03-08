@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.OfferLog;
@@ -66,9 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(getApplicationContext(), "dasdas", Toast.LENGTH_SHORT).show();
-                            // Intent intent = new Intent(MainActivity.this, ProfileDetailsActivity.class);
-                            // startActivity(intent);
+                            Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
+                            startActivity(intent);
                         }
                     });
                     fragment = new OptionsFragment();
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         if (mNavigation.getSelectedItemId() == R.id.navigation_history
                 || mNavigation.getSelectedItemId() == R.id.navigation_rides
                 || mNavigation.getSelectedItemId() == R.id.navigation_notifications) {
-            MenuItem item = menu.findItem(R.id.settings_menu_item);
+            MenuItem item = menu.findItem(R.id.logout_menu_item);
             item.setVisible(false);
         }
         return true;

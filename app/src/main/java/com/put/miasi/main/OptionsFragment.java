@@ -1,6 +1,7 @@
 package com.put.miasi.main;
 
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.put.miasi.LoginActivity;
 import com.put.miasi.R;
 
 /**
@@ -45,9 +48,10 @@ public class OptionsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.settings_menu_item:
-                // Intent i = new Intent(getContext(), SettingsActivity.class);
-                // startActivity(i);
+            case R.id.logout_menu_item:
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(getContext(), LoginActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
