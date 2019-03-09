@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity
 {
-    private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<Offers> data = new ArrayList<Offers>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -46,16 +46,23 @@ public class SearchActivity extends AppCompatActivity
 
     private void generateListContent() {
         for(int i = 0; i < 55; i++) {
-            data.add("This is row number " + i);
+            Offers offer = new Offers();
+            offer.nick = "tata";
+            offer.from = "lol";
+            offer.to = "1";
+            offer.price = "2";
+            offer.hour_begin = "3";
+            offer.hour_end = "4";
+            data.add(offer);
         }
     }
 
 
 
-    private class MyListAdapter extends ArrayAdapter<String>
+    private class MyListAdapter extends ArrayAdapter<Offers>
     {
         private int layout;
-        private MyListAdapter(Context context, int resource, List<String> objects)
+        private MyListAdapter(Context context, int resource, List<Offers> objects)
         {
             super(context,resource,objects);
             layout = resource;
@@ -79,7 +86,13 @@ public class SearchActivity extends AppCompatActivity
                 convertView.setTag(viewHolder);
             }
             mainViewholder = (ViewHolder) convertView.getTag();
-            mainViewholder.nick.setText(getItem(position));
+            mainViewholder.nick.setText(getItem(position).nick);
+            mainViewholder.from.setText(getItem(position).from);
+            mainViewholder.to.setText(getItem(position).to);
+            mainViewholder.price.setText(getItem(position).price);
+            mainViewholder.hour_begin.setText(getItem(position).hour_begin);
+            mainViewholder.hour_end.setText(getItem(position).hour_end);
+
 
             return convertView;
         }
@@ -93,6 +106,16 @@ public class SearchActivity extends AppCompatActivity
         TextView price;
         TextView hour_begin;
         TextView hour_end;
-
     }
+    public class Offers
+    {
+        String nick;
+        String from;
+        String to;
+        String price;
+        String hour_begin;
+        String hour_end;
+    }
+
+    /////////////////////////// FIREBASE //////////////////////////////////
 }
