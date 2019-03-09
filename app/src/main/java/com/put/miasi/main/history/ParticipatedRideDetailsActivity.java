@@ -24,6 +24,8 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         mRide = getIntent().getParcelableExtra(RIDE_INTENT_EXTRA);
 
+        
+
         OfferLog.d("beep", mRide.toString());
     }
 
