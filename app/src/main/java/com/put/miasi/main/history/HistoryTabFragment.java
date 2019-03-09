@@ -1,8 +1,10 @@
 package com.put.miasi.main.history;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,20 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.ListItemClickListener;
 import com.put.miasi.utils.NavLog;
+import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class HistoryTabFragment extends Fragment implements ListItemClickListener {
+public class HistoryTabFragment extends Fragment implements RideListItemClickListener {
     private static final String TAG = "HistoryTabFragment";
+
+    public static final String RIDE_INTENT_EXTRA = "ride-intent-extra";
 
     private TextView mNoDataInfoTextView;
     private HistoryAdapter mHistoryAdapter;
@@ -54,6 +56,8 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
         mHistoryAdapter = new HistoryAdapter(getContext(), this, mRides);
         mRecyclerView.setAdapter(mHistoryAdapter);
 
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
         mNoDataInfoTextView.setText(getString(R.string.loading));
         mNoDataInfoTextView.setVisibility(View.VISIBLE);
 
@@ -68,32 +72,20 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
     @Override
     public void onStart() {
         super.onStart();
-
         NavLog.d("HisTabFra: onStart");
-
-
-        if (mIsParticipatedFragment) {
-
-        }
-
-
-
-
-
-
-
-
-
-        // TODO download all data
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
-        // TODO start new activity for details
-
-        // Intent i = new Intent(getActivity(), WorkoutGpsDetailsFriend.class);
-        // i.putExtra(FRIEND_WORKOUT_INTENT_EXTRA, mFeedFriendsList.get(clickedItemIndex));
-        // startActivity(i);
+    public void onListItemClick(RideOffer clickedItem) {
+        if (mIsParticipatedFragment) {
+            Intent intent = new Intent(getActivity(), ParticipatedRideDetailsActivity.class);
+            intent.putExtra(RIDE_INTENT_EXTRA, clickedItem);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(getActivity(), OfferedRideDetailsActivity.class);
+            intent.putExtra(RIDE_INTENT_EXTRA, clickedItem);
+            startActivity(intent);
+        }
     }
 
     public void setRidesList(List<RideOffer> rides) {

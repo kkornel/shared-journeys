@@ -15,13 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.profile.EditProfileActivity"></activity>
+        <activity android:name=".main.history.ParticipatedRideDetailsActivity"></activity>
+        <activity android:name=".main.history.OfferedRideDetailsActivity" />
+        <activity android:name=".main.profile.EditProfileActivity" />
         <activity android:name=".main.offer.OfferSummaryActivity" />
         <activity android:name=".main.offer.MessagePriceActivity" />
         <activity android:name=".main.offer.CarDetailsActivity" />
         <activity android:name=".main.offer.TimePickerActivity" />
-        <activity android:name=".main.search.SeatsReservationActivity"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity
+            android:name=".main.search.SeatsReservationActivity"
+            android:theme="@style/AppTheme.CustomTheme" />
         <activity android:name=".main.search.RideDetailsActivity" />
         <activity android:name=".main.offer.TimePickerActivity" />
         <activity android:name=".main.offer.DatePickerActivity" />

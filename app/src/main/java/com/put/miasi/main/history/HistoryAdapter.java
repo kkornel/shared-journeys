@@ -16,6 +16,7 @@ import com.put.miasi.main.offer.OfferSummaryActivity;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Calendar;
@@ -26,11 +27,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     private Context mContext;
 
-    private final ListItemClickListener mOnClickListener;
+    private final RideListItemClickListener mOnClickListener;
 
     private List<RideOffer> mRides;
 
-    public HistoryAdapter(Context context, ListItemClickListener onClickListener, List<RideOffer> rides) {
+    public HistoryAdapter(Context context, RideListItemClickListener onClickListener, List<RideOffer> rides) {
         mContext = context;
         mOnClickListener = onClickListener;
         mRides = rides;
@@ -112,7 +113,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
+            RideOffer ride = mRides.get(clickedPosition);
+            mOnClickListener.onListItemClick(ride);
         }
     }
 }
