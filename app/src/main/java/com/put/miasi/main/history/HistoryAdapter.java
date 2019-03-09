@@ -20,17 +20,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     private final ListItemClickListener mOnClickListener;
 
-    private List<RideOffer> mWorkouts;
+    private List<RideOffer> mRides;
 
-    public HistoryAdapter(Context context, ListItemClickListener onClickListener, List<RideOffer> workouts) {
+    public HistoryAdapter(Context context, ListItemClickListener onClickListener, List<RideOffer> rides) {
         mContext = context;
         mOnClickListener = onClickListener;
-        mWorkouts = workouts;
+        mRides = rides;
     }
 
     @Override
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
+
         int layoutIdForListItem = R.layout.history_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
@@ -43,7 +44,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder workoutViewHolder, int position) {
-        if ((mWorkouts == null) || (mWorkouts.size() == 0)) {
+        if ((mRides == null) || (mRides.size() == 0)) {
             // workoutViewHolder.mDateTextView.setText("");
         } else {
 
@@ -52,12 +53,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public int getItemCount() {
-        return ((mWorkouts != null) && (mWorkouts.size() != 0) ? mWorkouts.size() : 0);
+        return ((mRides != null) && (mRides.size() != 0) ? mRides.size() : 0);
     }
 
-    void loadNewData(List<RideOffer> newActivities) {
-        // mWorkouts = newActivities;
-        // notifyDataSetChanged();
+    void loadNewData(List<RideOffer> newRides) {
+        mRides = newRides;
+        notifyDataSetChanged();
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

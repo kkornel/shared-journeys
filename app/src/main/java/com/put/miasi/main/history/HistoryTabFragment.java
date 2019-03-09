@@ -1,25 +1,21 @@
 package com.put.miasi.main.history;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.put.miasi.R;
-import com.put.miasi.utils.Database;
+import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.NavLog;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.ArrayList;
@@ -29,28 +25,13 @@ import java.util.List;
 public class HistoryTabFragment extends Fragment implements ListItemClickListener {
     private static final String TAG = "HistoryTabFragment";
 
-    private SwipeRefreshLayout mSwipeRefresh;
     private TextView mNoDataInfoTextView;
     private HistoryAdapter mHistoryAdapter;
     private RecyclerView mRecyclerView;
 
-    private FirebaseUser mUser;
-    private String mUserUid;
-    private DatabaseReference mRootRef;
-    private DatabaseReference mRidesRef;
-    private DatabaseReference mUsersRef;
+    private boolean mIsParticipatedFragment;
 
-    private List<String> mFriendsIds;
     private List<RideOffer> mRides;
-
-    // I do it, because I want to call loadNewData() only when I get all the data from ALL friends
-    // not every for every friend separately
-    private long mNumberOfFriendsAlreadyIterated = 0;
-    private long mFriendsCount;
-
-    private boolean mFragmentJustStarted;
-    private boolean mNewData;
-    private boolean mDataChanged;
 
     public HistoryTabFragment() {
 
@@ -59,6 +40,8 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycler_view_empty, container, false);
+
+        NavLog.d("HisTabFra: onCreateView");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -77,22 +60,29 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
         return rootView;
     }
 
+    public void setFlag(boolean isParticipated) {
+        NavLog.d("HisTabFra: setFlag");
+        mIsParticipatedFragment = isParticipated;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        mUser = auth.getCurrentUser();
-        mUserUid = mUser.getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mRootRef = database.getReference();
-        mUsersRef = mRootRef.child(Database.USERS);
+        NavLog.d("HisTabFra: onStart");
 
-        mFragmentJustStarted = true;
-        mNewData = false;
-        mDataChanged = false;
 
-        mFriendsIds = new ArrayList<>();
+        if (mIsParticipatedFragment) {
+
+        }
+
+
+
+
+
+
+
+
 
         // TODO download all data
     }
@@ -106,30 +96,17 @@ public class HistoryTabFragment extends Fragment implements ListItemClickListene
         // startActivity(i);
     }
 
-    public void setFeedFriendsList(List<RideOffer> feedFriendsList) {
-        // mFeedFriendsList = feedFriendsList;
+    public void setRidesList(List<RideOffer> rides) {
+        mRides = rides;
     }
 
-    public void loadNewData(List<RideOffer> feedFriendsList) {
-        // sortListByDate(feedFriendsList);
-        // setFeedFriendsList(feedFriendsList);
-        // checkIfListIsEmpty();
-        // mHistoryAdapter.loadNewData(mFeedFriendsList);
+    public void loadNewData(List<RideOffer> ridesList) {
+        DateUtils.sortListByDate(ridesList);
+        setRidesList(ridesList);
+        checkIfListIsEmpty();
+        mHistoryAdapter.loadNewData(mRides);
+        NavLog.d(mRides.toString());
     }
-
-    private void readFriendsWorkouts(List<String> friendsIds) {
-
-    }
-
-    // private void sortListByDate(List<FriendWorkout> list) {
-    //     Collections.sort(list, new Comparator<FriendWorkout>() {
-    //         public int compare(FriendWorkout o1, FriendWorkout o2) {
-    //             if (o1.getWorkout().getWorkoutDate() == null || o2.getWorkout().getWorkoutDate() == null)
-    //                 return 0;
-    //             return o2.getWorkout().getWorkoutDate().compareTo(o1.getWorkout().getWorkoutDate());
-    //         }
-    //     });
-    // }
 
     private void checkIfListIsEmpty() {
         if (mRides.size() == 0) {

@@ -28,6 +28,7 @@ import com.put.miasi.main.offer.OfferSummaryActivity;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.NavLog;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
@@ -118,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         getUserProfile();
 
+        NavLog.d("MainAct onStart");
+
         tests();
     }
 
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference usersRef = database.getReference(Database.USERS).child(userUid);
 
-        ValueEventListener postListener = new ValueEventListener() {
+        ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 OfferLog.d(dataSnapshot.toString());
@@ -209,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
         };
-        usersRef.addListenerForSingleValueEvent(postListener);
+        usersRef.addListenerForSingleValueEvent(userListener);
     }
 
     private void loadFragment(Fragment fragment) {

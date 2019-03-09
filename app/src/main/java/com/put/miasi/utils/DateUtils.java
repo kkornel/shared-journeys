@@ -1,7 +1,13 @@
 package com.put.miasi.utils;
 
+import com.google.firebase.database.Exclude;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 public class DateUtils {
 
@@ -66,5 +72,17 @@ public class DateUtils {
         return getWithLeadingZero(min);
     }
 
+    public static Date getDateFromMilli(long ms) {
+        return new Date(ms);
+    }
 
+    public static void sortListByDate(List<RideOffer> list) {
+        Collections.sort(list, new Comparator<RideOffer>() {
+            public int compare(RideOffer o1, RideOffer o2) {
+                if (getDateFromMilli(o1.getDate()) == null || getDateFromMilli(o2.getDate()) == null)
+                    return 0;
+                return getDateFromMilli(o2.getDate()).compareTo(getDateFromMilli(o1.getDate()));
+            }
+        });
+    }
 }
