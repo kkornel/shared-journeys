@@ -124,17 +124,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             // Log.d(TAG, "cal: " + cal.getTime());
             // Log.d(TAG, "cal.getTime: " + cal.getTime());
 
+
+
+
+            String arrivalHour = DateUtils.getHourFromCalendar(cal);
+            String arrivalMin = DateUtils.getMinFromCalendar(cal);
+            viewHolder.mArrivalTextView.setText(arrivalHour + ":" + arrivalMin);
+
             // TODO I changed it so now is ended while being in progress
             cal = DateUtils.getCalendarFromMilliSecs(ride.getDate());
 
             if (DateUtils.isNowBeforeDate(cal.getTime())) {
                 viewHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorActive));
             }
-
-
-            String arrivalHour = DateUtils.getHourFromCalendar(cal);
-            String arrivalMin = DateUtils.getMinFromCalendar(cal);
-            viewHolder.mArrivalTextView.setText(arrivalHour + ":" + arrivalMin);
         }
     }
 
