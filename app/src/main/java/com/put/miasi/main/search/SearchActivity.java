@@ -74,7 +74,7 @@ public class SearchActivity extends AppCompatActivity
                     offer.avatar = y.getAvatarUrl();
                 }
             }
-            offer.uid = x.getDriverUid();
+            offer.uid = x.getKey();
             offer.from = "From: " + GeoUtils.getCityFromLatLng(this, x.getStartPoint().toLatLng());
             offer.to = "To: " + GeoUtils.getCityFromLatLng(this, x.getDestinationPoint().toLatLng());
             offer.price = String.valueOf(x.getPrice()) + " zł";
