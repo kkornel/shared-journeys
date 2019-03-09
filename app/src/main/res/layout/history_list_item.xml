@@ -95,10 +95,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/colorText"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/myCircle"
         app:layout_constraintStart_toStartOf="@+id/horizontal_quarter"
+        app:layout_constraintTop_toBottomOf="@+id/startCityTextView"
         tools:text="16:00" />
 
     <TextView

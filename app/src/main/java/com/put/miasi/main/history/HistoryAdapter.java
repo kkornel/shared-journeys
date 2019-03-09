@@ -2,6 +2,7 @@ package com.put.miasi.main.history;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.put.miasi.utils.RideOffer;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private static final String TAG = "HistoryAdapter";
@@ -77,6 +79,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             cal.add(Calendar.HOUR_OF_DAY, durationHours);
             cal.add(Calendar.MINUTE, durationMins);
 
+            Calendar now = Calendar.getInstance();
+
+            Log.d(TAG, "now.getTime().after(cal.getTime()) " + now.getTime().after(cal.getTime()));
+            Log.d(TAG, "now.getTime().before(cal.getTime()): " + now.getTime().before(cal.getTime()));
+
+
+            long nowTime = now.getTimeInMillis();
+            long rideTime = cal.getTimeInMillis();
+
+            // Log.d(TAG, "now: " + now);
+            Log.d(TAG, "now.getTime: " + now.getTime());
+            // Log.d(TAG, "cal: " + cal.getTime());
+            Log.d(TAG, "cal.getTime: " + cal.getTime());
+
+            if (now.getTime().before(cal.getTime())) {
+                Log.d(TAG, "onBindViewHolder: " );
+                viewHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorActive));
+            }
+
+
             String arrivalHour = DateUtils.getHourFromCalendar(cal);
             String arrivalMin = DateUtils.getMinFromCalendar(cal);
             viewHolder.mArrivalTextView.setText(arrivalHour + ":" + arrivalMin);
@@ -94,6 +116,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private CardView mCardView;
         private TextView mDateTextView;
         private TextView mStartCityTextView;
         private TextView mDestinationCityTextView;
@@ -102,6 +125,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
+            this.mCardView = itemView.findViewById(R.id.myCircle);
             this.mDateTextView = itemView.findViewById(R.id.dateTextView);
             this.mStartCityTextView = itemView.findViewById(R.id.startCityTextView);
             this.mDestinationCityTextView = itemView.findViewById(R.id.destinationCityTextView);

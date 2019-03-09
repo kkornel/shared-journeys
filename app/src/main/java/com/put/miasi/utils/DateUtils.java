@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class DateUtils {
 
@@ -57,6 +58,7 @@ public class DateUtils {
 
     public static String getMonthFromCalendar(Calendar cl) {
         int month = cl.get(Calendar.MONTH);
+        OfferLog.d("halo?", String.valueOf(month));
         return getWithLeadingZero(month);
     }
 

@@ -31,6 +31,7 @@ import com.put.miasi.utils.User;
 import com.put.miasi.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -181,6 +182,24 @@ public class MainActivity extends AppCompatActivity {
 
         String s = DateUtils.getStringDistanceFromLongMeters(310291);
         Log.d("qwerty", "getStringDistanceFromLongMeters=" + s);
+
+        Calendar cl = Calendar.getInstance();
+
+        cl.add(Calendar.DAY_OF_MONTH, 4);
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+        cl.add(Calendar.DAY_OF_MONTH, 5);
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+        cl.add(Calendar.MONTH, 1);
+        cl.add(Calendar.DAY_OF_MONTH, 10);
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+        cl.add(Calendar.MONTH, 1);
+        cl.add(Calendar.DAY_OF_MONTH, 2);
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+
     }
 
     private void getUserProfile() {
