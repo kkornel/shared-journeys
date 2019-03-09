@@ -1,7 +1,10 @@
 package com.put.miasi.utils;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
@@ -84,5 +87,44 @@ public class DateUtils {
                 return getDateFromMilli(o2.getDate()).compareTo(getDateFromMilli(o1.getDate()));
             }
         });
+    }
+
+    public static String getStringDistanceFromLongMeters(long m) {
+        return m / 1000 + " km";
+    }
+
+    public static String getStringDurationFromLongSeconds(long s) {
+        Log.d("qwerty", "s=" + s);
+        double duration = s / 3600.0;
+        Log.d("qwerty", "duration=" + duration);
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(duration));
+        int intValue = bigDecimal.intValue();
+        Log.d("qwerty", "intValue=" + intValue);
+        double doubleValue = bigDecimal.subtract(new BigDecimal(intValue)).doubleValue();
+        Log.d("qwerty", "doubleValue=" + doubleValue);
+        double decimalTime = doubleValue * 6;
+        double d = decimalTime * 10;
+        int min = (int) d;
+        Log.d("qwerty", "decimalTime=" + decimalTime);
+        Log.d("qwerty", "full=" + intValue + "hours" + min + "min");
+        return intValue + " hours " + min + " min";
+    }
+
+    public static int getDurationHoursFromLongSeconds(long s) {
+        double duration = s / 3600.0;
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(duration));
+        int intValue = bigDecimal.intValue();
+        return intValue;
+    }
+
+    public static int getDurationMinsFromLongSeconds(long s) {
+        double duration = s / 3600.0;
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(duration));
+        int intValue = bigDecimal.intValue();
+        double doubleValue = bigDecimal.subtract(new BigDecimal(intValue)).doubleValue();
+        double decimalTime = doubleValue * 6;
+        double d = decimalTime * 10;
+        int min = (int) d;
+        return min;
     }
 }

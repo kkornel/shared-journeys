@@ -1,8 +1,6 @@
 package com.put.miasi.main.offer;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,14 +30,13 @@ import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.FetchURL;
+import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
 import com.put.miasi.utils.Utils;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -217,25 +214,28 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         String message = mRideOffer.getMessage();
 
 
-        List<Address> startAddressList = null;
-        List<Address> destAddressList = null;
+        // List<Address> startAddressList = null;
+        // List<Address> destAddressList = null;
+        //
+        // Geocoder startGeocoder = new Geocoder(OfferSummaryActivity.this);
+        // Geocoder destGeocoder = new Geocoder(OfferSummaryActivity.this);
+        // try {
+        //     startAddressList = startGeocoder.getFromLocation(startPoint.getLatitude(), startPoint.getLongitude(), 1);
+        //     destAddressList = destGeocoder.getFromLocation(destinationPoint.getLatitude(), destinationPoint.getLongitude(), 1);
+        //
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
+        // Address startAddress = startAddressList.get(0);
+        // Address destAddress = destAddressList.get(0);
+        //
+        // String startCity = startAddress.getLocality();
+        // String destCity = destAddress.getLocality();
 
-        Geocoder startGeocoder = new Geocoder(OfferSummaryActivity.this);
-        Geocoder destGeocoder = new Geocoder(OfferSummaryActivity.this);
-        try {
-            startAddressList = startGeocoder.getFromLocation(startPoint.getLatitude(), startPoint.getLongitude(), 1);
-            destAddressList = destGeocoder.getFromLocation(destinationPoint.getLatitude(), destinationPoint.getLongitude(), 1);
+        // OfferLog.d("onPlaceSelected: " + startAddress.toString());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Address startAddress = startAddressList.get(0);
-        Address destAddress = destAddressList.get(0);
-
-        String startCity = startAddress.getLocality();
-        String destCity = destAddress.getLocality();
-
-        OfferLog.d("onPlaceSelected: " + startAddress.toString());
+        String startCity = GeoUtils.getCityFromLatLng(OfferSummaryActivity.this, mStartLatLng);
+        String destCity = GeoUtils.getCityFromLatLng(OfferSummaryActivity.this, mDestLatLng);
 
         mStartTextView.setText(startCity);
         mDestinationTextView.setText(destCity);
@@ -272,8 +272,8 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onTaskDone(Object... values) {
-        String distance = Utils.getStringDistanceFromLongMeters(DISTANCE);
-        String duration = Utils.getStringDuartionFromLongSeconds(DURATION);
+        String distance = DateUtils.getStringDistanceFromLongMeters(DISTANCE);
+        String duration = DateUtils.getStringDurationFromLongSeconds(DURATION);
 
         mDistanceTextView.setText(distance);
         mDurationTextView.setText(duration);

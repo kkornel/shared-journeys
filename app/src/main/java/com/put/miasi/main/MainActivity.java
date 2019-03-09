@@ -6,17 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,10 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.main.offer.OfferSummaryActivity;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.NavLog;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
@@ -35,10 +31,7 @@ import com.put.miasi.utils.User;
 import com.put.miasi.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static com.put.miasi.utils.Database.OFFERED_RIDES;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -184,9 +177,9 @@ public class MainActivity extends AppCompatActivity {
 
         usersRef.addListenerForSingleValueEvent(usersListener);
 
-        Utils.getStringDuartionFromLongSeconds(10993);
+        DateUtils.getStringDurationFromLongSeconds(10993);
 
-        String s = Utils.getStringDistanceFromLongMeters(310291);
+        String s = DateUtils.getStringDistanceFromLongMeters(310291);
         Log.d("qwerty", "getStringDistanceFromLongMeters=" + s);
     }
 
