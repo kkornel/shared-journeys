@@ -178,27 +178,40 @@ public class MainActivity extends AppCompatActivity {
 
         usersRef.addListenerForSingleValueEvent(usersListener);
 
+        // TODO remove
+
         DateUtils.getStringDurationFromLongSeconds(10993);
 
         String s = DateUtils.getStringDistanceFromLongMeters(310291);
         Log.d("qwerty", "getStringDistanceFromLongMeters=" + s);
 
         Calendar cl = Calendar.getInstance();
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", "*********************");
 
-        cl.add(Calendar.DAY_OF_MONTH, 4);
+        cl.add(Calendar.DAY_OF_MONTH, -4);
+        OfferLog.d("Main", cl.getTime().toString());
         OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
 
-        cl.add(Calendar.DAY_OF_MONTH, 5);
+        cl.add(Calendar.DAY_OF_MONTH, -5);
+        OfferLog.d("Main", cl.getTime().toString());
         OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
 
-        cl.add(Calendar.MONTH, 1);
+        cl.add(Calendar.MONTH, -1);
         cl.add(Calendar.DAY_OF_MONTH, 10);
+        OfferLog.d("Main", cl.getTime().toString());
         OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
 
-        cl.add(Calendar.MONTH, 1);
+        cl.add(Calendar.MONTH, 3);
         cl.add(Calendar.DAY_OF_MONTH, 2);
+        OfferLog.d("Main", cl.getTime().toString());
         OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
 
+
+        cl.add(Calendar.MONTH, 4);
+        cl.add(Calendar.DAY_OF_MONTH, 2);
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
 
     }
 

@@ -39,6 +39,7 @@ import com.put.miasi.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -204,6 +205,20 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         String day = DateUtils.getDayFromCalendar(calendar);
         String hour = DateUtils.getHourFromCalendar(calendar);
         String min = DateUtils.getMinFromCalendar(calendar);
+
+        // TODO remove
+        // ********************************************************************
+        OfferLog.d("MyDate", "*************************************************");
+        OfferLog.d("MyDate", "Summary: " + date);
+        OfferLog.d("MyDate", "Summary: " + calendar.toString());
+        OfferLog.d("MyDate", "Summary: " + new Date(date));
+        OfferLog.d("MyDate", "Summary: year " + year);
+        OfferLog.d("MyDate", "Summary: month " + month);
+        OfferLog.d("MyDate", "Summary: day " + day);
+        OfferLog.d("MyDate", "Summary: hour " + hour);
+        OfferLog.d("MyDate", "Summary: min " + min);
+        OfferLog.d("MyDate", "*************************************************");
+        // ********************************************************************
 
         Car car = mRideOffer.getCar();
         String carString = car.getBrand() + " " + car.getModel() + " " + car.getColor();

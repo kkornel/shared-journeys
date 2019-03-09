@@ -17,10 +17,12 @@ import com.put.miasi.main.offer.OfferSummaryActivity;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -60,8 +62,22 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         } else {
             RideOffer ride = mRides.get(position);
 
+            OfferLog.d("MyDate", "*************************************************");
+
             Calendar cal = DateUtils.getCalendarFromMilliSecs(ride.getDate());
-            viewHolder.mDateTextView.setText(DateUtils.getDayFromCalendar(cal) + "/" + DateUtils.getMonthFromCalendar(cal));
+            OfferLog.d("MyDate", "HistoryAdapter: " + cal.toString());
+            OfferLog.d("MyDate", "HistoryAdapter: " + cal.getTime());
+
+            String day = DateUtils.getDayFromCalendar(cal);
+            String month = DateUtils.getMonthFromCalendar(cal);
+
+            OfferLog.d("MyDate", "HistoryAdapter:  day " + day);
+            OfferLog.d("MyDate", "HistoryAdapter: month " + month);
+
+
+            viewHolder.mDateTextView.setText(day + "/" + month);
+
+
 
             LatLng startLatLng = ride.startPoint.toLatLng();
             LatLng destLatLng = ride.destinationPoint.toLatLng();
@@ -71,15 +87,30 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             viewHolder.mDestinationCityTextView.setText(destCity);
 
             String startHour = DateUtils.getHourFromCalendar(cal);
+            OfferLog.d("MyDate", "HistoryAdapter: startHour " + startHour);
             String startMin = DateUtils.getMinFromCalendar(cal);
+            OfferLog.d("MyDate", "HistoryAdapter: startMin " + startMin);
             viewHolder.mStartTimeTextView.setText(startHour + ":" + startMin);
 
             int durationHours = DateUtils.getDurationHoursFromLongSeconds(ride.getDuration());
+            OfferLog.d("MyDate", "HistoryAdapter: durationHours " + durationHours);
             int durationMins = DateUtils.getDurationMinsFromLongSeconds(ride.getDuration());
+            OfferLog.d("MyDate", "HistoryAdapter: durationMins " + durationMins);
             cal.add(Calendar.HOUR_OF_DAY, durationHours);
             cal.add(Calendar.MINUTE, durationMins);
 
+            OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.toString());
+            OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.getTime());
+
             Calendar now = Calendar.getInstance();
+
+
+            // ********************************************************************
+
+            OfferLog.d("MyDate", "HistoryAdapter: now " + now.toString());
+            OfferLog.d("MyDate", "HistoryAdapter: " + now.getTime());
+            OfferLog.d("MyDate", "*************************************************");
+            // ********************************************************************
 
             Log.d(TAG, "now.getTime().after(cal.getTime()) " + now.getTime().after(cal.getTime()));
             Log.d(TAG, "now.getTime().before(cal.getTime()): " + now.getTime().before(cal.getTime()));

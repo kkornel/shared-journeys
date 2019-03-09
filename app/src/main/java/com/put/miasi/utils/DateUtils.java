@@ -58,7 +58,7 @@ public class DateUtils {
 
     public static String getMonthFromCalendar(Calendar cl) {
         int month = cl.get(Calendar.MONTH);
-        OfferLog.d("halo?", String.valueOf(month));
+        month += 1;
         return getWithLeadingZero(month);
     }
 

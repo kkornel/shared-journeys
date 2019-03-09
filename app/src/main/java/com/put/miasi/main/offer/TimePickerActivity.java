@@ -17,6 +17,7 @@ import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TimePickerFragment;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
@@ -34,17 +35,37 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
     // TODO remove
     void tests() {
         Calendar cl = Calendar.getInstance();
+        OfferLog.d("MyDate", "*************************************************");
+        OfferLog.d("MyDate", "TimePicker: " + cl.toString());
+
         cl.setTimeInMillis(mRideOffer.getDate());
+        OfferLog.d("MyDate", "TimePicker: " + cl.toString());
 
         int year = cl.get(Calendar.YEAR);
-        int month = cl.get(Calendar.MONTH) + 1;
+        OfferLog.d("MyDate", "TimePicker: year " + year);
+
+        int month = cl.get(Calendar.MONTH);
+        OfferLog.d("MyDate", "TimePicker: month " + month);
+
         int day = cl.get(Calendar.DAY_OF_MONTH);
+        OfferLog.d("MyDate", "TimePicker: day " + day);
+
         int hour = mHour;
+        OfferLog.d("MyDate", "TimePicker: mHour " + mHour);
         int min = mMin;
+        OfferLog.d("MyDate", "TimePicker: mMin " + mMin);
 
         cl.set(year, month, day, hour, min);
 
         mRideOffer.setDate(cl.getTime().getTime());
+
+        // TODO remove
+        // ********************************************************************
+
+        OfferLog.d("MyDate", "TimePicker: " + cl.toString());
+        OfferLog.d("MyDate", "TimePicker: " + new Date(cl.getTime().getTime()));
+        OfferLog.d("MyDate", "*************************************************");
+        // ********************************************************************
 
         Intent intent = new Intent(TimePickerActivity.this, CarDetailsActivity.class);
         intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
@@ -97,7 +118,7 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         });
 
         final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY) + 1;
+        int hour = c.get(Calendar.HOUR_OF_DAY);
 
         mHour = hour;
         mMin = 0;
