@@ -17,6 +17,10 @@ public class User implements Parcelable {
     private String phone;
     private List<String> offeredRides;
     private List<String> participatedRides;
+    private double driverRating;
+    private int numberOfDriverRatings;
+    private double passengerRating;
+    private int numberOfPassengerRatings;
 
     public User() {
     }
@@ -95,6 +99,38 @@ public class User implements Parcelable {
         this.participatedRides = participatedRides;
     }
 
+    public double getDriverRating() {
+        return driverRating;
+    }
+
+    public void setDriverRating(double driverRating) {
+        this.driverRating = driverRating;
+    }
+
+    public int getNumberOfDriverRatings() {
+        return numberOfDriverRatings;
+    }
+
+    public void setNumberOfDriverRatings(int numberOfDriverRatings) {
+        this.numberOfDriverRatings = numberOfDriverRatings;
+    }
+
+    public double getPassengerRating() {
+        return passengerRating;
+    }
+
+    public void setPassengerRating(double passengerRating) {
+        this.passengerRating = passengerRating;
+    }
+
+    public int getNumberOfPassengerRatings() {
+        return numberOfPassengerRatings;
+    }
+
+    public void setNumberOfPassengerRatings(int numberOfPassengerRatings) {
+        this.numberOfPassengerRatings = numberOfPassengerRatings;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -106,6 +142,10 @@ public class User implements Parcelable {
                 "\n, phone='" + phone + '\'' +
                 "\n, offeredRides=" + offeredRides +
                 "\n, participatedRides=" + participatedRides +
+                "\n, driverRating=" + driverRating +
+                "\n, numberOfDriverRatings=" + numberOfDriverRatings +
+                "\n, passengerRating=" + passengerRating +
+                "\n, numberOfPassengerRatings=" + numberOfPassengerRatings +
                 '}';
     }
 
@@ -120,6 +160,10 @@ public class User implements Parcelable {
         in.readList(this.offeredRides, String.class.getClassLoader());
         this.participatedRides = new ArrayList<>();
         in.readList(this.participatedRides, String.class.getClassLoader());
+        this.driverRating = in.readDouble();
+        this.numberOfDriverRatings = in.readInt();
+        this.passengerRating = in.readDouble();
+        this.numberOfPassengerRatings = in.readInt();
     }
 
     @Override
@@ -137,6 +181,10 @@ public class User implements Parcelable {
         dest.writeString(this.phone);
         dest.writeList(this.offeredRides);
         dest.writeList(this.participatedRides);
+        dest.writeDouble(this.driverRating);
+        dest.writeInt(this.numberOfDriverRatings);
+        dest.writeDouble(this.passengerRating);
+        dest.writeInt(this.numberOfPassengerRatings);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
