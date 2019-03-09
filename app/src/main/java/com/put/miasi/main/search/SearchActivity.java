@@ -30,6 +30,7 @@ import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity
@@ -54,6 +55,7 @@ public class SearchActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(SearchActivity.this, "List items was clicked "+ position, Toast.LENGTH_SHORT).show();
                 Intent rideDetailsIntent = new Intent(SearchActivity.this, RideDetailsActivity.class);
+                rideDetailsIntent.putExtra("Uid", data.get(position).uid);
                 startActivity(rideDetailsIntent);
             }
         });
@@ -72,11 +74,23 @@ public class SearchActivity extends AppCompatActivity
                     offer.avatar = y.getAvatarUrl();
                 }
             }
+            offer.uid = x.getDriverUid();
             offer.from = "From: " + GeoUtils.getCityFromLatLng(this, x.getStartPoint().toLatLng());
             offer.to = "To: " + GeoUtils.getCityFromLatLng(this, x.getDestinationPoint().toLatLng());
             offer.price = String.valueOf(x.getPrice()) + " zł";
-            offer.hour_begin = DateUtils.getDate(x.getDate(),DateUtils.STANDARD_TIME_FORMAT);;
-            offer.hour_end = DateUtils.getDate(x.getDate()+ x.getDuration(), DateUtils.STANDARD_TIME_FORMAT);
+
+            Calendar cal = DateUtils.getCalendarFromMilliSecs(x.getDate());
+            String startHour = DateUtils.getHourFromCalendar(cal);
+            String startMin = DateUtils.getMinFromCalendar(cal);
+            offer.hour_begin = startHour + ":" + startMin;
+
+            int durationHours = DateUtils.getDurationHoursFromLongSeconds(x.getDuration());
+            int durationMins = DateUtils.getDurationMinsFromLongSeconds(x.getDuration());
+            cal.add(Calendar.HOUR_OF_DAY, durationHours);
+            cal.add(Calendar.MINUTE, durationMins);
+            String arrivalHour = DateUtils.getHourFromCalendar(cal);
+            String arrivalMin = DateUtils.getMinFromCalendar(cal);
+            offer.hour_end =arrivalHour + ":" + arrivalMin;
 
             data.add(offer);
         }
@@ -135,6 +149,7 @@ public class SearchActivity extends AppCompatActivity
     }
     public class Offer
     {
+        String uid;
         String avatar;
         String nick;
         String from;

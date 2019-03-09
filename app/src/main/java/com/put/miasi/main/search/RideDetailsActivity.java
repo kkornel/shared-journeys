@@ -3,6 +3,7 @@ package com.put.miasi.main.search;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,6 +18,10 @@ public class RideDetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_details);
         initializeComponents();
+
+        Intent intent = getIntent();
+        String user_name = intent.getStringExtra("Uid");
+        Log.i("tag",user_name);
     }
 
     private void initializeComponents()
@@ -29,4 +34,5 @@ public class RideDetailsActivity extends AppCompatActivity
             }
         });
     }
+
 }
