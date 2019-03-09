@@ -42,7 +42,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private TextView tv_luggage;
     private TextView tv_message;
     private TextView tv_from;
-    private TextView tv_date;
+    private TextView tv_endedOrActive;
     private TextView tv_nick;
     private TextView tv_price;
 
@@ -65,6 +65,8 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         cal.add(Calendar.HOUR_OF_DAY, durationHours);
         cal.add(Calendar.MINUTE, durationMins);
 
+        // TODO I changed it so now is ended while being in progress
+        cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         mIsEnded = !DateUtils.isNowBeforeDate(cal.getTime());
 
         initializeComponents();
@@ -85,10 +87,14 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         tv_from = findViewById(R.id.tv_from);
         tv_nick = findViewById(R.id.tv_nick);
         tv_price = findViewById(R.id.tv_price);
+        tv_endedOrActive = findViewById(R.id.tv_endedOrActive);
 
         btn_action = findViewById(R.id.actionButton);
 
         if (mIsEnded) {
+            tv_endedOrActive.setText("ENDED");
+            tv_endedOrActive.setTextColor(getResources().getColor(R.color.colorAccent));
+
             btn_action.setText("Rate the driver");
             btn_action.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,6 +103,9 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
                 }
             });
         } else {
+            tv_endedOrActive.setText("ACTIVE");
+            tv_endedOrActive.setTextColor(getResources().getColor(R.color.colorActive));
+
             btn_action.setText("Cancel reservation");
             btn_action.setOnClickListener(new View.OnClickListener() {
                 @Override
