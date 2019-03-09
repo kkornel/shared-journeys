@@ -102,30 +102,29 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.toString());
             OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.getTime());
 
-            Calendar now = Calendar.getInstance();
+            // Calendar now = Calendar.getInstance();
 
 
             // ********************************************************************
 
-            OfferLog.d("MyDate", "HistoryAdapter: now " + now.toString());
-            OfferLog.d("MyDate", "HistoryAdapter: " + now.getTime());
-            OfferLog.d("MyDate", "*************************************************");
+            // OfferLog.d("MyDate", "HistoryAdapter: now " + now.toString());
+            // OfferLog.d("MyDate", "HistoryAdapter: " + now.getTime());
+            // OfferLog.d("MyDate", "*************************************************");
             // ********************************************************************
 
-            Log.d(TAG, "now.getTime().after(cal.getTime()) " + now.getTime().after(cal.getTime()));
-            Log.d(TAG, "now.getTime().before(cal.getTime()): " + now.getTime().before(cal.getTime()));
+            // Log.d(TAG, "now.getTime().after(cal.getTime()) " + now.getTime().after(cal.getTime()));
+            // Log.d(TAG, "now.getTime().before(cal.getTime()): " + now.getTime().before(cal.getTime()));
 
 
-            long nowTime = now.getTimeInMillis();
-            long rideTime = cal.getTimeInMillis();
+            // long nowTime = now.getTimeInMillis();
+            // long rideTime = cal.getTimeInMillis();
 
             // Log.d(TAG, "now: " + now);
-            Log.d(TAG, "now.getTime: " + now.getTime());
+            // Log.d(TAG, "now.getTime: " + now.getTime());
             // Log.d(TAG, "cal: " + cal.getTime());
-            Log.d(TAG, "cal.getTime: " + cal.getTime());
+            // Log.d(TAG, "cal.getTime: " + cal.getTime());
 
-            if (now.getTime().before(cal.getTime())) {
-                Log.d(TAG, "onBindViewHolder: " );
+            if (DateUtils.isNowBeforeDate(cal.getTime())) {
                 viewHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorActive));
             }
 

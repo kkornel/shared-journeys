@@ -6,319 +6,354 @@
     android:layout_height="match_parent"
     tools:context=".main.history.ParticipatedRideDetailsActivity">
 
-    <ImageView
-        android:id="@+id/iv_message"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:drawable/ic_menu_edit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitter4" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_date"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:textSize="30dp"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--tools:text="Mon. 06 March" />-->
 
-    <ImageView
-        android:id="@+id/iv_luggage_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_assignment_black_24dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <TextView
+        android:id="@+id/tv_hour_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitter3" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="15:00" />
 
-    <ImageView
-        android:id="@+id/iv_car"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_directions_car_black_24dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <TextView
+        android:id="@+id/tv_hour_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="54dp"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitter2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_hour_begin"
+        tools:text="18:00" />
 
     <ImageView
         android:id="@+id/iv_green_vertical_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="63dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="58dp"
         android:rotation="90"
         android:scaleX="2.5"
-        app:layout_constraintLeft_toRightOf="@+id/tv_hour_begin"
         app:layout_constraintStart_toEndOf="@+id/tv_hour_begin"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/button_onoff_indicator_on" />
 
-    <ImageView
-        android:id="@+id/iv_star"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@android:drawable/btn_star_big_on"
+    <TextView
+        android:id="@+id/tv_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="20dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_hour_begin"
+        app:layout_constraintStart_toEndOf="@+id/iv_green_vertical_line"
+        tools:text="Bydgoszcz" />
+
+    <TextView
+        android:id="@+id/tv_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="20dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_hour_end"
+        app:layout_constraintStart_toEndOf="@+id/iv_green_vertical_line"
+        tools:text="Poznan" />
+
+    <ImageButton
+        android:id="@+id/btn_location"
+        android:layout_width="37dp"
+        android:layout_height="45dp"
+        android:adjustViewBounds="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toEndOf="@+id/tv_from"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/marker" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hour_end"
+        tools:text="Distance: 151 km" />
+
+    <View
+        android:id="@+id/splitter"
+        android:layout_width="0dp"
+        android:layout_height="2dip"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#808080"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitter" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance" />
 
     <ImageView
         android:id="@+id/iv_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_account_circle_black_24dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splitter" />
 
     <TextView
-        android:id="@+id/tv_distance"
+        android:id="@+id/tv_nick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        tools:text="Distance: 151 km"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_hour_end" />
-
-    <TextView
-        android:id="@+id/tv_car_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        tools:text="black"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
         app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/tv_car" />
+        app:layout_constraintTop_toBottomOf="@+id/splitter"
+        tools:text="Janusz" />
+
+    <ImageView
+        android:id="@+id/iv_star"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:drawable/btn_star_big_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splitter" />
 
     <TextView
         android:id="@+id/tv_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginRight="3dp"
-        tools:text="4,4"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/iv_star"
         app:layout_constraintRight_toLeftOf="@+id/iv_star"
-        app:layout_constraintTop_toBottomOf="@+id/splitter" />
+        app:layout_constraintTop_toTopOf="@+id/iv_star"
+        tools:text="4,4" />
 
     <TextView
-        android:id="@+id/tv_hour_end"
+        android:id="@+id/tv_numRatings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
-        android:textSize="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_star"
+        app:layout_constraintEnd_toStartOf="@+id/iv_star"
+        tools:text="9" />
+
+    <View
+        android:id="@+id/splitter2"
+        android:layout_width="0dp"
+        android:layout_height="2dip"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#808080"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_hour_begin"
-        tools:text="18:00" />
+        app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
 
-    <TextView
-        android:id="@+id/tv_to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        tools:text="Poznan"
-        android:textSize="20dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_hour_end"
-        app:layout_constraintLeft_toRightOf="@+id/iv_green_vertical_line"
-        app:layout_constraintStart_toEndOf="@+id/iv_green_vertical_line"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+    <ImageView
+        android:id="@+id/iv_car"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_directions_car_black_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splitter2" />
 
     <TextView
         android:id="@+id/tv_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        tools:text="Opel Insignia"
-        app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/splitter2" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/iv_car"
+        app:layout_constraintTop_toBottomOf="@+id/splitter2"
+        tools:text="Opel Insignia" />
 
     <TextView
-        android:id="@+id/tv_hour_begin"
+        android:id="@+id/tv_car_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        tools:text="15:00"
-        android:textSize="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/iv_car"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car"
+        tools:text="black" />
+
+    <View
+        android:id="@+id/splitter3"
+        android:layout_width="0dp"
+        android:layout_height="2dip"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#808080"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_date" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_car" />
+
+    <ImageView
+        android:id="@+id/iv_luggage_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_assignment_black_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splitter3" />
 
     <TextView
         android:id="@+id/tv_luggage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="20dp"
-        tools:text="Luggage: duży"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintLeft_toRightOf="@+id/iv_luggage_icon"
         app:layout_constraintStart_toEndOf="@+id/iv_luggage_icon"
-        app:layout_constraintTop_toBottomOf="@+id/splitter3" />
-
-    <TextView
-        android:id="@+id/tv_message"
-        android:layout_width="315dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="9dp"
-        tools:text="Tutaj wiadomość od Janusza ze w samochodzie nie można palić :)"
-        app:layout_constraintLeft_toRightOf="@+id/iv_luggage_icon"
-        app:layout_constraintStart_toEndOf="@+id/iv_luggage_icon"
-        app:layout_constraintTop_toBottomOf="@+id/splitter4" />
-
-    <TextView
-        android:id="@+id/tv_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        tools:text="Bydgoszcz"
-        android:textSize="20dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_hour_begin"
-        app:layout_constraintLeft_toRightOf="@+id/iv_green_vertical_line"
-        app:layout_constraintStart_toEndOf="@+id/iv_green_vertical_line"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
-
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        tools:text="Mon. 06 March"
-        android:textSize="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_nick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        tools:text="Janusz"
-        app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/splitter" />
+        app:layout_constraintTop_toBottomOf="@+id/splitter3"
+        tools:text="Luggage: duży" />
 
     <TextView
         android:id="@+id/tv_price_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        tools:text="for seat"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="Price:"
         android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_luggage_icon"
+        app:layout_constraintStart_toEndOf="@+id/iv_luggage_icon" />
 
     <TextView
         android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        tools:text="15 zł"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
-
-    <View
-        android:id="@+id/splitter"
-        android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:background="#808080"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_distance" />
-
-    <View
-        android:id="@+id/splitter2"
-        android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="#808080"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
-
-    <View
-        android:id="@+id/splitter3"
-        android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="#808080"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_car" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_price_text"
+        app:layout_constraintStart_toEndOf="@+id/tv_price_text"
+        tools:text="15 zł" />
 
     <View
         android:id="@+id/splitter4"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="2dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="#808080"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_luggage_icon" />
+
+    <ImageView
+        android:id="@+id/iv_message"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:drawable/ic_menu_edit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splitter4" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_message"
+        app:layout_constraintTop_toBottomOf="@+id/splitter4"
+        tools:text="Tutaj wiadomość od Janusza ze w samochodzie nie można palić :)" />
+
+
+    <View
+        android:id="@+id/splitter5"
+        android:layout_width="0dp"
+        android:layout_height="2dip"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#808080"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_message" />
+
 
     <Button
         android:id="@+id/actionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btn_location"
-        android:layout_width="37dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="4dp"
-        android:adjustViewBounds="true"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="10dp"
-        android:scaleType="centerInside"
-        app:layout_constraintLeft_toRightOf="@+id/tv_from"
-        app:layout_constraintStart_toEndOf="@+id/tv_from"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date"
-        app:srcCompat="@drawable/marker" />
+
 
 
 

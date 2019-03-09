@@ -110,6 +110,10 @@ public class RegisterActivity extends AppCompatActivity {
                                        String avatarUrl = downloadUri.toString();
                                        if (!avatarUrl.equals("")) {
                                            User newUser = new User(avatarUrl, firstName, surname, email, phone);
+                                           newUser.setDriverRating(0.0);
+                                           newUser.setNumberOfDriverRatings(0);
+                                           newUser.setPassengerRating(0.0);
+                                           newUser.setNumberOfPassengerRatings(0);
                                            usersRef.child(userUid).setValue(newUser);
                                            hideProgressDialog();
                                            backToLogin(email);

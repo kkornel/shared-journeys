@@ -18,6 +18,7 @@ public class DateUtils {
     public static String STANDARD_DATE_TIME_FORMAT = "dd/MM/yyyy hh:mm";
     public static String STANDARD_DATE_FORMAT = "dd/MM/yyyy";
     public static String STANDARD_TIME_FORMAT = "hh:mm";
+    public static String TIME_FORMAT_1 = "EEE, dd MMMM";
 
     public static String convertSingleDateToDouble(int s) {
         return "0" + s;
@@ -128,5 +129,10 @@ public class DateUtils {
         double d = decimalTime * 10;
         int min = (int) d;
         return min;
+    }
+
+    public static boolean isNowBeforeDate(Date date) {
+        Calendar now = Calendar.getInstance();
+        return now.getTime().before(date);
     }
 }
