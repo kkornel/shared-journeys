@@ -30,6 +30,8 @@ import com.put.miasi.utils.ProfileInfoValidator;
 import com.put.miasi.utils.User;
 import com.put.miasi.utils.Utils;
 
+import java.util.HashMap;
+
 import static com.put.miasi.LoginActivity.INTENT_EXTRA_USER_EMAIL;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -110,6 +112,17 @@ public class RegisterActivity extends AppCompatActivity {
                                        String avatarUrl = downloadUri.toString();
                                        if (!avatarUrl.equals("")) {
                                            User newUser = new User(avatarUrl, firstName, surname, email, phone);
+                                           // TODO remove haspmap
+                                           HashMap<String, Boolean> hashMap = new HashMap<>();
+                                           newUser.setOfferedRides(hashMap);
+
+                                           HashMap<String, Boolean> hashMap1 = new HashMap<>();
+                                           newUser.setParticipatedRides(hashMap1);
+
+                                           newUser.setDriverRating(0.0);
+                                           newUser.setNumberOfDriverRatings(0);
+                                           newUser.setPassengerRating(0.0);
+                                           newUser.setNumberOfPassengerRatings(0);
                                            usersRef.child(userUid).setValue(newUser);
                                            hideProgressDialog();
                                            backToLogin(email);

@@ -3,6 +3,7 @@ package com.put.miasi.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RideOffer implements Parcelable {
@@ -163,6 +164,7 @@ public class RideOffer implements Parcelable {
         this.luggage = in.readString();
         this.price = in.readInt();
         this.message = in.readString();
+        this.passengers = new ArrayList<>();
         in.readList(this.passengers, String.class.getClassLoader());
     }
 

@@ -17,6 +17,7 @@ import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
+import java.util.Date;
 import java.util.Locale;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -37,6 +38,17 @@ public class DatePickerActivity extends AppCompatActivity {
             mTimePickedMilliSecs = mCalendarView.getDate();
         }
         mRideOffer.setDate(mTimePickedMilliSecs);
+
+        Calendar cl = Calendar.getInstance();
+
+        // TODO remove
+        // ********************************************************************
+        OfferLog.d("MyDate", "*************************************************");
+        OfferLog.d("MyDate", "DatePicker: " + mCalendarView.getDate());
+        OfferLog.d("MyDate", "DatePicker: " + cl.toString());
+        OfferLog.d("MyDate", "DatePicker: " + new Date(mCalendarView.getDate()));
+        OfferLog.d("MyDate", "*************************************************");
+        // ********************************************************************
 
         Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);
         intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);

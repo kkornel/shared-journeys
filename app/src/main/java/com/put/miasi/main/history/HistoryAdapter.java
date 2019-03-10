@@ -2,35 +2,49 @@ package com.put.miasi.main.history;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
+import com.put.miasi.main.offer.OfferSummaryActivity;
+import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
+    private static final String TAG = "HistoryAdapter";
+
     private Context mContext;
 
-    private final ListItemClickListener mOnClickListener;
+    private final RideListItemClickListener mOnClickListener;
 
-    private List<RideOffer> mWorkouts;
+    private List<RideOffer> mRides;
 
-    public HistoryAdapter(Context context, ListItemClickListener onClickListener, List<RideOffer> workouts) {
+    public HistoryAdapter(Context context, RideListItemClickListener onClickListener, List<RideOffer> rides) {
         mContext = context;
         mOnClickListener = onClickListener;
-        mWorkouts = workouts;
+        mRides = rides;
     }
 
     @Override
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
+
         int layoutIdForListItem = R.layout.history_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
@@ -42,48 +56,125 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryViewHolder workoutViewHolder, int position) {
-        if ((mWorkouts == null) || (mWorkouts.size() == 0)) {
-            // workoutViewHolder.mDateTextView.setText("");
+    public void onBindViewHolder(@NonNull HistoryViewHolder viewHolder, int position) {
+        if ((mRides == null) || (mRides.size() == 0)) {
+            viewHolder.mDateTextView.setText("halo?");
         } else {
+            RideOffer ride = mRides.get(position);
 
+            OfferLog.d("MyDate", "*************************************************");
+
+            Calendar cal = DateUtils.getCalendarFromMilliSecs(ride.getDate());
+            OfferLog.d("MyDate", "HistoryAdapter: " + cal.toString());
+            OfferLog.d("MyDate", "HistoryAdapter: " + cal.getTime());
+
+            String day = DateUtils.getDayFromCalendar(cal);
+            String month = DateUtils.getMonthFromCalendar(cal);
+
+            OfferLog.d("MyDate", "HistoryAdapter:  day " + day);
+            OfferLog.d("MyDate", "HistoryAdapter: month " + month);
+
+
+            viewHolder.mDateTextView.setText(day + "/" + month);
+
+
+
+            LatLng startLatLng = ride.startPoint.toLatLng();
+            LatLng destLatLng = ride.destinationPoint.toLatLng();
+            String startCity = GeoUtils.getCityFromLatLng(mContext, startLatLng);
+            String destCity = GeoUtils.getCityFromLatLng(mContext, destLatLng);
+            viewHolder.mStartCityTextView.setText(startCity);
+            viewHolder.mDestinationCityTextView.setText(destCity);
+
+            String startHour = DateUtils.getHourFromCalendar(cal);
+            OfferLog.d("MyDate", "HistoryAdapter: startHour " + startHour);
+            String startMin = DateUtils.getMinFromCalendar(cal);
+            OfferLog.d("MyDate", "HistoryAdapter: startMin " + startMin);
+            viewHolder.mStartTimeTextView.setText(startHour + ":" + startMin);
+
+            int durationHours = DateUtils.getDurationHoursFromLongSeconds(ride.getDuration());
+            OfferLog.d("MyDate", "HistoryAdapter: durationHours " + durationHours);
+            int durationMins = DateUtils.getDurationMinsFromLongSeconds(ride.getDuration());
+            OfferLog.d("MyDate", "HistoryAdapter: durationMins " + durationMins);
+            cal.add(Calendar.HOUR_OF_DAY, durationHours);
+            cal.add(Calendar.MINUTE, durationMins);
+
+            OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.toString());
+            OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.getTime());
+
+            // Calendar now = Calendar.getInstance();
+
+
+            // ********************************************************************
+
+            // OfferLog.d("MyDate", "HistoryAdapter: now " + now.toString());
+            // OfferLog.d("MyDate", "HistoryAdapter: " + now.getTime());
+            // OfferLog.d("MyDate", "*************************************************");
+            // ********************************************************************
+
+            // Log.d(TAG, "now.getTime().after(cal.getTime()) " + now.getTime().after(cal.getTime()));
+            // Log.d(TAG, "now.getTime().before(cal.getTime()): " + now.getTime().before(cal.getTime()));
+
+
+            // long nowTime = now.getTimeInMillis();
+            // long rideTime = cal.getTimeInMillis();
+
+            // Log.d(TAG, "now: " + now);
+            // Log.d(TAG, "now.getTime: " + now.getTime());
+            // Log.d(TAG, "cal: " + cal.getTime());
+            // Log.d(TAG, "cal.getTime: " + cal.getTime());
+
+
+
+
+            String arrivalHour = DateUtils.getHourFromCalendar(cal);
+            String arrivalMin = DateUtils.getMinFromCalendar(cal);
+            viewHolder.mArrivalTextView.setText(arrivalHour + ":" + arrivalMin);
+
+            // TODO I changed it so now is ended while being in progress
+            cal = DateUtils.getCalendarFromMilliSecs(ride.getDate());
+
+            if (DateUtils.isNowBeforeDate(cal.getTime())) {
+                viewHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorActive));
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return ((mWorkouts != null) && (mWorkouts.size() != 0) ? mWorkouts.size() : 0);
+        return ((mRides != null) && (mRides.size() != 0) ? mRides.size() : 0);
     }
 
-    void loadNewData(List<RideOffer> newActivities) {
-        // mWorkouts = newActivities;
-        // notifyDataSetChanged();
+    void loadNewData(List<RideOffer> newRides) {
+        mRides = newRides;
+        notifyDataSetChanged();
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView mWorkoutImageView;
+        private CardView mCardView;
         private TextView mDateTextView;
-        private TextView mDistanceTextView;
-        private TextView mDurationTextView;
-
-        private ImageView mDistanceImageView;
-        private ImageView mDurationImageView;
+        private TextView mStartCityTextView;
+        private TextView mDestinationCityTextView;
+        private TextView mStartTimeTextView;
+        private TextView mArrivalTextView;
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
-            // this.mWorkoutImageView = itemView.findViewById(R.id.activityImageView);
+            this.mCardView = itemView.findViewById(R.id.myCircle);
             this.mDateTextView = itemView.findViewById(R.id.dateTextView);
-            this.mDistanceTextView = itemView.findViewById(R.id.timeTextView);
-            this.mDurationTextView = itemView.findViewById(R.id.durationTextView);
-            // this.mDistanceImageView = itemView.findViewById(R.id.distanceImageView);
-            // this.mDurationImageView = itemView.findViewById(R.id.durationImageView);
+            this.mStartCityTextView = itemView.findViewById(R.id.startCityTextView);
+            this.mDestinationCityTextView = itemView.findViewById(R.id.destinationCityTextView);
+            this.mStartTimeTextView = itemView.findViewById(R.id.startTimeTextView);
+            this.mArrivalTextView = itemView.findViewById(R.id.arrivalTimeTextView);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
+            RideOffer ride = mRides.get(clickedPosition);
+            OfferLog.d("12321312", ride.toString());
+            mOnClickListener.onListItemClick(ride);
         }
     }
 }

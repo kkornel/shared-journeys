@@ -6,17 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,20 +20,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.main.offer.OfferSummaryActivity;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.NavLog;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.put.miasi.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
-
-import static com.put.miasi.utils.Database.OFFERED_RIDES;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -118,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         getUserProfile();
 
+        NavLog.d("MainAct onStart");
+
         tests();
     }
 
@@ -181,10 +178,41 @@ public class MainActivity extends AppCompatActivity {
 
         usersRef.addListenerForSingleValueEvent(usersListener);
 
-        Utils.getStringDuartionFromLongSeconds(10993);
+        // TODO remove
 
-        String s = Utils.getStringDistanceFromLongMeters(310291);
+        DateUtils.getStringDurationFromLongSeconds(10993);
+
+        String s = DateUtils.getStringDistanceFromLongMeters(310291);
         Log.d("qwerty", "getStringDistanceFromLongMeters=" + s);
+
+        Calendar cl = Calendar.getInstance();
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", "*********************");
+
+        cl.add(Calendar.DAY_OF_MONTH, -4);
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+        cl.add(Calendar.DAY_OF_MONTH, -5);
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+        cl.add(Calendar.MONTH, -1);
+        cl.add(Calendar.DAY_OF_MONTH, 10);
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+        cl.add(Calendar.MONTH, 3);
+        cl.add(Calendar.DAY_OF_MONTH, 2);
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
+
+        cl.add(Calendar.MONTH, 4);
+        cl.add(Calendar.DAY_OF_MONTH, 2);
+        OfferLog.d("Main", cl.getTime().toString());
+        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
+
     }
 
     private void getUserProfile() {
@@ -194,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference usersRef = database.getReference(Database.USERS).child(userUid);
 
-        ValueEventListener postListener = new ValueEventListener() {
+        ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 OfferLog.d(dataSnapshot.toString());
@@ -209,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
         };
-        usersRef.addListenerForSingleValueEvent(postListener);
+        usersRef.addListenerForSingleValueEvent(userListener);
     }
 
     private void loadFragment(Fragment fragment) {

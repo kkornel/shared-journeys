@@ -10,7 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="colorWhite">#dfdfdf</color>
     <color name="cardviewColor">#DEDEDE</color>
-
+    <color name="colorActive">#68b033</color>
 
     <color name="colorText">#054451</color>
     <color name="colorSearchBackground">#ededed</color>
