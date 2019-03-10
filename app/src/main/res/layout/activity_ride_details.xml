@@ -89,7 +89,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_account_circle_black_24dp" />
+             />
 
         <TextView
             android:id="@+id/tv_available_seats"
@@ -131,9 +131,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/splitter"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toStartOf="@+id/iv_star"
             android:layout_toLeftOf="@+id/iv_star"
             android:text="4,4"
@@ -242,6 +242,28 @@
             android:layout_toEndOf="@+id/iv_avatar"
             android:layout_toRightOf="@+id/iv_avatar"
             android:text="Janusz" />
+
+        <TextView
+            android:id="@+id/tv_rating_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_rating"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toStartOf="@+id/iv_star"
+            android:layout_toLeftOf="@+id/iv_star" />
+
+        <TextView
+            android:id="@+id/tv_telephone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_nick"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/iv_avatar"
+            android:layout_toRightOf="@+id/iv_avatar" />
 
         <TextView
             android:id="@+id/tv_price_text"

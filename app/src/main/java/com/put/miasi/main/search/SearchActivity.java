@@ -2,10 +2,6 @@ package com.put.miasi.main.search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +29,6 @@ import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,7 +45,7 @@ public class SearchActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        tests();
+        firebaseInit();
     }
     public void generateListView()
     {
@@ -179,7 +174,7 @@ public class SearchActivity extends AppCompatActivity
     }
 
     /////////////////////////// FIREBASE //////////////////////////////////
-    private void tests() {
+    private void firebaseInit() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
