@@ -16,4 +16,8 @@ public class Database {
     public static final String PARTICIPATED_RIDES = "participatedRides";
     public static final String PASSENGERS = "passengers";
     public static final String SEATS = "seats";
+    public static final String DRIVER_RATING = "driverRating";
+    public static final String NUMBER_OF_DRIVER_RATING = "numberOfDriverRatings";
+    public static final String PASSENGER_RATING = "passengerRating";
+    public static final String NUMBER_OF_PASSENGER_RATING = "numberOfPassengerRatings";
 }

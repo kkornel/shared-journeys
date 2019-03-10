@@ -1,13 +1,17 @@
 package com.put.miasi.main.history;
 
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +24,6 @@ import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
@@ -55,8 +58,10 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private TextView tv_price;
 
     private RideOffer mRide;
+    private User mDriver;
     private boolean mIsAlreadyRated;
     private boolean mIsEnded;
+    private float mRating;
 
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mUsersRef;
@@ -145,7 +150,73 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     }
 
     private void rateTheDriver() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        final LayoutInflater inflater = getLayoutInflater();
+
+        View vView = inflater.inflate(R.layout.dialog_rate_driver, null);
+        final ImageView avatarImageView = vView.findViewById(R.id.avatarImageView);
+        final TextView driverNameTextView = vView.findViewById(R.id.driverNameTextView);
+        final RatingBar ratingBar = vView.findViewById(R.id.ratingBar);
+
+        Picasso.get()
+                .load(mDriver.getAvatarUrl())
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_error_red_24dp)
+                .into(avatarImageView);
+
+        driverNameTextView.setText(mDriver.getFirstName() + " " + mDriver.getSurname());
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                mRating = rating;
+            }
+        });
+
+        final AlertDialog dialog;
+
+        builder.setView(vView)
+                .setTitle("Rate " + mDriver.getFirstName())
+                .setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "Rated:  " + mRating, Toast.LENGTH_SHORT).show();
+                        rate();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "Canceled ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    private void rate() {
+        // Driver
+        float driverRate = mDriver.getDriverRating();
+        int numOfDriverRatings = mDriver.getNumberOfDriverRatings();
+
+        driverRate = driverRate + mRating;
+        numOfDriverRatings = numOfDriverRatings + 1;
+
+        mDriver.setDriverRating(driverRate);
+        mDriver.setNumberOfDriverRatings(numOfDriverRatings);
+
+        mUsersRef.child(mDriver.getUid()).child(Database.DRIVER_RATING).setValue(driverRate);
+        mUsersRef.child(mDriver.getUid()).child(Database.NUMBER_OF_DRIVER_RATING).setValue(numOfDriverRatings);
+
+        // Passenger
+        HashMap<String, Boolean> participatedRidesMap = CurrentUserProfile.participatedRidesMap;
+        participatedRidesMap.put(mRide.getKey(), true);
+
+        mUsersRef.child(CurrentUserProfile.uid).child(Database.PARTICIPATED_RIDES).setValue(participatedRidesMap);
+
+        CurrentUserProfile.getUserProfile();
+
+        btn_action.setEnabled(false);
     }
 
     private void cancelReservation() {
@@ -166,10 +237,8 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         String userUid = CurrentUserProfile.uid;
 
         HashMap<String, Boolean> participatedRides = CurrentUserProfile.participatedRidesMap;
-        OfferLog.d("hakuna", participatedRides.toString());
 
         participatedRides.remove(rideUid);
-        OfferLog.d("hakuna", participatedRides.toString());
 
         CurrentUserProfile.offeredRidesMap = participatedRides;
 
@@ -183,20 +252,18 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
             idx++;
         }
 
-        OfferLog.d("hakuna",  mRide.passengers.toString());
         mRide.passengers.remove(idx);
-        OfferLog.d("hakuna",  mRide.passengers.toString());
 
         int seats = mRide.getSeats();
-        OfferLog.d("hakuna",  seats + "");
         seats++;
         mRide.setSeats(seats);
-        OfferLog.d("hakuna",  seats + "");
 
         mRidesRef.child(rideUid).setValue(mRide);
+
+        CurrentUserProfile.getUserProfile();
     }
 
-    private void fillRideDetails(User user) {
+    private void fillRideDetails() {
         getSupportActionBar().setTitle(DateUtils.getDate(mRide.getDate(), DateUtils.TIME_FORMAT_1));
 
         Calendar cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
@@ -222,16 +289,16 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         tv_distance.setText("Distance: " + distance + " km");
 
         Picasso.get()
-                .load(user.getAvatarUrl())
+                .load(mDriver.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
                 .into(iv_avatar);
 
-        tv_nick.setText(user.getFirstName() + " " + user.getSurname());
-        tv_phone.setText(user.getPhone());
+        tv_nick.setText(mDriver.getFirstName() + " " + mDriver.getSurname());
+        tv_phone.setText(mDriver.getPhone());
 
-        tv_rating.setText(String.valueOf(user.getDriverRating()));
-        tv_numRatings.setText(String.valueOf(user.getNumberOfDriverRatings()));
+        tv_rating.setText(String.valueOf(mDriver.getDriverRatingAvg()));
+        tv_numRatings.setText(String.valueOf(mDriver.getNumberOfDriverRatings()));
 
         tv_car.setText(mRide.getCar().getBrand() + " " + mRide.getCar().getModel());
         tv_car_color.setText(mRide.getCar().getColor());
@@ -241,8 +308,8 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         tv_message.setText(mRide.getMessage());
 
-        // TODO
-        tv_reservedSeats.setText("10");
+        int reservedRests = mRide.passengers.get(CurrentUserProfile.uid);
+        tv_reservedSeats.setText(String.valueOf(reservedRests));
     }
 
     private void getUserProfile(String userUid) {
@@ -253,8 +320,9 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-
-                fillRideDetails(user);
+                user.setUid(dataSnapshot.getKey());
+                mDriver = user;
+                fillRideDetails();
             }
 
             @Override
