@@ -3,7 +3,11 @@ package com.put.miasi.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Car implements Parcelable {
+import java.io.Serializable;
+
+// public class Car implements Parcelable {
+public class Car implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String brand;
     private String model;
     private String color;
@@ -51,31 +55,31 @@ public class Car implements Parcelable {
                 '}';
     }
 
-    public Car(Parcel in) {
-        this.brand = in.readString();
-        this.model = in.readString();
-        this.color = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.brand);
-        dest.writeString(this.model);
-        dest.writeString(this.color);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Car createFromParcel(Parcel in) {
-            return new Car(in);
-        }
-
-        public Car[] newArray(int size) {
-            return new Car[size];
-        }
-    };
+    // public Car(Parcel in) {
+    //     this.brand = in.readString();
+    //     this.model = in.readString();
+    //     this.color = in.readString();
+    // }
+    //
+    // @Override
+    // public int describeContents() {
+    //     return 0;
+    // }
+    //
+    // @Override
+    // public void writeToParcel(Parcel dest, int flags) {
+    //     dest.writeString(this.brand);
+    //     dest.writeString(this.model);
+    //     dest.writeString(this.color);
+    // }
+    //
+    // public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    //     public Car createFromParcel(Parcel in) {
+    //         return new Car(in);
+    //     }
+    //
+    //     public Car[] newArray(int size) {
+    //         return new Car[size];
+    //     }
+    // };
 }

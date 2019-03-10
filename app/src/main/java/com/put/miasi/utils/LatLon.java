@@ -6,10 +6,13 @@ import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LatLon implements Parcelable {
+// public class LatLon implements Parcelable {
+public class LatLon implements Serializable {
+    private static final long serialVersionUID = 1L;
     private double latitude;
     private double longitude;
 
@@ -64,29 +67,29 @@ public class LatLon implements Parcelable {
 
     // Parcelling part
 
-    public LatLon(Parcel in) {
-        this.latitude = in.readDouble();
-        this.longitude = in.readDouble();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(this.latitude);
-        dest.writeDouble(this.longitude);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public LatLon createFromParcel(Parcel in) {
-            return new LatLon(in);
-        }
-
-        public LatLon[] newArray(int size) {
-            return new LatLon[size];
-        }
-    };
+    // public LatLon(Parcel in) {
+    //     this.latitude = in.readDouble();
+    //     this.longitude = in.readDouble();
+    // }
+    //
+    // @Override
+    // public int describeContents() {
+    //     return 0;
+    // }
+    //
+    // @Override
+    // public void writeToParcel(Parcel dest, int flags) {
+    //     dest.writeDouble(this.latitude);
+    //     dest.writeDouble(this.longitude);
+    // }
+    //
+    // public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    //     public LatLon createFromParcel(Parcel in) {
+    //         return new LatLon(in);
+    //     }
+    //
+    //     public LatLon[] newArray(int size) {
+    //         return new LatLon[size];
+    //     }
+    // };
 }

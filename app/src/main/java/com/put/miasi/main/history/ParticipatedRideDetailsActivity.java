@@ -71,7 +71,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mRide = getIntent().getParcelableExtra(RIDE_INTENT_EXTRA);
+        mRide = (RideOffer) getIntent().getSerializableExtra(RIDE_INTENT_EXTRA);
         mIsAlreadyRated = getIntent().getBooleanExtra(RATED_RIDE_INTENT_EXTRA, false);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
@@ -175,7 +175,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
 
         int idx = 0;
-        for (String id : mRide.passengers) {
+        for (String id : mRide.passengers.keySet()) {
             if (id.equals(userUid)) {
                 break;
             }

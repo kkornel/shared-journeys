@@ -1,14 +1,14 @@
 package com.put.miasi.utils;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashMap;
 
-public class RideOffer implements Parcelable {
+// public class RideOffer implements Parcelable {
+public class RideOffer implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public String key;
     public String driverUid;
@@ -22,7 +22,8 @@ public class RideOffer implements Parcelable {
     public String luggage;
     public int price;
     public String message;
-    public List<String> passengers;
+    // public List<String> passengers;
+    public HashMap<String, Integer> passengers;
 
     public RideOffer() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -125,11 +126,12 @@ public class RideOffer implements Parcelable {
         this.message = message;
     }
 
-    public List<String> getPassengers() {
+
+    public HashMap<String, Integer> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(List<String> passengers) {
+    public void setPassengers(HashMap<String, Integer> passengers) {
         this.passengers = passengers;
     }
 
@@ -154,52 +156,52 @@ public class RideOffer implements Parcelable {
 
     // Parcelling part
 
-    public RideOffer(Parcel in) {
-        this.key = in.readString();
-        this.driverUid = in.readString();
-        this.date = in.readLong();
-        this.startPoint = in.readParcelable(LatLon.class.getClassLoader());
-        this.destinationPoint = in.readParcelable(LatLon.class.getClassLoader());
-        this.distance = in.readLong();
-        this.duration = in.readLong();
-        this.car = in.readParcelable(Car.class.getClassLoader());
-        this.seats = in.readInt();
-        this.luggage = in.readString();
-        this.price = in.readInt();
-        this.message = in.readString();
-        this.passengers = new ArrayList<>();
-        in.readList(this.passengers, String.class.getClassLoader());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.key);
-        dest.writeString(this.driverUid);
-        dest.writeLong(this.date);
-        dest.writeParcelable(this.startPoint, flags);
-        dest.writeParcelable(this.destinationPoint, flags);
-        dest.writeLong(this.distance);
-        dest.writeLong(this.duration);
-        dest.writeParcelable(this.car, flags);
-        dest.writeInt(this.seats);
-        dest.writeString(this.luggage);
-        dest.writeInt(this.price);
-        dest.writeString(this.message);
-        dest.writeList(this.passengers);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public RideOffer createFromParcel(Parcel in) {
-            return new RideOffer(in);
-        }
-
-        public RideOffer[] newArray(int size) {
-            return new RideOffer[size];
-        }
-    };
+    // public RideOffer(Parcel in) {
+    //     this.key = in.readString();
+    //     this.driverUid = in.readString();
+    //     this.date = in.readLong();
+    //     this.startPoint = in.readParcelable(LatLon.class.getClassLoader());
+    //     this.destinationPoint = in.readParcelable(LatLon.class.getClassLoader());
+    //     this.distance = in.readLong();
+    //     this.duration = in.readLong();
+    //     this.car = in.readParcelable(Car.class.getClassLoader());
+    //     this.seats = in.readInt();
+    //     this.luggage = in.readString();
+    //     this.price = in.readInt();
+    //     this.message = in.readString();
+    //     this.passengers = new ArrayList<>();
+    //     in.readList(this.passengers, String.class.getClassLoader());
+    // }
+    //
+    // @Override
+    // public int describeContents() {
+    //     return 0;
+    // }
+    //
+    // @Override
+    // public void writeToParcel(Parcel dest, int flags) {
+    //     dest.writeString(this.key);
+    //     dest.writeString(this.driverUid);
+    //     dest.writeLong(this.date);
+    //     dest.writeParcelable(this.startPoint, flags);
+    //     dest.writeParcelable(this.destinationPoint, flags);
+    //     dest.writeLong(this.distance);
+    //     dest.writeLong(this.duration);
+    //     dest.writeParcelable(this.car, flags);
+    //     dest.writeInt(this.seats);
+    //     dest.writeString(this.luggage);
+    //     dest.writeInt(this.price);
+    //     dest.writeString(this.message);
+    //     dest.writeList(this.passengers);
+    // }
+    //
+    // public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    //     public RideOffer createFromParcel(Parcel in) {
+    //         return new RideOffer(in);
+    //     }
+    //
+    //     public RideOffer[] newArray(int size) {
+    //         return new RideOffer[size];
+    //     }
+    // };
 }
