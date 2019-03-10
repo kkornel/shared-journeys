@@ -19,6 +19,7 @@ import com.put.miasi.utils.NavLog;
 import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,6 +27,7 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
     private static final String TAG = "HistoryTabFragment";
 
     public static final String RIDE_INTENT_EXTRA = "ride-intent-extra";
+    public static final String RATED_RIDE_INTENT_EXTRA = "rated-ride-intent-extra";
 
     private TextView mNoDataInfoTextView;
     private HistoryAdapter mHistoryAdapter;
@@ -34,6 +36,7 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
     private boolean mIsParticipatedFragment;
 
     private List<RideOffer> mRides;
+    private HashMap<String, Boolean> mRidesMap;
 
     public HistoryTabFragment() {
 
@@ -42,8 +45,6 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycler_view_empty, container, false);
-
-        NavLog.d("HisTabFra: onCreateView");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -64,15 +65,12 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
         return rootView;
     }
 
-    public void setFlag(boolean isParticipated) {
-        NavLog.d("HisTabFra: setFlag");
+    public void setIsParticipatedFragmentFlag(boolean isParticipated) {
         mIsParticipatedFragment = isParticipated;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        NavLog.d("HisTabFra: onStart");
+    public void setRidesMap(HashMap<String, Boolean> ridesMap) {
+        this.mRidesMap = ridesMap;
     }
 
     @Override

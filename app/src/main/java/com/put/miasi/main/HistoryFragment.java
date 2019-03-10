@@ -19,10 +19,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.connection.ListenHashProvider;
 import com.put.miasi.R;
 import com.put.miasi.main.history.HistoryTabFragment;
 import com.put.miasi.utils.Database;
-import com.put.miasi.utils.NavLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 
@@ -47,9 +47,11 @@ public class HistoryFragment extends Fragment {
 
     private List<String> mParticipatedRidesIds;
     private List<RideOffer> mParticipatedRides;
+    private HashMap<String, Boolean> mParticipatedRidesMap;
 
     private List<String> mOfferedRidesIds;
     private List<RideOffer> mOfferedRidesRides;
+    private HashMap<String, Boolean> mOfferedRidesRidesMap;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -58,8 +60,6 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-
-        NavLog.d("HisFra: onCreateView");
 
         mHistoryPagerAdapter = new HistoryPagerAdapter(getChildFragmentManager());
 
@@ -77,12 +77,13 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        NavLog.d("HisFra: onStart");
 
         mParticipatedRidesIds = new ArrayList<>();
         mParticipatedRides = new ArrayList<>();
+        mParticipatedRidesMap = new HashMap<>();
         mOfferedRidesIds = new ArrayList<>();
         mOfferedRidesRides = new ArrayList<>();
+        mOfferedRidesRidesMap = new HashMap<>();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -102,7 +103,6 @@ public class HistoryFragment extends Fragment {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: " + dataSnapshot.toString());
                 User user = dataSnapshot.getValue(User.class);
                 mParticipatedRidesIds = user.getParticipatedRidesList();
                 mOfferedRidesIds = user.getOfferedRidesList();
@@ -122,16 +122,16 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "DataSnapshot: " + ds.toString());
                     if (mParticipatedRidesIds.contains(ds.getKey())) {
-                        mParticipatedRides.add(ds.getValue(RideOffer.class));
-                        Log.d(TAG, "mParticipatedRides: " + ds.getValue(RideOffer.class));
+                        RideOffer rideOffer = ds.getValue(RideOffer.class);
+                        rideOffer.setKey(ds.getKey());
+                        mParticipatedRides.add(rideOffer);
                     } else if (mOfferedRidesIds.contains(ds.getKey())) {
-                        mOfferedRidesRides.add(ds.getValue(RideOffer.class));
-                        Log.d(TAG, "mOfferedRidesRides: " + ds.getValue(RideOffer.class));
+                        RideOffer rideOffer = ds.getValue(RideOffer.class);
+                        rideOffer.setKey(ds.getKey());
+                        mOfferedRidesRides.add(rideOffer);
                     }
                 }
-                NavLog.d("heere");
                 mParticipatedFragment.loadNewData(mParticipatedRides);
                 mOfferedFragment.loadNewData(mOfferedRidesRides);
             }
@@ -147,22 +147,19 @@ public class HistoryFragment extends Fragment {
     public class HistoryPagerAdapter extends FragmentPagerAdapter {
         public HistoryPagerAdapter(FragmentManager fm) {
             super(fm);
-            NavLog.d("HisFra HistoryPagerAdapter");
-
         }
 
         @Override
         public Fragment getItem(int position) {
-            NavLog.d("HisFra getItem");
             if (position == 0) {
-                NavLog.d("HisFra mParticipatedFragment");
                 mParticipatedFragment = new HistoryTabFragment();
-                mParticipatedFragment.setFlag(true);
+                mParticipatedFragment.setIsParticipatedFragmentFlag(true);
+                mParticipatedFragment.setRidesMap(mParticipatedRidesMap);
                 return mParticipatedFragment;
             } else {
-                NavLog.d("HisFra mOfferedFragment");
                 mOfferedFragment = new HistoryTabFragment();
-                mOfferedFragment.setFlag(false);
+                mOfferedFragment.setIsParticipatedFragmentFlag(false);
+                mOfferedFragment.setRidesMap(mOfferedRidesRidesMap);
                 return mOfferedFragment;
             }
         }

@@ -114,16 +114,9 @@ public class RegisterActivity extends AppCompatActivity {
                                            User newUser = new User(avatarUrl, firstName, surname, email, phone);
                                            // TODO remove haspmap
                                            HashMap<String, Boolean> hashMap = new HashMap<>();
-                                           hashMap.put("-L_WrbG4g7auZFzVtpvg", false);
-
                                            newUser.setOfferedRides(hashMap);
 
                                            HashMap<String, Boolean> hashMap1 = new HashMap<>();
-                                           hashMap1.put("-L_WHoqEhYa8JawqVafE", false);
-                                           hashMap1.put("-L_WHqR4nyGQHP_30P4U", false);
-                                           hashMap1.put("-L_WHoqEhYa8JawqVafE", false);
-                                           hashMap1.put("-L_WHqR4nyGQHP_30P4U", false);
-
                                            newUser.setParticipatedRides(hashMap1);
 
                                            newUser.setDriverRating(0.0);

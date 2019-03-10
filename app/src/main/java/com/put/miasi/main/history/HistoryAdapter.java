@@ -173,6 +173,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
             RideOffer ride = mRides.get(clickedPosition);
+            OfferLog.d("12321312", ride.toString());
             mOnClickListener.onListItemClick(ride);
         }
     }
