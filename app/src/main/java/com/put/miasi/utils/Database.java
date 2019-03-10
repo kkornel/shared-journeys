@@ -13,4 +13,5 @@ public class Database {
     public static final String FIRST_NAME = "firstName";
     public static final String SURNAME = "surname";
     public static final String AVATAR_URL = "avatarUrl";
+    public static final String PARTICIPATED_RIDES = "participatedRides";
 }

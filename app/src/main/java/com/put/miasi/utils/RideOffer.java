@@ -3,6 +3,8 @@ package com.put.miasi.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +28,11 @@ public class RideOffer implements Parcelable {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
+    @Exclude
     public String getKey() {
         return key;
     }
-
+    @Exclude
     public void setKey(String key) {
         this.key = key;
     }

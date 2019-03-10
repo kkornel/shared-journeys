@@ -106,6 +106,11 @@ public class HistoryFragment extends Fragment {
                 User user = dataSnapshot.getValue(User.class);
                 mParticipatedRidesIds = user.getParticipatedRidesList();
                 mOfferedRidesIds = user.getOfferedRidesList();
+                mParticipatedRidesMap = user.getParticipatedRides();
+                mParticipatedFragment.setRidesMap(mParticipatedRidesMap);
+                mOfferedRidesRidesMap = user.getOfferedRides();
+                mOfferedFragment.setRidesMap(mOfferedRidesRidesMap);
+
                 getUserRides();
             }
 
@@ -154,12 +159,11 @@ public class HistoryFragment extends Fragment {
             if (position == 0) {
                 mParticipatedFragment = new HistoryTabFragment();
                 mParticipatedFragment.setIsParticipatedFragmentFlag(true);
-                mParticipatedFragment.setRidesMap(mParticipatedRidesMap);
+
                 return mParticipatedFragment;
             } else {
                 mOfferedFragment = new HistoryTabFragment();
                 mOfferedFragment.setIsParticipatedFragmentFlag(false);
-                mOfferedFragment.setRidesMap(mOfferedRidesRidesMap);
                 return mOfferedFragment;
             }
         }

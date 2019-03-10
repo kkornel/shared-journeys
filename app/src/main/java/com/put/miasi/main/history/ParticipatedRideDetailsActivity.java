@@ -1,5 +1,6 @@
 package com.put.miasi.main.history;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,15 +16,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
+import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
+import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 
 public class ParticipatedRideDetailsActivity extends AppCompatActivity {
@@ -44,10 +52,16 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private TextView tv_from;
     private TextView tv_endedOrActive;
     private TextView tv_nick;
+    private TextView tv_phone;
     private TextView tv_price;
 
     private RideOffer mRide;
-    private Boolean mIsEnded;
+    private boolean mIsAlreadyRated;
+    private boolean mIsEnded;
+
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mRidesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +72,11 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mRide = getIntent().getParcelableExtra(RIDE_INTENT_EXTRA);
+        mIsAlreadyRated = getIntent().getBooleanExtra(RATED_RIDE_INTENT_EXTRA, false);
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = mDatabaseRef.child(Database.USERS);
+        mRidesRef = mDatabaseRef.child(Database.RIDES);
 
         Calendar cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         int durationHours = DateUtils.getDurationHoursFromLongSeconds(mRide.getDuration());
@@ -86,6 +105,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         tv_message = findViewById(R.id.tv_message);
         tv_from = findViewById(R.id.tv_from);
         tv_nick = findViewById(R.id.tv_nick);
+        tv_phone = findViewById(R.id.tv_phone);
         tv_price = findViewById(R.id.tv_price);
         tv_endedOrActive = findViewById(R.id.tv_endedOrActive);
 
@@ -95,13 +115,18 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
             tv_endedOrActive.setText("ENDED");
             tv_endedOrActive.setTextColor(getResources().getColor(R.color.colorAccent));
 
-            btn_action.setText("Rate the driver");
-            btn_action.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "Rate!", Toast.LENGTH_SHORT).show();
-                }
-            });
+            if (mIsAlreadyRated) {
+                btn_action.setText("Already rated");
+                btn_action.setEnabled(false);
+            } else {
+                btn_action.setText("Rate the driver");
+                btn_action.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rateTheDriver();
+                    }
+                });
+            }
         } else {
             tv_endedOrActive.setText("ACTIVE");
             tv_endedOrActive.setTextColor(getResources().getColor(R.color.colorActive));
@@ -110,12 +135,64 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
             btn_action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "Cancel!", Toast.LENGTH_SHORT).show();
+                    cancelReservation();
                 }
             });
         }
 
         getUserProfile(mRide.getDriverUid());
+    }
+
+    private void rateTheDriver() {
+
+    }
+
+    private void cancelReservation() {
+        DialogUtils.createDialog(this,
+                "Are you sure to cancel reservation?",
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        cancel();
+                    }
+                },
+                "No",
+                null);
+    }
+
+    private void cancel() {
+        String rideUid = mRide.getKey();
+        String userUid = CurrentUserProfile.uid;
+
+        HashMap<String, Boolean> participatedRides = CurrentUserProfile.participatedRidesMap;
+        OfferLog.d("hakuna", participatedRides.toString());
+
+        participatedRides.remove(rideUid);
+        OfferLog.d("hakuna", participatedRides.toString());
+
+        CurrentUserProfile.offeredRidesMap = participatedRides;
+
+        mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
+
+        int idx = 0;
+        for (String id : mRide.passengers) {
+            if (id.equals(userUid)) {
+                break;
+            }
+            idx++;
+        }
+
+        OfferLog.d("hakuna",  mRide.passengers.toString());
+        mRide.passengers.remove(idx);
+        OfferLog.d("hakuna",  mRide.passengers.toString());
+
+        int seats = mRide.getSeats();
+        OfferLog.d("hakuna",  seats + "");
+        seats++;
+        mRide.setSeats(seats);
+        OfferLog.d("hakuna",  seats + "");
+
+        mRidesRef.child(rideUid).setValue(mRide);
     }
 
     private void fillRideDetails(User user) {
@@ -150,6 +227,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
                 .into(iv_avatar);
 
         tv_nick.setText(user.getFirstName() + " " + user.getSurname());
+        tv_phone.setText(user.getPhone());
 
         tv_rating.setText(String.valueOf(user.getDriverRating()));
         tv_numRatings.setText(String.valueOf(user.getNumberOfDriverRatings()));
