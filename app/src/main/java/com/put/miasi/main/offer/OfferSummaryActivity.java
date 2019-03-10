@@ -40,6 +40,7 @@ import com.put.miasi.utils.Utils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -147,10 +148,12 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String key = database.child(Database.RIDES).push().getKey();
 
-        List<String> offeredRides = CurrentUserProfile.offeredRides;
+        List<String> offeredRides = CurrentUserProfile.offeredRidesList;
+
         if (offeredRides == null) {
             offeredRides = new ArrayList<>();
         }
+
         offeredRides.add(key);
 
         mRideOffer.setDriverUid(CurrentUserProfile.uid);

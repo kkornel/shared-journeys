@@ -5,18 +5,24 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class User implements Parcelable {
+// public class User implements Parcelable {
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String uid;
     private String avatarUrl;
     private String firstName;
     private String surname;
     private String email;
     private String phone;
-    private List<String> offeredRides;
-    private List<String> participatedRides;
+    // private List<String> offeredRides;
+    private HashMap<String, Boolean> offeredRides;
+    private HashMap<String, Boolean> participatedRides;
+    // private List<String> participatedRides;
     private double driverRating;
     private int numberOfDriverRatings;
     private double passengerRating;
@@ -83,19 +89,36 @@ public class User implements Parcelable {
         this.phone = phone;
     }
 
-    public List<String> getOfferedRides() {
+    // public List<String> getOfferedRides() {
+    //     return offeredRides;
+    // }
+    //
+    // public void setOfferedRides(List<String> offeredRides) {
+    //     this.offeredRides = offeredRides;
+    // }
+    //
+    // public List<String> getParticipatedRides() {
+    //     return participatedRides;
+    // }
+    //
+    // public void setParticipatedRides(List<String> participatedRides) {
+    //     this.participatedRides = participatedRides;
+    // }
+
+
+    public HashMap<String, Boolean> getOfferedRides() {
         return offeredRides;
     }
 
-    public void setOfferedRides(List<String> offeredRides) {
+    public void setOfferedRides(HashMap<String, Boolean> offeredRides) {
         this.offeredRides = offeredRides;
     }
 
-    public List<String> getParticipatedRides() {
+    public HashMap<String, Boolean> getParticipatedRides() {
         return participatedRides;
     }
 
-    public void setParticipatedRides(List<String> participatedRides) {
+    public void setParticipatedRides(HashMap<String, Boolean> participatedRides) {
         this.participatedRides = participatedRides;
     }
 
@@ -131,6 +154,22 @@ public class User implements Parcelable {
         this.numberOfPassengerRatings = numberOfPassengerRatings;
     }
 
+    public List<String> getOfferedRidesList() {
+        List<String> offered = new ArrayList<>();
+        for (String key : this.offeredRides.keySet()) {
+            offered.add(key);
+        }
+        return offered;
+    }
+
+    public List<String> getParticipatedRidesList() {
+        List<String> participated = new ArrayList<>();
+        for (String key : this.participatedRides.keySet()) {
+            participated.add(key);
+        }
+        return participated;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -149,51 +188,57 @@ public class User implements Parcelable {
                 '}';
     }
 
-    public User(Parcel in) {
-        this.uid = in.readString();
-        this.avatarUrl = in.readString();
-        this.firstName = in.readString();
-        this.surname = in.readString();
-        this.email = in.readString();
-        this.phone = in.readString();
-        this.offeredRides = new ArrayList<>();
-        in.readList(this.offeredRides, String.class.getClassLoader());
-        this.participatedRides = new ArrayList<>();
-        in.readList(this.participatedRides, String.class.getClassLoader());
-        this.driverRating = in.readDouble();
-        this.numberOfDriverRatings = in.readInt();
-        this.passengerRating = in.readDouble();
-        this.numberOfPassengerRatings = in.readInt();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.uid);
-        dest.writeString(this.avatarUrl);
-        dest.writeString(this.firstName);
-        dest.writeString(this.surname);
-        dest.writeString(this.email);
-        dest.writeString(this.phone);
-        dest.writeList(this.offeredRides);
-        dest.writeList(this.participatedRides);
-        dest.writeDouble(this.driverRating);
-        dest.writeInt(this.numberOfDriverRatings);
-        dest.writeDouble(this.passengerRating);
-        dest.writeInt(this.numberOfPassengerRatings);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
+    // public User(Parcel in) {
+    //     this.uid = in.readString();
+    //     this.avatarUrl = in.readString();
+    //     this.firstName = in.readString();
+    //     this.surname = in.readString();
+    //     this.email = in.readString();
+    //     this.phone = in.readString();
+    //     // this.offeredRides = new ArrayList<>();
+    //     // in.readList(this.offeredRides, String.class.getClassLoader());
+    //     // this.participatedRides = new ArrayList<>();
+    //     // in.readList(this.participatedRides, String.class.getClassLoader());
+    //     this.offeredRides = new HashMap<>();
+    //     this.offeredRides = (HashMap<String, Boolean>) in.readSerializable();
+    //     this.participatedRides = new HashMap<>();
+    //     this.participatedRides = (HashMap<String, Boolean>) in.readSerializable();
+    //     this.driverRating = in.readDouble();
+    //     this.numberOfDriverRatings = in.readInt();
+    //     this.passengerRating = in.readDouble();
+    //     this.numberOfPassengerRatings = in.readInt();
+    // }
+    //
+    // @Override
+    // public int describeContents() {
+    //     return 0;
+    // }
+    //
+    // @Override
+    // public void writeToParcel(Parcel dest, int flags) {
+    //     dest.writeString(this.uid);
+    //     dest.writeString(this.avatarUrl);
+    //     dest.writeString(this.firstName);
+    //     dest.writeString(this.surname);
+    //     dest.writeString(this.email);
+    //     dest.writeString(this.phone);
+    //     // dest.writeList(this.offeredRides);
+    //     // dest.writeList(this.participatedRides);
+    //     dest.writeSerializable(this.offeredRides);
+    //     dest.writeSerializable(this.participatedRides);
+    //     dest.writeDouble(this.driverRating);
+    //     dest.writeInt(this.numberOfDriverRatings);
+    //     dest.writeDouble(this.passengerRating);
+    //     dest.writeInt(this.numberOfPassengerRatings);
+    // }
+    //
+    // public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    //     public User createFromParcel(Parcel in) {
+    //         return new User(in);
+    //     }
+    //
+    //     public User[] newArray(int size) {
+    //         return new User[size];
+    //     }
+    // };
 }

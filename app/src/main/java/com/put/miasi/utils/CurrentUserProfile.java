@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CurrentUserProfile {
@@ -20,8 +21,12 @@ public class CurrentUserProfile {
     public static String surname;
     public static String email;
     public static String phone;
-    public static List<String> offeredRides;
-    public static List<String> participatedRides;
+    // public static List<String> offeredRides;
+    // public static List<String> participatedRides;
+    public static HashMap<String, Boolean> offeredRidesMap;
+    public static List<String>  offeredRidesList;
+    public static HashMap<String, Boolean> participatedRidesMap;
+    public static List<String> participatedRidesList;
     public static double driverRating;
     public static int numberOfDriverRatings;
     public static double passengerRating;
@@ -34,8 +39,10 @@ public class CurrentUserProfile {
         surname = user.getSurname();
         email = user.getEmail();
         phone = user.getPhone();
-        offeredRides = user.getOfferedRides();
-        participatedRides = user.getParticipatedRides();
+        offeredRidesMap = user.getOfferedRides();
+        offeredRidesList = user.getOfferedRidesList();
+        participatedRidesMap = user.getParticipatedRides();
+        participatedRidesList = user.getParticipatedRidesList();
         driverRating = user.getDriverRating();
         numberOfDriverRatings = user.getNumberOfDriverRatings();
         passengerRating = user.getPassengerRating();
@@ -75,8 +82,8 @@ public class CurrentUserProfile {
                 "\n, surname='" + surname + '\'' +
                 "\n, email='" + email + '\'' +
                 "\n, phone='" + phone + '\'' +
-                "\n, offeredRides=" + offeredRides +
-                "\n, participatedRides=" + participatedRides +
+                "\n, offeredRides=" + offeredRidesMap +
+                "\n, participatedRides=" + participatedRidesMap +
                 "\n, driverRating=" + driverRating +
                 "\n, numberOfDriverRatings=" + numberOfDriverRatings +
                 "\n, passengerRating=" + passengerRating +

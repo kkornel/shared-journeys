@@ -27,6 +27,7 @@ import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
@@ -103,8 +104,8 @@ public class HistoryFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: " + dataSnapshot.toString());
                 User user = dataSnapshot.getValue(User.class);
-                mParticipatedRidesIds = user.getParticipatedRides();
-                mOfferedRidesIds = user.getOfferedRides();
+                mParticipatedRidesIds = user.getParticipatedRidesList();
+                mOfferedRidesIds = user.getOfferedRidesList();
                 getUserRides();
             }
 
