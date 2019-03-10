@@ -1,10 +1,8 @@
 package com.put.miasi.main;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.main.offer.FromActivity;
-import com.put.miasi.main.search.SearchActivity;
-import com.put.miasi.main.search.SeatsReservationActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.ArrayList;
@@ -42,6 +36,9 @@ public class NotificationFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mUsersRef;
     private DatabaseReference mRidesRef;
+
+    private List<RideOffer> mRideOffers;
+
 
     public NotificationFragment() {
     }
@@ -64,12 +61,8 @@ public class NotificationFragment extends Fragment {
             }
         });
 
-        // Inflate the layout for this fragment
         return rootView;
-
     }
-
-    private List<RideOffer> mRideOffers;
 
     @Override
     public void onStart() {
@@ -84,15 +77,12 @@ public class NotificationFragment extends Fragment {
         ValueEventListener ridesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {
                     RideOffer rideOffer = ds.getValue(RideOffer.class);
                     rideOffer.setKey(ds.getKey());
-                    OfferLog.d(rideOffer.toString());
                     mRideOffers.add(rideOffer);
-                    OfferLog.d(String.valueOf(mRideOffers.size()));
                 }
-                Toast.makeText(getContext(), "juz", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "ready", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -119,10 +109,8 @@ public class NotificationFragment extends Fragment {
 
         RideOffer rideOffer = mRideOffers.get(idx);
         int avaSeats = rideOffer.getSeats();
-        OfferLog.d("hakuna", avaSeats + "");
         rideOffer.setSeats(avaSeats - seats);
         avaSeats = rideOffer.getSeats();
-        OfferLog.d("hakuna", avaSeats + "");
 
         HashMap<String, Integer> passengers = rideOffer.getPassengers();
         if (passengers == null) {
@@ -137,9 +125,7 @@ public class NotificationFragment extends Fragment {
         participatedRides.put(key, false);
 
         mUsersRef.child(CurrentUserProfile.uid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
-        mRidesRef.child(key).child("passengers").setValue(passengers);
-        mRidesRef.child(key).child("seats").setValue(avaSeats);
-
+        mRidesRef.child(key).child(Database.PASSENGERS).setValue(passengers);
+        mRidesRef.child(key).child(Database.SEATS).setValue(avaSeats);
     }
-
 }

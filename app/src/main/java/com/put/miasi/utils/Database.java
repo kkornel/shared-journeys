@@ -14,4 +14,6 @@ public class Database {
     public static final String SURNAME = "surname";
     public static final String AVATAR_URL = "avatarUrl";
     public static final String PARTICIPATED_RIDES = "participatedRides";
+    public static final String PASSENGERS = "passengers";
+    public static final String SEATS = "seats";
 }
