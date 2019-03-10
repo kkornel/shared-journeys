@@ -106,6 +106,40 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_hour_end"
         tools:text="Distance: 151 km" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reserved: "
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_reservedSeats"
+        app:layout_constraintEnd_toStartOf="@+id/tv_reservedSeats" />
+
+    <TextView
+        android:id="@+id/tv_reservedSeats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text=" seats"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/splitter"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <View
         android:id="@+id/splitter"
         android:layout_width="0dp"
@@ -251,6 +285,31 @@
         app:layout_constraintStart_toEndOf="@+id/iv_car"
         app:layout_constraintTop_toBottomOf="@+id/tv_car"
         tools:text="black" />
+
+    <TextView
+        android:id="@+id/tv_seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="TextView"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splitter2" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="available seats"
+        android:textColor="@color/colorText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_seats" />
 
     <View
         android:id="@+id/splitter3"

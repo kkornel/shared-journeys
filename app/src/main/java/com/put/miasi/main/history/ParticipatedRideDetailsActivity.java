@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,10 +25,8 @@ import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
@@ -51,8 +48,10 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private TextView tv_message;
     private TextView tv_from;
     private TextView tv_endedOrActive;
+    private TextView tv_reservedSeats;
     private TextView tv_nick;
     private TextView tv_phone;
+    private TextView tv_seats;
     private TextView tv_price;
 
     private RideOffer mRide;
@@ -100,6 +99,8 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         tv_hour_end = findViewById(R.id.tv_hour_end);
         tv_to = findViewById(R.id.tv_to);
         tv_car = findViewById(R.id.tv_car);
+        tv_seats = findViewById(R.id.tv_seats);
+        tv_reservedSeats = findViewById(R.id.tv_reservedSeats);
         tv_hour_begin = findViewById(R.id.tv_hour_begin);
         tv_luggage = findViewById(R.id.tv_luggage);
         tv_message = findViewById(R.id.tv_message);
@@ -234,10 +235,14 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         tv_car.setText(mRide.getCar().getBrand() + " " + mRide.getCar().getModel());
         tv_car_color.setText(mRide.getCar().getColor());
+        tv_seats.setText(mRide.getSeats() + "");
 
         tv_luggage.setText("Luggage: " + mRide.getLuggage());
 
         tv_message.setText(mRide.getMessage());
+
+        // TODO
+        tv_reservedSeats.setText("10");
     }
 
     private void getUserProfile(String userUid) {
