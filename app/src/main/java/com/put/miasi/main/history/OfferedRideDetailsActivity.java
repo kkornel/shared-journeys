@@ -7,11 +7,13 @@ import com.put.miasi.R;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
+import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 
 public class OfferedRideDetailsActivity extends AppCompatActivity {
 
     private RideOffer mRide;
+    private boolean mIsAlreadyRated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,8 @@ public class OfferedRideDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_offerSummary));
 
-        mRide = getIntent().getParcelableExtra(RIDE_INTENT_EXTRA);
+        mRide = (RideOffer) getIntent().getSerializableExtra(RIDE_INTENT_EXTRA);
+        mIsAlreadyRated = getIntent().getBooleanExtra(RATED_RIDE_INTENT_EXTRA, false);
 
         OfferLog.d("beep", mRide.toString());
     }
