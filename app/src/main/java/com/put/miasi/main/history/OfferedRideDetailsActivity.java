@@ -2,16 +2,20 @@ package com.put.miasi.main.history;
 
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -161,7 +165,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         passengersRecyclerView = findViewById(R.id.passengersRecyclerView);
         passengersRecyclerView.setLayoutManager(linearLayoutManager);
         passengersRecyclerView.setHasFixedSize(true);
-        passengersRecyclerView.addItemDecoration(new DividerItemDecoration(passengersRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        // passengersRecyclerView.addItemDecoration(new DividerItemDecoration(passengersRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         mPassengersListAdapter = new PassengersListAdapter(this, mPassengersList, this);
         passengersRecyclerView.setAdapter(mPassengersListAdapter);
@@ -219,7 +223,67 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        // showUserDialog(clickedItemIndex);
+        rateTheDriver(mPassengersList.get(clickedItemIndex));
+    }
+
+    private void rateTheDriver(Passenger passenger) {
+        User user = passenger.getUser();
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final LayoutInflater inflater = getLayoutInflater();
+
+        View vView = inflater.inflate(R.layout.dialog_passenger, null);
+
+        final ImageView avatarImageView = vView.findViewById(R.id.avatarImageView);
+        final TextView passengerNameTextView = vView.findViewById(R.id.driverNameTextView);
+        final TextView avgPassRateTextView = vView.findViewById(R.id.avgPassRateTextView);
+        final TextView numPassRateTextView = vView.findViewById(R.id.numPassRateTextView);
+        final Button rejectButton = vView.findViewById(R.id.rejectButton);
+        final Button rateButton = vView.findViewById(R.id.rateButton);
+
+        Picasso.get()
+                .load(user.getAvatarUrl())
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_error_red_24dp)
+                .into(avatarImageView);
+
+        passengerNameTextView.setText(user.getFirstName() + " " + user.getSurname());
+        avgPassRateTextView.setText(user.getPassengerRaingAvg() + "");
+        numPassRateTextView.setText(user.getNumberOfPassengerRatings() + "");
+
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Reject:  ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Rate:  ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final AlertDialog dialog;
+
+        builder.setView(vView)
+                .setTitle("Rate " + user.getFirstName())
+                .setPositiveButton("Call", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "Call:  ", Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getApplicationContext(), "Canceled ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
     }
 
     private void cancelRide() {

@@ -65,18 +65,18 @@ public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAd
             viewHolder.mAvgPassRateTextView.setText(user.getPassengerRaingAvg() + "");
             viewHolder.mNumPassRateTextView.setText(user.getNumberOfPassengerRatings() + "");
 
-            viewHolder.mRefuseRideButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "Refuse", Toast.LENGTH_SHORT).show();
-                }
-            });
-            viewHolder.mCallButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "Call", Toast.LENGTH_SHORT).show();
-                }
-            });
+            // viewHolder.mRefuseRideButton.setOnClickListener(new View.OnClickListener() {
+            //     @Override
+            //     public void onClick(View v) {
+            //         Toast.makeText(mContext, "Refuse", Toast.LENGTH_SHORT).show();
+            //     }
+            // });
+            // viewHolder.mCallButton.setOnClickListener(new View.OnClickListener() {
+            //     @Override
+            //     public void onClick(View v) {
+            //         Toast.makeText(mContext, "Call", Toast.LENGTH_SHORT).show();
+            //     }
+            // });
         }
     }
 
@@ -96,8 +96,8 @@ public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAd
         private TextView mSeatsTextView;
         private TextView mAvgPassRateTextView;
         private TextView mNumPassRateTextView;
-        private Button mRefuseRideButton;
-        private Button mCallButton;
+        // private Button mRefuseRideButton;
+        // private Button mCallButton;
 
         public PassengersListViewHolder(View itemView) {
             super(itemView);
@@ -106,8 +106,8 @@ public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAd
             mSeatsTextView = itemView.findViewById(R.id.seatsTextView);
             mAvgPassRateTextView = itemView.findViewById(R.id.avgPassRateTextView);
             mNumPassRateTextView = itemView.findViewById(R.id.numPassRateTextView);
-            mRefuseRideButton = itemView.findViewById(R.id.refuseRideButton);
-            mCallButton = itemView.findViewById(R.id.callButton);
+            // mRefuseRideButton = itemView.findViewById(R.id.refuseRideButton);
+            // mCallButton = itemView.findViewById(R.id.callButton);
             itemView.setOnClickListener(this);
         }
 
