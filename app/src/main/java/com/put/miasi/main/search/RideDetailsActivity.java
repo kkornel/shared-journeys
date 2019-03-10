@@ -95,7 +95,7 @@ public class RideDetailsActivity extends AppCompatActivity
         tv_nick.setText(rider.getFirstName() + " " + rider.getSurname());
         tv_available_seats.setText("Available seats: " + offer.getSeats());
         // distance - zle
-        tv_distance.setText("Distance: " + offer.getDistance());
+        tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");
         tv_car_color.setText(offer.getCar().getColor());
         tv_rating.setText("4.4");
         // kalendarz i data

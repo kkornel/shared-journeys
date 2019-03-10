@@ -2,6 +2,10 @@ package com.put.miasi.main.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
@@ -28,6 +33,7 @@ import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,8 +97,10 @@ public class SearchActivity extends AppCompatActivity
             String arrivalHour = DateUtils.getHourFromCalendar(cal);
             String arrivalMin = DateUtils.getMinFromCalendar(cal);
             offer.hour_end =arrivalHour + ":" + arrivalMin;
+            offer.distance = "5km" + " from you";
+            offer.seats = "Availabale seats: " + x.getSeats();
 
-            data.add(offer);
+                    data.add(offer);
         }
     }
 
@@ -115,6 +123,7 @@ public class SearchActivity extends AppCompatActivity
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout,parent,false);
                 ViewHolder viewHolder = new ViewHolder();
+
                 viewHolder.avatar = (ImageView) convertView.findViewById(R.id.list_item_avatar);
                 viewHolder.nick = (TextView) convertView.findViewById(R.id.list_item_nick);
                 viewHolder.from = (TextView) convertView.findViewById(R.id.list_item_from);
@@ -122,16 +131,22 @@ public class SearchActivity extends AppCompatActivity
                 viewHolder.price = (TextView) convertView.findViewById(R.id.list_item_price);
                 viewHolder.hour_begin = (TextView) convertView.findViewById(R.id.list_item_hour_begin);
                 viewHolder.hour_end = (TextView) convertView.findViewById(R.id.list_item_hour_end);
+                viewHolder.seats = (TextView) convertView.findViewById(R.id.list_item_available_spaces);
+                viewHolder.distance = (TextView) convertView.findViewById(R.id.list_item_distance);
                 convertView.setTag(viewHolder);
             }
             mainViewholder = (ViewHolder) convertView.getTag();
-            Picasso.get().load(getItem(position).avatar).into(mainViewholder.avatar);
+
+
+            Picasso.get().load(getItem(position).avatar).transform(new CircleTransform()).into(mainViewholder.avatar);
             mainViewholder.nick.setText(getItem(position).nick);
             mainViewholder.from.setText(getItem(position).from);
             mainViewholder.to.setText(getItem(position).to);
             mainViewholder.price.setText(getItem(position).price);
             mainViewholder.hour_begin.setText(getItem(position).hour_begin);
             mainViewholder.hour_end.setText(getItem(position).hour_end);
+            mainViewholder.seats.setText(getItem(position).seats);
+            mainViewholder.distance.setText(getItem(position).distance);
 
 
             return convertView;
@@ -146,6 +161,8 @@ public class SearchActivity extends AppCompatActivity
         TextView price;
         TextView hour_begin;
         TextView hour_end;
+        TextView seats;
+        TextView distance;
     }
     public class Offer
     {
@@ -157,6 +174,8 @@ public class SearchActivity extends AppCompatActivity
         String price;
         String hour_begin;
         String hour_end;
+        String seats;
+        String distance;
     }
 
     /////////////////////////// FIREBASE //////////////////////////////////
@@ -215,4 +234,6 @@ public class SearchActivity extends AppCompatActivity
 
 
     }
+
+
 }
