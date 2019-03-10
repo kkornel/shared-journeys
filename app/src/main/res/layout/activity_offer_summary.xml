@@ -89,7 +89,7 @@
             tools:text="Warszawa" />
 
         <TextView
-            android:id="@+id/distanceTextView"
+            android:id="@+id/seatsTextViewLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -385,9 +385,9 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/colorText"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/distanceTextView"
-            app:layout_constraintStart_toStartOf="@+id/distanceTextView"
-            app:layout_constraintTop_toBottomOf="@+id/distanceTextView"
+            app:layout_constraintEnd_toEndOf="@+id/seatsTextViewLabel"
+            app:layout_constraintStart_toStartOf="@+id/seatsTextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/seatsTextViewLabel"
             tools:text="3.5 h" />
 
     </android.support.constraint.ConstraintLayout>
