@@ -17,19 +17,6 @@
         tools:context=".main.search.RideDetailsActivity">
 
 
-        <TextView
-            android:id="@+id/tv_available_seats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_price_text"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:text="Available seats: 5"
-            android:textSize="16dp" />
-
         <ImageView
             android:id="@+id/iv_message"
             android:layout_width="50dp"
@@ -103,6 +90,19 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/ic_account_circle_black_24dp" />
+
+        <TextView
+            android:id="@+id/tv_available_seats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_price_text"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Available seats: 5"
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/tv_distance"

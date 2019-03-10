@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:text="Nickname"
         android:id="@+id/list_item_nick"
+        android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:layout_toEndOf="@+id/list_item_avatar" />
 
@@ -25,7 +26,7 @@
         android:id="@+id/list_item_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_marginLeft="5dp"
         android:layout_toEndOf="@+id/list_item_hour_begin"
         android:layout_below="@id/list_item_nick"
         android:textSize="16dp"
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/list_item_hour_end"
         android:layout_below="@id/list_item_from"
+        android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:text="To: " />
 
@@ -46,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/list_item_avatar"
         android:layout_below="@id/list_item_nick"
+        android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:text="15:00 " />
 
@@ -55,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/list_item_avatar"
         android:layout_below="@id/list_item_from"
+        android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:text="18:00 " />
 
