@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,6 @@ import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
-import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
@@ -49,11 +49,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
-import static com.put.miasi.main.offer.FromActivity.MARGIN_BOTTOM;
-import static com.put.miasi.main.offer.FromActivity.MARGIN_TOP;
-import static com.put.miasi.main.offer.FromActivity.VERTICAL_BIAS;
-import static com.put.miasi.main.offer.FromActivity.ZOOM_LEVEL;
 
 public class SearchActivity extends AppCompatActivity
 {
@@ -105,6 +100,7 @@ public class SearchActivity extends AppCompatActivity
         ListView lv = (ListView) findViewById(R.id.listview);
         lv.setAdapter(null);
         lv.setAdapter(new MyListAdapter(this, R.layout.list_item, data));
+        setListViewHeightBasedOnChildren(lv);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -321,10 +317,10 @@ public class SearchActivity extends AppCompatActivity
                     String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
                     String rideOfferStartPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getStartPoint().toLatLng());
                     String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getDestinationPoint().toLatLng());
-                    if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity))
-                    {
+                    //if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity))
+                    //{
                         rideOffers.add(rideOffer);
-                    }
+                    //}
                     OfferLog.d(String.valueOf(rideOffers.size()));
                 }
             }
@@ -363,6 +359,37 @@ public class SearchActivity extends AppCompatActivity
         };
         usersRef.addListenerForSingleValueEvent(usersListener);
 
+
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView)
+    {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight=0;
+        View view = null;
+
+        for (int i = 0; i < listAdapter.getCount(); i++)
+        {
+            view = listAdapter.getView(i, view, listView);
+
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + ((listView.getDividerHeight()) * (listAdapter.getCount()));
+
+        listView.setLayoutParams(params);
+        listView.requestLayout();
 
     }
 
