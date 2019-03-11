@@ -171,11 +171,19 @@ public class User implements Serializable {
     }
 
     public float getDriverRatingAvg() {
-        return driverRating / numberOfDriverRatings;
+        float avg = driverRating / numberOfDriverRatings;
+        if (Float.isNaN(avg) || Float.isInfinite(avg)){
+            return 0.0f;
+        }
+        return avg;
     }
 
     public float getPassengerRaingAvg() {
-        return passengerRating / numberOfPassengerRatings;
+        float avg = passengerRating / numberOfPassengerRatings;
+        if (Float.isNaN(avg) || Float.isInfinite(avg)){
+            return 0.0f;
+        }
+        return avg;
     }
 
     @Override

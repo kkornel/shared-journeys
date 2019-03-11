@@ -2,11 +2,9 @@ package com.put.miasi.utils;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import java.math.BigDecimal;
 
 public class Utils {
 
@@ -24,6 +22,4 @@ public class Utils {
 
         imm.hideSoftInputFromWindow(fragment.getView().getRootView().getWindowToken(), 0);
     }
-
-
 }

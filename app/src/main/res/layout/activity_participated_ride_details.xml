@@ -180,19 +180,6 @@
         app:layout_constraintTop_toBottomOf="@+id/splitter"
         tools:text="Janusz" />
 
-    <TextView
-        android:id="@+id/tv_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="TextView"
-        android:textColor="@color/colorText"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar" />
-
     <ImageView
         android:id="@+id/iv_star"
         android:layout_width="50dp"
@@ -463,4 +450,21 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_to"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_from" />
+
+    <Button
+        android:id="@+id/callDriverButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Call driver"
+        app:layout_constraintBottom_toTopOf="@+id/actionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splitter5"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

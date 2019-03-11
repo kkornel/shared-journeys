@@ -1,6 +1,8 @@
 package com.put.miasi.main.history;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,7 +55,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private TextView tv_endedOrActive;
     private TextView tv_reservedSeats;
     private TextView tv_nick;
-    private TextView tv_phone;
+    private TextView callDriverButton;
     private TextView tv_seats;
     private TextView tv_price;
 
@@ -111,7 +113,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         tv_message = findViewById(R.id.tv_message);
         tv_from = findViewById(R.id.tv_from);
         tv_nick = findViewById(R.id.tv_nick);
-        tv_phone = findViewById(R.id.tv_phone);
+        callDriverButton = findViewById(R.id.callDriverButton);
         tv_price = findViewById(R.id.tv_price);
         tv_endedOrActive = findViewById(R.id.tv_endedOrActive);
 
@@ -295,7 +297,12 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
                 .into(iv_avatar);
 
         tv_nick.setText(mDriver.getFirstName() + " " + mDriver.getSurname());
-        tv_phone.setText(mDriver.getPhone());
+        callDriverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialPhoneNumber(mDriver.getPhone());
+            }
+        });
 
         tv_rating.setText(String.valueOf(mDriver.getDriverRatingAvg()));
         tv_numRatings.setText(String.valueOf(mDriver.getNumberOfDriverRatings()));
@@ -310,6 +317,14 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         int reservedRests = mRide.passengers.get(CurrentUserProfile.uid);
         tv_reservedSeats.setText(String.valueOf(reservedRests));
+    }
+
+    private void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     private void getUserProfile(String userUid) {
