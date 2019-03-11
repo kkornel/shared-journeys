@@ -2,6 +2,8 @@ package com.put.miasi.main.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,29 +12,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.offer.DatePickerActivity;
+import com.put.miasi.main.offer.DestinationActivity;
 import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
+import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.put.miasi.main.offer.FromActivity.MARGIN_BOTTOM;
+import static com.put.miasi.main.offer.FromActivity.MARGIN_TOP;
+import static com.put.miasi.main.offer.FromActivity.VERTICAL_BIAS;
+import static com.put.miasi.main.offer.FromActivity.ZOOM_LEVEL;
 
 public class SearchActivity extends AppCompatActivity
 {
@@ -40,16 +61,49 @@ public class SearchActivity extends AppCompatActivity
     final List<RideOffer> rideOffers = new ArrayList<>();
     final List<User> users = new ArrayList<>();
     private String TAG = "SearchActivity";
+    private String date;
+    private Button btn_search;
+    private ListView listView;
+    private String startCity;
+    private String destinationCity;
+    boolean startTextFilled = false;
+    boolean destinationTextFilled = false;
+
+    private static String SEARCH_COUNTRY = "PL";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        firebaseInit();
+
+        listView = (ListView) findViewById(R.id.listview);
+
+        Intent intent = getIntent();
+        long dateInMs = intent.getLongExtra("date",0);
+        date = DateUtils.getDate(dateInMs, DateUtils.STANDARD_DATE_FORMAT);
+        initializeSearchButton();
+        f();
+    }
+    public void initializeSearchButton()
+    {
+        btn_search = (Button) findViewById(R.id.btn_search);
+        btn_search.setVisibility(View.INVISIBLE);
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listView.setAdapter(null);
+                firebaseInit();
+
+
+            }
+        });
     }
     public void generateListView()
     {
         ListView lv = (ListView) findViewById(R.id.listview);
+        lv.setAdapter(null);
         lv.setAdapter(new MyListAdapter(this, R.layout.list_item, data));
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -64,6 +118,7 @@ public class SearchActivity extends AppCompatActivity
 
 
     private void generateListContent() {
+        data.clear();
         for (RideOffer x : rideOffers)
         {
             Offer offer = new Offer();
@@ -94,8 +149,7 @@ public class SearchActivity extends AppCompatActivity
             offer.hour_end =arrivalHour + ":" + arrivalMin;
             offer.distance = "5km" + " from you";
             offer.seats = "Availabale seats: " + x.getSeats();
-
-                    data.add(offer);
+            data.add(offer);
         }
     }
 
@@ -173,13 +227,89 @@ public class SearchActivity extends AppCompatActivity
         String distance;
     }
 
+
+    private void f() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
+
+        // Initialize Places.
+        Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
+
+        // Create a new Places client instance.
+        final PlacesClient placesClient = Places.createClient(this);
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+
+        autocompleteFragment.setCountry(SEARCH_COUNTRY);
+        autocompleteFragment.setHint("e.g. Poznań");
+        autocompleteFragment.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place)
+            {
+                startTextFilled = true;
+                startCity = place.getName();
+                if (destinationTextFilled && startTextFilled)
+                {
+                    btn_search.setVisibility(View.VISIBLE);
+                }
+                Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Status status) {
+                OfferLog.d("An error occurred: " + status);
+            }
+        });
+
+
+
+        AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment2);
+
+        // Specify the types of place data to return.
+        autocompleteFragment2.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+
+        autocompleteFragment2.setCountry(SEARCH_COUNTRY);
+        autocompleteFragment2.setHint("e.g. Bydgoszcz");
+        autocompleteFragment2.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                destinationTextFilled = true;
+                destinationCity = place.getName();
+                if (destinationTextFilled  && startTextFilled)
+                {
+                    btn_search.setVisibility(View.VISIBLE);
+                }
+                Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Status status) {
+                OfferLog.d("An error occurred: " + status);
+            }
+        });
+
+
+    }
+
+
     /////////////////////////// FIREBASE //////////////////////////////////
     private void firebaseInit() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-
         final DatabaseReference offeredRidesRef = database.child(Database.RIDES);
-
+        rideOffers.clear();
         ValueEventListener ridesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,7 +318,13 @@ public class SearchActivity extends AppCompatActivity
                     RideOffer rideOffer = ds.getValue(RideOffer.class);
                     rideOffer.setKey(ds.getKey());
                     OfferLog.d(rideOffer.toString());
-                    rideOffers.add(rideOffer);
+                    String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
+                    String rideOfferStartPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getStartPoint().toLatLng());
+                    String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getDestinationPoint().toLatLng());
+                    if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity))
+                    {
+                        rideOffers.add(rideOffer);
+                    }
                     OfferLog.d(String.valueOf(rideOffers.size()));
                 }
             }

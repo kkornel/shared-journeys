@@ -189,8 +189,6 @@ public class RideDetailsActivity extends AppCompatActivity
         };
         offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
 
-
-
     }
 
 }
