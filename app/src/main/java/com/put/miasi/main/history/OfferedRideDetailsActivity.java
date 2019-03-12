@@ -18,6 +18,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,7 +60,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
     private TextView tv_endedOrActive;
     private TextView tv_seats;
     private TextView tv_price;
-    private TextView noPassengersTextView;
+    private TextView tv_noPassengers;
     private RecyclerView passengersRecyclerView;
 
     private PassengersListAdapter mPassengersListAdapter;
@@ -105,9 +106,9 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         // TODO
         mPassengersList = new ArrayList<>();
 
-        getPassengersProfiles();
 
         initializeComponents();
+        getPassengersProfiles();
     }
 
     private void initializeComponents() {
@@ -124,7 +125,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         tv_price = findViewById(R.id.tv_price);
         tv_endedOrActive = findViewById(R.id.tv_endedOrActive);
 
-        noPassengersTextView = findViewById(R.id.noPassengersTextView);
+        tv_noPassengers = findViewById(R.id.tv_noPassengers);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         passengersRecyclerView = findViewById(R.id.passengersRecyclerView);
@@ -134,8 +135,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mPassengersListAdapter = new PassengersListAdapter(this, mPassengersList, this);
         passengersRecyclerView.setAdapter(mPassengersListAdapter);
 
-        noPassengersTextView.setText("");
-        noPassengersTextView.setVisibility(View.VISIBLE);
+        tv_noPassengers.setVisibility(View.INVISIBLE);
 
         btn_action = findViewById(R.id.actionButton);
         btn_action.setText("Cancel offer");
@@ -183,6 +183,12 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
     private void getPassengersProfiles() {
         final List<User> passengerProfiles = new ArrayList<>();
+
+        if (mRide.getPassengers() == null) {
+            gotAllPassengers(passengerProfiles);
+            return;
+        }
+
         final int howManyPassengers = mRide.getPassengers().size();
 
         for (final String passengerId : mRide.getPassengers().keySet()) {
@@ -387,11 +393,16 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         CurrentUserProfile.offeredRidesMap = offeredRides;
 
-        mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(offeredRides);
+        mUsersRef.child(userUid).child(Database.OFFERED_RIDES).setValue(offeredRides);
 
         CurrentUserProfile.getUserProfile();
 
-        finish();
+        mRidesRef.child(mRide.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                finish();
+            }
+        });
     }
 
     private void fillRideDetails() {
@@ -437,11 +448,11 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
     }
 
     private void checkIfListIsEmpty() {
-        if (mPassengersList.size() == 0) {
-            noPassengersTextView.setVisibility(View.VISIBLE);
-            noPassengersTextView.setText("No passengers yet");
+        if (mPassengersList == null || mPassengersList.size() == 0) {
+            tv_noPassengers.setVisibility(View.VISIBLE);
+            tv_noPassengers.setText("No passengers yet");
         } else {
-            noPassengersTextView.setVisibility(View.GONE);
+            tv_noPassengers.setVisibility(View.GONE);
         }
     }
 

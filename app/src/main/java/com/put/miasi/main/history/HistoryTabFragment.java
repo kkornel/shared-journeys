@@ -104,7 +104,11 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
         if (mRides.size() == 0) {
             // TODO
             mNoDataInfoTextView.setVisibility(View.VISIBLE);
-            mNoDataInfoTextView.setText("LUL");
+            if (mIsParticipatedFragment) {
+                mNoDataInfoTextView.setText("You haven't participated in any rides");
+            } else {
+                mNoDataInfoTextView.setText("You haven't offered any rides");
+            }
         } else {
             mNoDataInfoTextView.setVisibility(View.GONE);
         }

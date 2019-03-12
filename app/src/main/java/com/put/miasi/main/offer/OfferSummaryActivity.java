@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -39,6 +40,7 @@ import com.put.miasi.utils.TaskLoadedCallback;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -126,6 +128,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
         Marker startMarker = mMap.addMarker(new MarkerOptions()
                 .position(mStartLatLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 .title("Start"));
 
         Marker destMarker = mMap.addMarker(new MarkerOptions()
@@ -147,13 +150,13 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String key = database.child(Database.RIDES).push().getKey();
 
-        List<String> offeredRides = CurrentUserProfile.offeredRidesList;
+        HashMap<String, Boolean> offeredRides = CurrentUserProfile.offeredRidesMap;
 
         if (offeredRides == null) {
-            offeredRides = new ArrayList<>();
+            offeredRides = new HashMap<>();
         }
 
-        offeredRides.add(key);
+        offeredRides.put(key, false);
 
         mRideOffer.setDriverUid(CurrentUserProfile.uid);
         mRideOffer.setDistance(DISTANCE);
