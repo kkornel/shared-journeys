@@ -1,9 +1,15 @@
 package com.put.miasi.main;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +20,7 @@ import com.put.miasi.R;
 import com.put.miasi.main.offer.FromActivity;
 import com.put.miasi.main.search.RideCalendar;
 import com.put.miasi.main.search.SearchActivity;
+import com.put.miasi.utils.LocationUtils;
 
 
 public class RidesFragment extends Fragment {
@@ -47,5 +54,14 @@ public class RidesFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!LocationUtils.hasLocationPermissions(getContext())) {
+            LocationUtils.requestLocationPermissions(getActivity(), getContext(), mSearchButton);
+        }
     }
 }

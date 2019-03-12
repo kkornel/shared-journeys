@@ -24,6 +24,7 @@ import com.put.miasi.R;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.LocationUtils;
 import com.put.miasi.utils.User;
 
 
