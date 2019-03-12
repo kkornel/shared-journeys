@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.put.miasi.R;
 import com.put.miasi.main.offer.FromActivity;
+import com.put.miasi.main.search.RideCalendar;
 import com.put.miasi.main.search.SearchActivity;
 
 /**
@@ -50,11 +51,10 @@ public class RidesFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Search", Toast.LENGTH_SHORT).show();
 
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+                startActivity(new Intent(getActivity(), RideCalendar.class));
             }
         });
 
-        // Inflate the layout for this fragment
         return rootView;
     }
 

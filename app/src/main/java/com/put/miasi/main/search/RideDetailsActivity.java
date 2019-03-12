@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
@@ -23,10 +24,7 @@ import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
-import java.util.Date;
 
 public class RideDetailsActivity extends AppCompatActivity
 {
@@ -46,6 +44,8 @@ public class RideDetailsActivity extends AppCompatActivity
     private TextView tv_date;
     private TextView tv_nick;
     private TextView tv_price;
+    private TextView tv_rating_quantity;
+    private TextView tv_telephone;
     private String TAG = "RideDetailsActivity";
     private String rideKey = null;
     private String uid = null;
@@ -60,7 +60,7 @@ public class RideDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         rideKey = intent.getStringExtra("Uid");
-        tests();
+        firebaseInit();
     }
 
     private void initializeComponents()
@@ -80,22 +80,29 @@ public class RideDetailsActivity extends AppCompatActivity
         tv_date = (TextView) findViewById(R.id.tv_date);
         tv_nick = (TextView) findViewById(R.id.tv_nick);
         tv_price = (TextView) findViewById(R.id.tv_price);
+        tv_telephone = (TextView) findViewById(R.id.tv_telephone);
+        tv_rating_quantity = (TextView) findViewById(R.id.tv_rating_quantity);
+
 
         btn_reservation = (Button) findViewById(R.id.btn_reservation);
         btn_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RideDetailsActivity.this, SeatsReservationActivity.class));
+
+                Intent seatsReservationIntent = new Intent(RideDetailsActivity.this, SeatsReservationActivity.class);
+                seatsReservationIntent.putExtra("size", String.valueOf(offer.seats));
+                startActivity(seatsReservationIntent);
+
+
             }
         });
     }
     private void fillRideDetails()
     {
-        Picasso.get().load(rider.getAvatarUrl()).into(iv_avatar);
+        Picasso.get().load(rider.getAvatarUrl()).transform(new CircleTransform()).into(iv_avatar);
         tv_nick.setText(rider.getFirstName() + " " + rider.getSurname());
         tv_available_seats.setText("Available seats: " + offer.getSeats());
-        // distance - zle
-        tv_distance.setText("Distance: " + offer.getDistance());
+        tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");
         tv_car_color.setText(offer.getCar().getColor());
         tv_rating.setText("4.4");
         // kalendarz i data
@@ -121,11 +128,15 @@ public class RideDetailsActivity extends AppCompatActivity
         tv_message.setText(offer.getMessage());
         tv_price.setText(offer.getPrice() + " zł");
 
+        tv_rating_quantity.setText(rider.getNumberOfDriverRatings() + " reviews");
+        tv_telephone.setText("Tel: "+ rider.getPhone());
+
+
 
     }
 
     ////////////////////// FIREBASE ///////////////////
-    private void tests() {
+    private void firebaseInit() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
@@ -177,8 +188,6 @@ public class RideDetailsActivity extends AppCompatActivity
             }
         };
         offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
-
-
 
     }
 

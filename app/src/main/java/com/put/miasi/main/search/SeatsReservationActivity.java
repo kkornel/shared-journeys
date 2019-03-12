@@ -1,5 +1,6 @@
 package com.put.miasi.main.search;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -28,8 +29,10 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seats_reservation);
         setPopUpSize();
-        initalizeSpinner();
-
+        Intent intent = getIntent();
+        String text = intent.getStringExtra("size");
+        int size = Integer.valueOf(text);
+        initalizeSpinner(size);
 
     }
     private void setPopUpSize()
@@ -41,9 +44,9 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         getWindow().setLayout((int) (width*0.8), (int) (height *0.6));
     }
 
-    private void initalizeSpinner()
+    private void initalizeSpinner(int size)
     {
-        fillListWithNumbers(5);
+        fillListWithNumbers(size);
 
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,numbersList);

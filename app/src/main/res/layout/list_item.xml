@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:descendantFocusability="blocksDescendants">
 
     <ImageView
@@ -11,7 +11,7 @@
         android:id="@+id/list_item_avatar"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +20,8 @@
         android:id="@+id/list_item_nick"
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
-        android:layout_toEndOf="@+id/list_item_avatar" />
+        android:layout_toEndOf="@+id/list_item_avatar"
+        android:layout_toRightOf="@+id/list_item_avatar" />
 
     <TextView
         android:id="@+id/list_item_from"
@@ -30,7 +31,8 @@
         android:layout_toEndOf="@+id/list_item_hour_begin"
         android:layout_below="@id/list_item_nick"
         android:textSize="16dp"
-        android:text="From: " />
+        android:text="From: "
+        android:layout_toRightOf="@+id/list_item_hour_begin" />
 
     <TextView
         android:id="@+id/list_item_to"
@@ -40,7 +42,8 @@
         android:layout_below="@id/list_item_from"
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
-        android:text="To: " />
+        android:text="To: "
+        android:layout_toRightOf="@+id/list_item_hour_end" />
 
     <TextView
         android:id="@+id/list_item_hour_begin"
@@ -50,7 +53,8 @@
         android:layout_below="@id/list_item_nick"
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
-        android:text="15:00 " />
+        android:text="15:00 "
+        android:layout_toRightOf="@+id/list_item_avatar" />
 
     <TextView
         android:id="@+id/list_item_hour_end"
@@ -60,7 +64,8 @@
         android:layout_below="@id/list_item_from"
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
-        android:text="18:00 " />
+        android:text="18:00 "
+        android:layout_toRightOf="@+id/list_item_avatar" />
 
     <TextView
         android:id="@+id/list_item_price"
@@ -71,7 +76,45 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="40dp"
         android:textSize="20dp"
-        android:text="Price" />
+        android:text="Price"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp" />
+
+    <TextView
+        android:id="@+id/list_item_available_spaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/list_item_distance"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="Available spaces: "
+        android:textSize="16dp"
+         />
+
+    <TextView
+        android:id="@+id/list_item_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_item_avatar"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/btn_location"
+        android:text="5km from your locaton "
+        android:textSize="16dp" />
+
+    <ImageButton
+        android:id="@+id/btn_location"
+        android:layout_width="37dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/list_item_avatar"
+        android:layout_marginTop="-8dp"
+        android:layout_toEndOf="@+id/tv_from"
+        android:layout_toRightOf="@+id/tv_from"
+        android:adjustViewBounds="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/marker" />
+
 
 
 </RelativeLayout>
