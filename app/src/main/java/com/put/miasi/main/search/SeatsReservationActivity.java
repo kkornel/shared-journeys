@@ -90,7 +90,15 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         if (passengers == null) {
             passengers = new HashMap<>();
         }
-        passengers.put(CurrentUserProfile.uid, mNumOfSeatsPicked);
+
+        if (passengers.containsKey(CurrentUserProfile.uid)) {
+            int alreadyReserved = passengers.get(CurrentUserProfile.uid);
+            alreadyReserved += mNumOfSeatsPicked;
+            passengers.put(CurrentUserProfile.uid, alreadyReserved);
+        } else {
+            passengers.put(CurrentUserProfile.uid, mNumOfSeatsPicked);
+        }
+
         mOffer.setPassengers(passengers);
 
         mRidesRef.child(mOffer.getKey()).child(Database.PASSENGERS).setValue(passengers);
