@@ -2,8 +2,6 @@ package com.put.miasi.main.search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,9 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -34,13 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.main.offer.DatePickerActivity;
-import com.put.miasi.main.offer.DestinationActivity;
 import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
@@ -66,7 +58,6 @@ public class SearchActivity extends AppCompatActivity
 
     private static String SEARCH_COUNTRY = "PL";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -81,6 +72,7 @@ public class SearchActivity extends AppCompatActivity
         initializeSearchButton();
         f();
     }
+
     public void initializeSearchButton()
     {
         btn_search = (Button) findViewById(R.id.btn_search);
@@ -95,6 +87,7 @@ public class SearchActivity extends AppCompatActivity
             }
         });
     }
+
     public void generateListView()
     {
         ListView lv = (ListView) findViewById(R.id.listview);
@@ -111,7 +104,6 @@ public class SearchActivity extends AppCompatActivity
             }
         });
     }
-
 
     private void generateListContent() {
         data.clear();
@@ -144,12 +136,10 @@ public class SearchActivity extends AppCompatActivity
             String arrivalMin = DateUtils.getMinFromCalendar(cal);
             offer.hour_end =arrivalHour + ":" + arrivalMin;
             offer.distance = "5km" + " from you";
-            offer.seats = "Availabale seats: " + x.getSeats();
+            offer.seats = "Available seats: " + x.getSeats();
             data.add(offer);
         }
     }
-
-
 
     private class MyListAdapter extends ArrayAdapter<Offer>
     {
@@ -182,7 +172,6 @@ public class SearchActivity extends AppCompatActivity
             }
             mainViewholder = (ViewHolder) convertView.getTag();
 
-
             Picasso.get().load(getItem(position).avatar).transform(new CircleTransform()).into(mainViewholder.avatar);
             mainViewholder.nick.setText(getItem(position).nick);
             mainViewholder.from.setText(getItem(position).from);
@@ -192,7 +181,6 @@ public class SearchActivity extends AppCompatActivity
             mainViewholder.hour_end.setText(getItem(position).hour_end);
             mainViewholder.seats.setText(getItem(position).seats);
             mainViewholder.distance.setText(getItem(position).distance);
-
 
             return convertView;
         }
@@ -222,7 +210,6 @@ public class SearchActivity extends AppCompatActivity
         String seats;
         String distance;
     }
-
 
     private void f() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -257,16 +244,14 @@ public class SearchActivity extends AppCompatActivity
                 {
                     btn_search.setVisibility(View.VISIBLE);
                 }
-                Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(Status status) {
-                OfferLog.d("An error occurred: " + status);
+                Log.d(TAG,"An error occurred: " + status);
             }
         });
-
-
 
         AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment2);
@@ -288,18 +273,17 @@ public class SearchActivity extends AppCompatActivity
                 {
                     btn_search.setVisibility(View.VISIBLE);
                 }
-                Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(Status status) {
-                OfferLog.d("An error occurred: " + status);
+                Log.d(TAG, "An error occurred: " + status);
             }
         });
 
 
     }
-
 
     /////////////////////////// FIREBASE //////////////////////////////////
     private void firebaseInit() {
@@ -309,11 +293,9 @@ public class SearchActivity extends AppCompatActivity
         ValueEventListener ridesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {
                     RideOffer rideOffer = ds.getValue(RideOffer.class);
                     rideOffer.setKey(ds.getKey());
-                    OfferLog.d(rideOffer.toString());
                     String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
                     String rideOfferStartPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getStartPoint().toLatLng());
                     String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getDestinationPoint().toLatLng());
@@ -321,7 +303,6 @@ public class SearchActivity extends AppCompatActivity
                     //{
                         rideOffers.add(rideOffer);
                     //}
-                    OfferLog.d(String.valueOf(rideOffers.size()));
                 }
             }
 
@@ -332,22 +313,16 @@ public class SearchActivity extends AppCompatActivity
         };
         offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
 
-
         final DatabaseReference usersRef = database.child(Database.USERS);
 
         ValueEventListener usersListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {
                     User user = ds.getValue(User.class);
                     user.setUid(ds.getKey());
-                    OfferLog.d(user.toString());
                     users.add(user);
-                    OfferLog.d(String.valueOf(users.size()));
                 }
-                Log.i(TAG,"users: "+ users.size());
-                Log.i(TAG, "rides: " + rideOffers.size());
                 generateListContent();
                 generateListView();
             }
@@ -358,8 +333,6 @@ public class SearchActivity extends AppCompatActivity
             }
         };
         usersRef.addListenerForSingleValueEvent(usersListener);
-
-
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView)
@@ -390,8 +363,5 @@ public class SearchActivity extends AppCompatActivity
 
         listView.setLayoutParams(params);
         listView.requestLayout();
-
     }
-
-
 }

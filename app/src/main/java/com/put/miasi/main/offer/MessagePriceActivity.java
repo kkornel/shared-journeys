@@ -3,16 +3,12 @@ package com.put.miasi.main.offer;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
-import com.put.miasi.utils.LatLon;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -49,9 +45,7 @@ public class MessagePriceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_messagePrice));
 
-        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
-        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         mMessageEditText = findViewById(R.id.messageEditText);
         mPriceEditText = findViewById(R.id.priceEditText);
@@ -85,13 +79,6 @@ public class MessagePriceActivity extends AppCompatActivity {
 
         // TODO remove
         // tests();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-        OfferLog.d(mRideOffer.toString());
     }
 
     @Override

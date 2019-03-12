@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -72,9 +71,6 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
 
         mDriver = (User) getIntent().getSerializableExtra("driver");
         mOffer = (RideOffer) getIntent().getSerializableExtra("ride");
-
-        Log.d(TAG, "onCreate: " + mDriver);
-        Log.d(TAG, "onCreate: " + mOffer);
     }
 
     private void bookSeats() {
@@ -100,8 +96,6 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         mRidesRef.child(mOffer.getKey()).child(Database.PASSENGERS).setValue(passengers);
         mRidesRef.child(mOffer.getKey()).child(Database.SEATS).setValue(availableSeats);
 
-        Log.d(TAG, "bookSeats: " + mOffer);
-
         startActivity(new Intent(SeatsReservationActivity.this, MainActivity.class));
     }
 
@@ -125,6 +119,7 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
+
     private void fillListWithNumbers(int size)
     {
         numbersList = new ArrayList<String>();
@@ -153,9 +148,7 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
                 case 6:
                     numbersList.add("7");
                     break;
-
             }
-
         }
     }
 

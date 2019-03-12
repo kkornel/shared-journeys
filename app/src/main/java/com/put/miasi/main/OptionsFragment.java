@@ -16,22 +16,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.put.miasi.LoginActivity;
 import com.put.miasi.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class OptionsFragment extends Fragment {
 
+public class OptionsFragment extends Fragment {
+    private static final String TAG = "OptionsFragment";
 
     public OptionsFragment() {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_options, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_options, container, false);
+
+
+
+        return rootView;
     }
 
     @Override

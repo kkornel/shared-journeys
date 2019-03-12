@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TimePickerFragment;
@@ -81,9 +79,7 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_timePicker));
 
-        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
-        OfferLog.d(TAG, "onCreate: " + mRideOffer.toString());
 
         mSelectedTimeTextView = findViewById(R.id.selectedTimeTextView);
 

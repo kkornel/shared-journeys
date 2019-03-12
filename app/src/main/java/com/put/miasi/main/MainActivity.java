@@ -1,5 +1,6 @@
 package com.put.miasi.main;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,16 +24,8 @@ import com.put.miasi.R;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
-import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.NavLog;
-import com.put.miasi.utils.OfferLog;
-import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
-import com.put.miasi.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -112,107 +105,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getUserProfile();
-
-        NavLog.d("MainAct onStart");
-
-        tests();
-    }
-
-    private void tests() {
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-        // Rides
-
-        final DatabaseReference offeredRidesRef = database.child(Database.RIDES);
-
-        final List<RideOffer> rideOffers = new ArrayList<>();
-
-        ValueEventListener ridesListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
-                for (DataSnapshot ds :dataSnapshot.getChildren()) {
-                    RideOffer rideOffer = ds.getValue(RideOffer.class);
-                    rideOffer.setKey(ds.getKey());
-                    OfferLog.d(rideOffer.toString());
-                    rideOffers.add(rideOffer);
-                    OfferLog.d(String.valueOf(rideOffers.size()));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-
-        offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
-
-        // Users
-
-        final DatabaseReference usersRef = database.child(Database.USERS);
-
-        // Konkretny uzytkownik o userUid
-        // final DatabaseReference usersRef = database.child(Database.USERS).child(userUid);
-
-        final List<User> users = new ArrayList<>();
-
-        ValueEventListener usersListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
-                for (DataSnapshot ds :dataSnapshot.getChildren()) {
-                    User user = ds.getValue(User.class);
-                    user.setUid(ds.getKey());
-                    OfferLog.d(user.toString());
-                    users.add(user);
-                    OfferLog.d(String.valueOf(users.size()));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-
-        usersRef.addListenerForSingleValueEvent(usersListener);
-
-        // TODO remove
-
-        DateUtils.getStringDurationFromLongSeconds(10993);
-
-        String s = DateUtils.getStringDistanceFromLongMeters(310291);
-        Log.d("qwerty", "getStringDistanceFromLongMeters=" + s);
-
-        Calendar cl = Calendar.getInstance();
-        OfferLog.d("Main", cl.getTime().toString());
-        OfferLog.d("Main", "*********************");
-
-        cl.add(Calendar.DAY_OF_MONTH, -4);
-        OfferLog.d("Main", cl.getTime().toString());
-        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
-
-        cl.add(Calendar.DAY_OF_MONTH, -5);
-        OfferLog.d("Main", cl.getTime().toString());
-        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
-
-        cl.add(Calendar.MONTH, -1);
-        cl.add(Calendar.DAY_OF_MONTH, 10);
-        OfferLog.d("Main", cl.getTime().toString());
-        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
-
-        cl.add(Calendar.MONTH, 3);
-        cl.add(Calendar.DAY_OF_MONTH, 2);
-        OfferLog.d("Main", cl.getTime().toString());
-        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
-
-
-        cl.add(Calendar.MONTH, 4);
-        cl.add(Calendar.DAY_OF_MONTH, 2);
-        OfferLog.d("Main", cl.getTime().toString());
-        OfferLog.d("Main", String.valueOf(cl.getTime().getTime()));
-
     }
 
     private void getUserProfile() {
@@ -225,11 +117,8 @@ public class MainActivity extends AppCompatActivity {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 User user = dataSnapshot.getValue(User.class);
-                OfferLog.d(user.toString());
                 CurrentUserProfile.loadUserData(userUid, user);
-                OfferLog.d(CurrentUserProfile.toStringy());
             }
 
             @Override

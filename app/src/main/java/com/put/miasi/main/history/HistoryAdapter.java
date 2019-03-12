@@ -51,7 +51,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder viewHolder, int position) {
         if ((mRides == null) || (mRides.size() == 0)) {
-            viewHolder.mDateTextView.setText("halo?");
+            viewHolder.mDateTextView.setText(mContext.getString(R.string.no_data));
         } else {
             RideOffer ride = mRides.get(position);
 

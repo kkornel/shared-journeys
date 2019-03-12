@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,7 +24,6 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
 import com.put.miasi.utils.LatLon;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Arrays;
@@ -94,8 +94,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                OfferLog.d("Place: " + place.getName() + ", " + place.getLatLng());
-
                 mStartLatLng = place.getLatLng();
 
                 mMap.addMarker(new MarkerOptions().position(mStartLatLng)
@@ -118,7 +116,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onError(Status status) {
-                OfferLog.d("An error occurred: " + status);
+                Log.d(TAG,"An error occurred: " + status);
             }
         });
 

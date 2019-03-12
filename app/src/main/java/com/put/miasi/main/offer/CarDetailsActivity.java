@@ -9,11 +9,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
 import com.put.miasi.utils.Car;
-import com.put.miasi.utils.LatLon;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -55,9 +52,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_carDetails));
 
-        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
-        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         mBrandEditText = findViewById(R.id.brandEditText);
         mModelEditText = findViewById(R.id.modelEditText);

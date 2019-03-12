@@ -37,15 +37,11 @@ import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 import static com.put.miasi.utils.Database.OFFERED_RIDES;
-import static com.put.miasi.utils.DateUtils.STANDARD_DATE_TIME_FORMAT;
 
 public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "OfferSummaryActivity";
@@ -85,9 +81,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_offerSummary));
 
-        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
-        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -163,22 +157,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mRideOffer.setDistance(DISTANCE);
         mRideOffer.setDuration(DURATION);
 
-
         final DatabaseReference userRef = database.child(Database.USERS).child(CurrentUserProfile.uid);
-
-        // userRef.child(OFFERED_RIDES).setValue(offeredRides).addOnSuccessListener(new OnSuccessListener<Void>() {
-        //     @Override
-        //     public void onSuccess(Void aVoid) {
-        //         database.child(Database.RIDES).child(key).setValue(mRideOffer).addOnSuccessListener(new OnSuccessListener<Void>() {
-        //             @Override
-        //             public void onSuccess(Void aVoid) {
-        //                 Toast.makeText(getApplicationContext(), "Published!", Toast.LENGTH_SHORT).show();
-        //                 Intent intent = new Intent(OfferSummaryActivity.this, MainActivity.class);
-        //                 startActivity(intent);
-        //             }
-        //         });
-        //     }
-        // });
 
         userRef.child(OFFERED_RIDES).setValue(offeredRides).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -206,28 +185,12 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         mDestLatLng = destinationPoint.toLatLng();
         long date = mRideOffer.getDate();
 
-        OfferLog.d( "onSelectedDayChange: " + DateUtils.getDate(date, STANDARD_DATE_TIME_FORMAT));
-
         Calendar calendar = DateUtils.getCalendarFromMilliSecs(date);
         String year = DateUtils.getYearFromCalendar(calendar);
         String month = DateUtils.getMonthFromCalendar(calendar);
         String day = DateUtils.getDayFromCalendar(calendar);
         String hour = DateUtils.getHourFromCalendar(calendar);
         String min = DateUtils.getMinFromCalendar(calendar);
-
-        // TODO remove
-        // ********************************************************************
-        OfferLog.d("MyDate", "*************************************************");
-        OfferLog.d("MyDate", "Summary: " + date);
-        OfferLog.d("MyDate", "Summary: " + calendar.toString());
-        OfferLog.d("MyDate", "Summary: " + new Date(date));
-        OfferLog.d("MyDate", "Summary: year " + year);
-        OfferLog.d("MyDate", "Summary: month " + month);
-        OfferLog.d("MyDate", "Summary: day " + day);
-        OfferLog.d("MyDate", "Summary: hour " + hour);
-        OfferLog.d("MyDate", "Summary: min " + min);
-        OfferLog.d("MyDate", "*************************************************");
-        // ********************************************************************
 
         Car car = mRideOffer.getCar();
         String carString = car.getBrand() + " " + car.getModel() + " " + car.getColor();
@@ -236,27 +199,6 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         String luggage = mRideOffer.getLuggage();
         int price = mRideOffer.getPrice();
         String message = mRideOffer.getMessage();
-
-
-        // List<Address> startAddressList = null;
-        // List<Address> destAddressList = null;
-        //
-        // Geocoder startGeocoder = new Geocoder(OfferSummaryActivity.this);
-        // Geocoder destGeocoder = new Geocoder(OfferSummaryActivity.this);
-        // try {
-        //     startAddressList = startGeocoder.getFromLocation(startPoint.getLatitude(), startPoint.getLongitude(), 1);
-        //     destAddressList = destGeocoder.getFromLocation(destinationPoint.getLatitude(), destinationPoint.getLongitude(), 1);
-        //
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
-        // Address startAddress = startAddressList.get(0);
-        // Address destAddress = destAddressList.get(0);
-        //
-        // String startCity = startAddress.getLocality();
-        // String destCity = destAddress.getLocality();
-
-        // OfferLog.d("onPlaceSelected: " + startAddress.toString());
 
         String startCity = GeoUtils.getCityFromLatLng(OfferSummaryActivity.this, mStartLatLng);
         String destCity = GeoUtils.getCityFromLatLng(OfferSummaryActivity.this, mDestLatLng);

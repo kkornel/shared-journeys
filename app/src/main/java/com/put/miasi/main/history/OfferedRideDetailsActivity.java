@@ -90,8 +90,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mRide = (RideOffer) getIntent().getSerializableExtra(RIDE_INTENT_EXTRA);
         mIsAlreadyRated = getIntent().getBooleanExtra(RATED_RIDE_INTENT_EXTRA, false);
 
-        OfferLog.d("rated", mIsAlreadyRated + "");
-
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
         mRidesRef = mDatabaseRef.child(Database.RIDES);
@@ -106,9 +104,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         mIsEnded = !DateUtils.isNowBeforeDate(cal.getTime());
 
-        // TODO
         mPassengersList = new ArrayList<>();
-
 
         initializeComponents();
         getPassengersProfiles();
