@@ -138,7 +138,7 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override

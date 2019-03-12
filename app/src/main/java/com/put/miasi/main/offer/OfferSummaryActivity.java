@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -39,10 +40,12 @@ import com.put.miasi.utils.TaskLoadedCallback;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 import static com.put.miasi.utils.Database.OFFERED_RIDES;
+import static com.put.miasi.utils.DateUtils.STANDARD_DATE_TIME_FORMAT;
 
 public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "OfferSummaryActivity";
@@ -126,6 +129,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
         Marker startMarker = mMap.addMarker(new MarkerOptions()
                 .position(mStartLatLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 .title("Start"));
 
         Marker destMarker = mMap.addMarker(new MarkerOptions()
@@ -147,13 +151,13 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String key = database.child(Database.RIDES).push().getKey();
 
-        List<String> offeredRides = CurrentUserProfile.offeredRidesList;
+        HashMap<String, Boolean> offeredRides = CurrentUserProfile.offeredRidesMap;
 
         if (offeredRides == null) {
-            offeredRides = new ArrayList<>();
+            offeredRides = new HashMap<>();
         }
 
-        offeredRides.add(key);
+        offeredRides.put(key, false);
 
         mRideOffer.setDriverUid(CurrentUserProfile.uid);
         mRideOffer.setDistance(DISTANCE);
@@ -201,6 +205,9 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         LatLon destinationPoint = mRideOffer.getDestinationPoint();
         mDestLatLng = destinationPoint.toLatLng();
         long date = mRideOffer.getDate();
+
+        OfferLog.d( "onSelectedDayChange: " + DateUtils.getDate(date, STANDARD_DATE_TIME_FORMAT));
+
         Calendar calendar = DateUtils.getCalendarFromMilliSecs(date);
         String year = DateUtils.getYearFromCalendar(calendar);
         String month = DateUtils.getMonthFromCalendar(calendar);

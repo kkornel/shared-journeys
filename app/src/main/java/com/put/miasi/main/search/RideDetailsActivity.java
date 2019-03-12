@@ -91,6 +91,10 @@ public class RideDetailsActivity extends AppCompatActivity
 
                 Intent seatsReservationIntent = new Intent(RideDetailsActivity.this, SeatsReservationActivity.class);
                 seatsReservationIntent.putExtra("size", String.valueOf(offer.seats));
+                seatsReservationIntent.putExtra("driver", rider);
+                seatsReservationIntent.putExtra("ride", offer);
+
+
                 startActivity(seatsReservationIntent);
 
 

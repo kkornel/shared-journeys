@@ -73,6 +73,7 @@ public class DatePickerActivity extends AppCompatActivity {
         mCalendarView = findViewById(R.id.calendarView);
         mCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
         mCalendarView.setMinDate(currentCalendar.getTimeInMillis());
+
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -90,6 +91,7 @@ public class DatePickerActivity extends AppCompatActivity {
                 if (mTimePickedMilliSecs == 0) {
                     mTimePickedMilliSecs = mCalendarView.getDate();
                 }
+                OfferLog.d( "onSelectedDayChange: " + DateUtils.getDate(mTimePickedMilliSecs, STANDARD_DATE_TIME_FORMAT));
                 mRideOffer.setDate(mTimePickedMilliSecs);
 
                 Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);
@@ -99,7 +101,7 @@ public class DatePickerActivity extends AppCompatActivity {
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override

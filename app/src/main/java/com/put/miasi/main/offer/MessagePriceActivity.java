@@ -84,7 +84,7 @@ public class MessagePriceActivity extends AppCompatActivity {
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override

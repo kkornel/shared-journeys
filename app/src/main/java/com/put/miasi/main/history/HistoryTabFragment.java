@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
@@ -79,12 +80,20 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
             boolean isAlreadyRated = mRidesMap.get(clickedItemKey);
 
             intent.putExtra(RIDE_INTENT_EXTRA, clickedItem);
+
+            OfferLog.d("rated before", isAlreadyRated + "");
             intent.putExtra(RATED_RIDE_INTENT_EXTRA, isAlreadyRated);
 
             startActivity(intent);
         } else {
             Intent intent = new Intent(getActivity(), OfferedRideDetailsActivity.class);
+            String clickedItemKey = clickedItem.getKey();
+            boolean isAlreadyRated = mRidesMap.get(clickedItemKey);
+
             intent.putExtra(RIDE_INTENT_EXTRA, clickedItem);
+
+            OfferLog.d("rated before", isAlreadyRated + "");
+            intent.putExtra(RATED_RIDE_INTENT_EXTRA, isAlreadyRated);
             startActivity(intent);
         }
     }
@@ -104,7 +113,11 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
         if (mRides.size() == 0) {
             // TODO
             mNoDataInfoTextView.setVisibility(View.VISIBLE);
-            mNoDataInfoTextView.setText("LUL");
+            if (mIsParticipatedFragment) {
+                mNoDataInfoTextView.setText("You haven't participated in any rides");
+            } else {
+                mNoDataInfoTextView.setText("You haven't offered any rides");
+            }
         } else {
             mNoDataInfoTextView.setVisibility(View.GONE);
         }

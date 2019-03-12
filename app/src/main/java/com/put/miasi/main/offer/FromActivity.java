@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
@@ -98,6 +99,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mStartLatLng = place.getLatLng();
 
                 mMap.addMarker(new MarkerOptions().position(mStartLatLng)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                         .title(place.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mStartLatLng, ZOOM_LEVEL));
 
@@ -135,7 +137,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override
