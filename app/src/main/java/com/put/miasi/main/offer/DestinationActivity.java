@@ -65,7 +65,8 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
 
-        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

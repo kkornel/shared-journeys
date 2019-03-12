@@ -49,7 +49,8 @@ public class MessagePriceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_messagePrice));
 
-        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         mMessageEditText = findViewById(R.id.messageEditText);
