@@ -99,7 +99,7 @@ public class DatePickerActivity extends AppCompatActivity {
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override

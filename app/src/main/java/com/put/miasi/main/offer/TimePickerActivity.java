@@ -129,7 +129,7 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         mSelectedTimeTextView.setText(h + ":00");
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     public void showTimePickerDialog(View v) {

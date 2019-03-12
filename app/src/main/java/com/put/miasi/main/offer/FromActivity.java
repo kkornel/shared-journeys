@@ -135,7 +135,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override

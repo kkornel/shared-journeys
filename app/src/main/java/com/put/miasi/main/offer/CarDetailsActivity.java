@@ -94,7 +94,7 @@ public class CarDetailsActivity extends AppCompatActivity {
         });
 
         // TODO remove
-        tests();
+        // tests();
     }
 
     @Override

@@ -29,6 +29,8 @@ public class User implements Serializable {
     private int numberOfPassengerRatings;
 
     public User() {
+        this.offeredRides = new HashMap<>();
+        this.participatedRides = new HashMap<>();
     }
 
     public User(String avatarUrl, String firstName, String surname, String email, String phone) {
@@ -170,6 +172,7 @@ public class User implements Serializable {
         return participated;
     }
 
+    @Exclude
     public float getDriverRatingAvg() {
         float avg = driverRating / numberOfDriverRatings;
         if (Float.isNaN(avg) || Float.isInfinite(avg)){
@@ -178,7 +181,8 @@ public class User implements Serializable {
         return avg;
     }
 
-    public float getPassengerRaingAvg() {
+    @Exclude
+    public float getPassengerRatingAvg() {
         float avg = passengerRating / numberOfPassengerRatings;
         if (Float.isNaN(avg) || Float.isInfinite(avg)){
             return 0.0f;

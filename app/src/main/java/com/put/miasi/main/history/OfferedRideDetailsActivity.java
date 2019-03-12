@@ -311,7 +311,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
                 .into(avatarImageView);
 
         passengerNameTextView.setText(user.getFirstName() + " " + user.getSurname());
-        avgPassRateTextView.setText(user.getPassengerRaingAvg() + "");
+        avgPassRateTextView.setText(user.getPassengerRatingAvg() + "");
         numPassRateTextView.setText(user.getNumberOfPassengerRatings() + "");
 
         rejectButton.setOnClickListener(new View.OnClickListener() {
