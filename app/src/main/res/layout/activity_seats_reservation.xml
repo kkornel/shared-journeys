@@ -16,7 +16,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_rounded_edges"
         android:padding="10dp"
-        android:text="OK"
+        android:text="Book"
         android:textColor="#ffffff" />
 
     <TextView

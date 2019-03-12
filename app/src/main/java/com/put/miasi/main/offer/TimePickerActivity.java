@@ -103,7 +103,7 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
                 cl.setTimeInMillis(mRideOffer.getDate());
 
                 int year = cl.get(Calendar.YEAR);
-                int month = cl.get(Calendar.MONTH) + 1;
+                int month = cl.get(Calendar.MONTH);
                 int day = cl.get(Calendar.DAY_OF_MONTH);
                 int hour = mHour;
                 int min = mMin;

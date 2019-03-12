@@ -45,6 +45,7 @@ import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 import static com.put.miasi.utils.Database.OFFERED_RIDES;
+import static com.put.miasi.utils.DateUtils.STANDARD_DATE_TIME_FORMAT;
 
 public class OfferSummaryActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "OfferSummaryActivity";
@@ -204,6 +205,9 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         LatLon destinationPoint = mRideOffer.getDestinationPoint();
         mDestLatLng = destinationPoint.toLatLng();
         long date = mRideOffer.getDate();
+
+        OfferLog.d( "onSelectedDayChange: " + DateUtils.getDate(date, STANDARD_DATE_TIME_FORMAT));
+
         Calendar calendar = DateUtils.getCalendarFromMilliSecs(date);
         String year = DateUtils.getYearFromCalendar(calendar);
         String month = DateUtils.getMonthFromCalendar(calendar);

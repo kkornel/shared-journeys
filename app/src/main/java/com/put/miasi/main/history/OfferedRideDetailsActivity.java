@@ -31,6 +31,7 @@ import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.Passenger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
@@ -88,6 +89,8 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         mRide = (RideOffer) getIntent().getSerializableExtra(RIDE_INTENT_EXTRA);
         mIsAlreadyRated = getIntent().getBooleanExtra(RATED_RIDE_INTENT_EXTRA, false);
+
+        OfferLog.d("rated", mIsAlreadyRated + "");
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
@@ -163,6 +166,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
     @Override
     public void onListItemClick(int clickedItemIndex) {
         if (mIsEnded) {
+            OfferLog.d("rated", mIsAlreadyRated + "");
             if(mIsAlreadyRated) {
                 Toast.makeText(getApplicationContext(), "You've already rated passengers", Toast.LENGTH_SHORT).show();
             } else {
@@ -320,11 +324,15 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         avgPassRateTextView.setText(user.getPassengerRatingAvg() + "");
         numPassRateTextView.setText(user.getNumberOfPassengerRatings() + "");
 
+        final AlertDialog dialog;
+
+
         rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Reject:  ", Toast.LENGTH_SHORT).show();
                 rejectRide(user);
+                rejectButton.setEnabled(false);
             }
         });
 
@@ -336,7 +344,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
             }
         });
 
-        final AlertDialog dialog;
 
         builder.setView(vView)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -358,7 +365,9 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         mRide.getPassengers().remove(user.getUid());
 
-        mRidesRef.child(mRide.getKey()).setValue(mRide);
+        mRidesRef.child(mRide.getKey()).child(Database.PASSENGERS).setValue(mRide.getPassengers());
+        mRidesRef.child(mRide.getKey()).child(Database.SEATS).setValue(availableSeats);
+        // mRidesRef.child(mRide.getKey()).setValue(mRide);
 
         user.getParticipatedRides().remove(mRide.getKey());
         mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(user.getParticipatedRides());

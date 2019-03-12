@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +48,19 @@ public class CurrentUserProfile {
         numberOfDriverRatings = user.getNumberOfDriverRatings();
         passengerRating = user.getPassengerRating();
         numberOfPassengerRatings = user.getNumberOfPassengerRatings();
+
+        if (offeredRidesMap == null) {
+            offeredRidesMap = new HashMap<>();
+        }
+        if (offeredRidesList == null) {
+            offeredRidesList = new ArrayList<>();
+        }
+        if (participatedRidesMap == null) {
+            participatedRidesMap = new HashMap<>();
+        }
+        if (participatedRidesList == null) {
+            participatedRidesList = new ArrayList<>();
+        }
     }
 
     public static void getUserProfile() {
