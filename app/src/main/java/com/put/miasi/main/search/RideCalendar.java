@@ -38,10 +38,11 @@ public class RideCalendar extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.title_activity_datePicker));
 
 
-        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        Calendar currentCalendar = Calendar.getInstance();
 
         mCalendarView = findViewById(R.id.calendarView);
         mCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
+        mCalendarView.setMinDate(currentCalendar.getTimeInMillis());
         //mCalendarView.setMinDate(currentCalendar.getTimeInMillis());
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override

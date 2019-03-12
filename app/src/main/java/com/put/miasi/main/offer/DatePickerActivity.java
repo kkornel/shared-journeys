@@ -68,7 +68,7 @@ public class DatePickerActivity extends AppCompatActivity {
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
         OfferLog.d( "onCreate: " + mRideOffer.toString());
 
-        Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+        Calendar currentCalendar = Calendar.getInstance();
 
         mCalendarView = findViewById(R.id.calendarView);
         mCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
