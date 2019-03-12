@@ -59,11 +59,8 @@ public class CurrentUserProfile {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 User user = dataSnapshot.getValue(User.class);
-                OfferLog.d(user.toString());
                 CurrentUserProfile.loadUserData(userUid, user);
-                OfferLog.d(CurrentUserProfile.toStringy());
             }
 
             @Override

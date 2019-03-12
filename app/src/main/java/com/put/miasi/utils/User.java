@@ -23,9 +23,9 @@ public class User implements Serializable {
     private HashMap<String, Boolean> offeredRides;
     private HashMap<String, Boolean> participatedRides;
     // private List<String> participatedRides;
-    private double driverRating;
+    private float driverRating;
     private int numberOfDriverRatings;
-    private double passengerRating;
+    private float passengerRating;
     private int numberOfPassengerRatings;
 
     public User() {
@@ -122,11 +122,11 @@ public class User implements Serializable {
         this.participatedRides = participatedRides;
     }
 
-    public double getDriverRating() {
+    public float getDriverRating() {
         return driverRating;
     }
 
-    public void setDriverRating(double driverRating) {
+    public void setDriverRating(float driverRating) {
         this.driverRating = driverRating;
     }
 
@@ -138,11 +138,11 @@ public class User implements Serializable {
         this.numberOfDriverRatings = numberOfDriverRatings;
     }
 
-    public double getPassengerRating() {
+    public float getPassengerRating() {
         return passengerRating;
     }
 
-    public void setPassengerRating(double passengerRating) {
+    public void setPassengerRating(float passengerRating) {
         this.passengerRating = passengerRating;
     }
 
@@ -168,6 +168,22 @@ public class User implements Serializable {
             participated.add(key);
         }
         return participated;
+    }
+
+    public float getDriverRatingAvg() {
+        float avg = driverRating / numberOfDriverRatings;
+        if (Float.isNaN(avg) || Float.isInfinite(avg)){
+            return 0.0f;
+        }
+        return avg;
+    }
+
+    public float getPassengerRaingAvg() {
+        float avg = passengerRating / numberOfPassengerRatings;
+        if (Float.isNaN(avg) || Float.isInfinite(avg)){
+            return 0.0f;
+        }
+        return avg;
     }
 
     @Override

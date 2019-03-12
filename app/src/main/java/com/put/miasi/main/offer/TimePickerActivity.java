@@ -81,7 +81,8 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_timePicker));
 
-        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
         OfferLog.d(TAG, "onCreate: " + mRideOffer.toString());
 
         mSelectedTimeTextView = findViewById(R.id.selectedTimeTextView);

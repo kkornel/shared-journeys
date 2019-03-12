@@ -4,27 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.put.miasi.R;
-import com.put.miasi.main.offer.OfferSummaryActivity;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
-import com.put.miasi.utils.ListItemClickListener;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private static final String TAG = "HistoryAdapter";
@@ -62,22 +55,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         } else {
             RideOffer ride = mRides.get(position);
 
-            OfferLog.d("MyDate", "*************************************************");
-
             Calendar cal = DateUtils.getCalendarFromMilliSecs(ride.getDate());
-            OfferLog.d("MyDate", "HistoryAdapter: " + cal.toString());
-            OfferLog.d("MyDate", "HistoryAdapter: " + cal.getTime());
 
             String day = DateUtils.getDayFromCalendar(cal);
             String month = DateUtils.getMonthFromCalendar(cal);
 
-            OfferLog.d("MyDate", "HistoryAdapter:  day " + day);
-            OfferLog.d("MyDate", "HistoryAdapter: month " + month);
-
-
             viewHolder.mDateTextView.setText(day + "/" + month);
-
-
 
             LatLng startLatLng = ride.startPoint.toLatLng();
             LatLng destLatLng = ride.destinationPoint.toLatLng();
@@ -87,45 +70,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             viewHolder.mDestinationCityTextView.setText(destCity);
 
             String startHour = DateUtils.getHourFromCalendar(cal);
-            OfferLog.d("MyDate", "HistoryAdapter: startHour " + startHour);
             String startMin = DateUtils.getMinFromCalendar(cal);
-            OfferLog.d("MyDate", "HistoryAdapter: startMin " + startMin);
             viewHolder.mStartTimeTextView.setText(startHour + ":" + startMin);
 
             int durationHours = DateUtils.getDurationHoursFromLongSeconds(ride.getDuration());
-            OfferLog.d("MyDate", "HistoryAdapter: durationHours " + durationHours);
             int durationMins = DateUtils.getDurationMinsFromLongSeconds(ride.getDuration());
-            OfferLog.d("MyDate", "HistoryAdapter: durationMins " + durationMins);
             cal.add(Calendar.HOUR_OF_DAY, durationHours);
             cal.add(Calendar.MINUTE, durationMins);
-
-            OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.toString());
-            OfferLog.d("MyDate", "HistoryAdapter: cal " + cal.getTime());
-
-            // Calendar now = Calendar.getInstance();
-
-
-            // ********************************************************************
-
-            // OfferLog.d("MyDate", "HistoryAdapter: now " + now.toString());
-            // OfferLog.d("MyDate", "HistoryAdapter: " + now.getTime());
-            // OfferLog.d("MyDate", "*************************************************");
-            // ********************************************************************
-
-            // Log.d(TAG, "now.getTime().after(cal.getTime()) " + now.getTime().after(cal.getTime()));
-            // Log.d(TAG, "now.getTime().before(cal.getTime()): " + now.getTime().before(cal.getTime()));
-
-
-            // long nowTime = now.getTimeInMillis();
-            // long rideTime = cal.getTimeInMillis();
-
-            // Log.d(TAG, "now: " + now);
-            // Log.d(TAG, "now.getTime: " + now.getTime());
-            // Log.d(TAG, "cal: " + cal.getTime());
-            // Log.d(TAG, "cal.getTime: " + cal.getTime());
-
-
-
 
             String arrivalHour = DateUtils.getHourFromCalendar(cal);
             String arrivalMin = DateUtils.getMinFromCalendar(cal);
@@ -136,6 +87,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
             if (DateUtils.isNowBeforeDate(cal.getTime())) {
                 viewHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorActive));
+            } else {
+                viewHolder.mCardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
             }
         }
     }
@@ -173,7 +126,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
             RideOffer ride = mRides.get(clickedPosition);
-            OfferLog.d("12321312", ride.toString());
             mOnClickListener.onListItemClick(ride);
         }
     }

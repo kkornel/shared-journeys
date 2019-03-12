@@ -119,9 +119,9 @@ public class RegisterActivity extends AppCompatActivity {
                                            HashMap<String, Boolean> hashMap1 = new HashMap<>();
                                            newUser.setParticipatedRides(hashMap1);
 
-                                           newUser.setDriverRating(0.0);
+                                           newUser.setDriverRating(0.0f);
                                            newUser.setNumberOfDriverRatings(0);
-                                           newUser.setPassengerRating(0.0);
+                                           newUser.setPassengerRating(0.0f);
                                            newUser.setNumberOfPassengerRatings(0);
                                            usersRef.child(userUid).setValue(newUser);
                                            hideProgressDialog();

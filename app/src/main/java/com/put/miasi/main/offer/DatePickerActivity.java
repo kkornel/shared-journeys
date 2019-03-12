@@ -64,7 +64,8 @@ public class DatePickerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_datePicker));
 
-        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
         OfferLog.d( "onCreate: " + mRideOffer.toString());
 
         Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());

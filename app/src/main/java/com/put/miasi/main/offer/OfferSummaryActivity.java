@@ -35,12 +35,10 @@ import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
-import com.put.miasi.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
@@ -84,7 +82,8 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_offerSummary));
 
-        mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
+        mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
         OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -94,7 +93,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
 
         mStartTextView = findViewById(R.id.startTextView);
         mDestinationTextView = findViewById(R.id.destinationTextView);
-        mDistanceTextView = findViewById(R.id.distanceTextView);
+        mDistanceTextView = findViewById(R.id.seatsTextViewLabel);
         mDurationTextView = findViewById(R.id.durationTextView);
         mDateTextView = findViewById(R.id.dateTextView);
         mTimeTextView = findViewById(R.id.timeTextView);
