@@ -1,7 +1,5 @@
 package com.put.miasi.utils;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.Serializable;
 

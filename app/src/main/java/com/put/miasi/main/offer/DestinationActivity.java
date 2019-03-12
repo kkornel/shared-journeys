@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,7 +23,6 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
 import com.put.miasi.utils.LatLon;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Arrays;
@@ -65,9 +65,7 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
 
-        // mRideOffer = getIntent().getParcelableExtra(RIDE_OFFER_INTENT);
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
-        OfferLog.d("onCreate: " + mRideOffer.toString());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -96,8 +94,6 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                OfferLog.d("Place: " + place.getName() + ", " + place.getLatLng());
-
                 mDestinationLatLng = place.getLatLng();
 
                 mMap.addMarker(new MarkerOptions().position(mDestinationLatLng)
@@ -120,7 +116,7 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
 
             @Override
             public void onError(Status status) {
-                OfferLog.d("An error occurred: " + status);
+                Log.d(TAG, "An error occurred: " + status);
             }
         });
 

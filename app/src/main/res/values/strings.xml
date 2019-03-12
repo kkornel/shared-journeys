@@ -161,5 +161,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_data">No data</string>
+    <string name="no_participated_rides">You haven\'t participated in any rides</string>
+    <string name="no_offered_rides">You haven\'t offered any rides</string>
 
 </resources>

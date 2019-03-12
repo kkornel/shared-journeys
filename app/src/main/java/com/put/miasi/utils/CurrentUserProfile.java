@@ -1,5 +1,6 @@
 package com.put.miasi.utils;
 
+
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class CurrentUserProfile {
     private static final String TAG = "CurrentUserProfile";
 
@@ -22,10 +24,8 @@ public class CurrentUserProfile {
     public static String surname;
     public static String email;
     public static String phone;
-    // public static List<String> offeredRides;
-    // public static List<String> participatedRides;
     public static HashMap<String, Boolean> offeredRidesMap;
-    public static List<String>  offeredRidesList;
+    public static List<String> offeredRidesList;
     public static HashMap<String, Boolean> participatedRidesMap;
     public static List<String> participatedRidesList;
     public static double driverRating;

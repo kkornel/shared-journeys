@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 
@@ -76,24 +75,23 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
     public void onListItemClick(RideOffer clickedItem) {
         if (mIsParticipatedFragment) {
             Intent intent = new Intent(getActivity(), ParticipatedRideDetailsActivity.class);
+
             String clickedItemKey = clickedItem.getKey();
             boolean isAlreadyRated = mRidesMap.get(clickedItemKey);
 
             intent.putExtra(RIDE_INTENT_EXTRA, clickedItem);
-
-            OfferLog.d("rated before", isAlreadyRated + "");
             intent.putExtra(RATED_RIDE_INTENT_EXTRA, isAlreadyRated);
 
             startActivity(intent);
         } else {
             Intent intent = new Intent(getActivity(), OfferedRideDetailsActivity.class);
+
             String clickedItemKey = clickedItem.getKey();
             boolean isAlreadyRated = mRidesMap.get(clickedItemKey);
 
             intent.putExtra(RIDE_INTENT_EXTRA, clickedItem);
-
-            OfferLog.d("rated before", isAlreadyRated + "");
             intent.putExtra(RATED_RIDE_INTENT_EXTRA, isAlreadyRated);
+
             startActivity(intent);
         }
     }
@@ -111,20 +109,14 @@ public class HistoryTabFragment extends Fragment implements RideListItemClickLis
 
     private void checkIfListIsEmpty() {
         if (mRides.size() == 0) {
-            // TODO
             mNoDataInfoTextView.setVisibility(View.VISIBLE);
             if (mIsParticipatedFragment) {
-                mNoDataInfoTextView.setText("You haven't participated in any rides");
+                mNoDataInfoTextView.setText(getString(R.string.no_participated_rides));
             } else {
-                mNoDataInfoTextView.setText("You haven't offered any rides");
+                mNoDataInfoTextView.setText(getString(R.string.no_offered_rides));
             }
         } else {
             mNoDataInfoTextView.setVisibility(View.GONE);
         }
-    }
-
-    private void showNoFriendsMsg() {
-        mNoDataInfoTextView.setVisibility(View.VISIBLE);
-        mNoDataInfoTextView.setText("No friends");
     }
 }

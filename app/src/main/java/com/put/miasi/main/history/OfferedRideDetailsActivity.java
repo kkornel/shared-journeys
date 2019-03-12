@@ -90,8 +90,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mRide = (RideOffer) getIntent().getSerializableExtra(RIDE_INTENT_EXTRA);
         mIsAlreadyRated = getIntent().getBooleanExtra(RATED_RIDE_INTENT_EXTRA, false);
 
-        OfferLog.d("rated", mIsAlreadyRated + "");
-
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
         mRidesRef = mDatabaseRef.child(Database.RIDES);
@@ -106,9 +104,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         mIsEnded = !DateUtils.isNowBeforeDate(cal.getTime());
 
-        // TODO
         mPassengersList = new ArrayList<>();
-
 
         initializeComponents();
         getPassengersProfiles();
@@ -371,6 +367,21 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         user.getParticipatedRides().remove(mRide.getKey());
         mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(user.getParticipatedRides());
+
+        int declinedId = findPassenger(user.getUid());
+        mPassengersList.remove(declinedId);
+        loadNewData(mPassengersList);
+    }
+
+    private int findPassenger(String passengerUid) {
+        int idx = -1;
+        for (Passenger passenger : mPassengersList) {
+            idx++;
+            if (passenger.getUser().getUid().equals(passengerUid)) {
+                return idx;
+            }
+        }
+        return idx;
     }
 
     private void cancelRide() {

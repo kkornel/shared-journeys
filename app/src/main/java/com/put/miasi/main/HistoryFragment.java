@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.connection.ListenHashProvider;
 import com.put.miasi.R;
 import com.put.miasi.main.history.HistoryTabFragment;
 import com.put.miasi.utils.Database;

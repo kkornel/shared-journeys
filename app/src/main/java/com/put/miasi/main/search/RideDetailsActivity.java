@@ -19,7 +19,6 @@ import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
@@ -51,6 +50,7 @@ public class RideDetailsActivity extends AppCompatActivity
     private String uid = null;
     private RideOffer offer;
     private User rider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -83,7 +83,6 @@ public class RideDetailsActivity extends AppCompatActivity
         tv_telephone = (TextView) findViewById(R.id.tv_telephone);
         tv_rating_quantity = (TextView) findViewById(R.id.tv_rating_quantity);
 
-
         btn_reservation = (Button) findViewById(R.id.btn_reservation);
         btn_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,10 +93,7 @@ public class RideDetailsActivity extends AppCompatActivity
                 seatsReservationIntent.putExtra("driver", rider);
                 seatsReservationIntent.putExtra("ride", offer);
 
-
                 startActivity(seatsReservationIntent);
-
-
             }
         });
     }
@@ -126,7 +122,7 @@ public class RideDetailsActivity extends AppCompatActivity
         tv_date.setText(DateUtils.getDate(offer.getDate(), DateUtils.STANDARD_DATE_FORMAT));
         tv_to.setText(GeoUtils.getCityFromLatLng(this, offer.getDestinationPoint().toLatLng()));
         tv_from.setText(GeoUtils.getCityFromLatLng(this, offer.getStartPoint().toLatLng()));
-        //
+
         tv_car.setText(offer.getCar().getBrand() + " " + offer.getCar().getModel());
         tv_luggage.setText("Luggage: " + offer.getLuggage());
         tv_message.setText(offer.getMessage());
@@ -134,26 +130,20 @@ public class RideDetailsActivity extends AppCompatActivity
 
         tv_rating_quantity.setText(rider.getNumberOfDriverRatings() + " reviews");
         tv_telephone.setText("Tel: "+ rider.getPhone());
-
-
-
     }
 
     ////////////////////// FIREBASE ///////////////////
     private void firebaseInit() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-
         final DatabaseReference usersRef = database.child(Database.USERS);
 
         final ValueEventListener usersListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {
                     User user = ds.getValue(User.class);
                     user.setUid(ds.getKey());
-                    OfferLog.d(user.toString());
                     if (uid.equals(user.getUid()))
                     {
                         rider = user;
@@ -172,11 +162,9 @@ public class RideDetailsActivity extends AppCompatActivity
         ValueEventListener ridesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                OfferLog.d(dataSnapshot.toString());
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {
                     RideOffer rideOffer = ds.getValue(RideOffer.class);
                     rideOffer.setKey(ds.getKey());
-                    OfferLog.d(rideOffer.toString());
                     if (rideKey.equals(rideOffer.getKey()))
                     {
                         offer = rideOffer;
@@ -192,7 +180,5 @@ public class RideDetailsActivity extends AppCompatActivity
             }
         };
         offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
-
     }
-
 }
