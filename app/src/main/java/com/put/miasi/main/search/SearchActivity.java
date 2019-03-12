@@ -380,4 +380,9 @@ public class SearchActivity extends AppCompatActivity
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

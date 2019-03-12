@@ -365,7 +365,7 @@
                 android:textColor="#ffffff" />
 
             <ImageButton
-                android:id="@+id/btn_location"
+                android:id="@+id/ib_see_on_the_map"
                 android:layout_width="37dp"
                 android:layout_height="45dp"
                 android:layout_below="@id/tv_hour_end"
