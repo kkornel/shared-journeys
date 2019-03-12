@@ -38,14 +38,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
-        int layoutIdForListItem = R.layout.history_list_item;
+        int layoutIdForListItem = R.layout.list_item_history;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        HistoryViewHolder workoutViewHolder = new HistoryViewHolder(view);
+        HistoryViewHolder viewHolder = new HistoryViewHolder(view);
 
-        return workoutViewHolder;
+        return viewHolder;
     }
 
     @Override
