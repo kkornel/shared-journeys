@@ -371,6 +371,21 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         user.getParticipatedRides().remove(mRide.getKey());
         mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(user.getParticipatedRides());
+
+        int declinedId = findPassenger(user.getUid());
+        mPassengersList.remove(declinedId);
+        loadNewData(mPassengersList);
+    }
+
+    private int findPassenger(String passengerUid) {
+        int idx = -1;
+        for (Passenger passenger : mPassengersList) {
+            idx++;
+            if (passenger.getUser().getUid().equals(passengerUid)) {
+                return idx;
+            }
+        }
+        return idx;
     }
 
     private void cancelRide() {
