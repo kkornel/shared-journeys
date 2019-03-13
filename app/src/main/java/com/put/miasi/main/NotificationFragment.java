@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,6 +54,7 @@ import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 public class NotificationFragment extends Fragment implements NotificationListItemClickListener {
     private static final String TAG = "NotificationFragment";
 
+    private SwipeRefreshLayout mSwipeRefresh;
     private TextView mNoDataInfoTextView;
     private NotificationAdapter mNotificationAdapter;
     private RecyclerView mRecyclerView;
@@ -87,6 +89,20 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         mRecyclerView.setAdapter(mNotificationAdapter);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+        mSwipeRefresh = rootView.findViewById(R.id.swipeRefresh);
+        mSwipeRefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Toast.makeText(getActivity(), getString(R.string.refresh), Toast.LENGTH_SHORT).show();
+                        mNoDataInfoTextView.setText(getString(R.string.loading));
+                        mNoDataInfoTextView.setVisibility(View.VISIBLE);
+                        getNotificationsFromProfile();
+                        mSwipeRefresh.setRefreshing(false);
+                    }
+                }
+        );
 
         mNoDataInfoTextView.setText(getString(R.string.loading));
         mNoDataInfoTextView.setVisibility(View.VISIBLE);
