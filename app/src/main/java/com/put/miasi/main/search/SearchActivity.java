@@ -2,6 +2,7 @@ package com.put.miasi.main.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,9 +35,12 @@ import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.RideOffer;
+import com.put.miasi.utils.TimePickerFragment;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -44,7 +48,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity
+public class SearchActivity extends AppCompatActivity implements TimePickerFragment.TimePickedListener
 {
     private ArrayList<Offer> data = new ArrayList<Offer>();
     final List<RideOffer> rideOffers = new ArrayList<>();
@@ -57,6 +61,12 @@ public class SearchActivity extends AppCompatActivity
     private String destinationCity;
     boolean startTextFilled = false;
     boolean destinationTextFilled = false;
+
+    private TextView mSelectedTimeTextView;
+    private Button mSelectTimeButton;
+    private int mHour;
+    private int mMin;
+
 
     private static String SEARCH_COUNTRY = "PL";
 
@@ -75,6 +85,11 @@ public class SearchActivity extends AppCompatActivity
         initializeSearchButton();
         initializeAutocompleteFragment("start");
         initializeAutocompleteFragment("destination");
+        initializeTimer();
+
+
+
+
     }
 
     public void initializeSearchButton()
@@ -235,7 +250,7 @@ public class SearchActivity extends AppCompatActivity
     {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
+        getSupportActionBar().setTitle("Search for available rides");
         // Initialize Places.
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         // Create a new Places client instance.
@@ -294,8 +309,16 @@ public class SearchActivity extends AppCompatActivity
         String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
         String rideOfferStartPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getStartPoint().toLatLng());
         String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getDestinationPoint().toLatLng());
+
+        Calendar cal = DateUtils.getCalendarFromMilliSecs(rideOffer.getDate());
+        String startHour = DateUtils.getHourFromCalendar(cal);
+        String startMin = DateUtils.getMinFromCalendar(cal);
+
+        int startHourInMinutes = Integer.valueOf(startHour) * 60 + Integer.valueOf(startMin);
+        int timePickedInMinutes = mHour *60 + mMin;
+
         if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity)
-        && rideOfferTime > currentTime && rideOfferSeats > 0)
+        && rideOfferTime > currentTime && rideOfferSeats > 0  && startHourInMinutes > timePickedInMinutes)
         {
             rideOffers.add(rideOffer);
         }
@@ -380,9 +403,63 @@ public class SearchActivity extends AppCompatActivity
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
+    private void initializeTimer()
+    {
+        mSelectedTimeTextView = findViewById(R.id.selectedTimeTextView);
+        mSelectTimeButton = findViewById(R.id.selectTimeButton);
+        mSelectTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(v);
+            }
+        });
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+
+        mHour = hour;
+        mMin = min;
+        String h = (hour < 10) ? DateUtils.convertSingleDateToDouble(hour) : String.valueOf(hour);
+        String m = (min < 10) ? DateUtils.convertSingleDateToDouble(min) : String.valueOf(min);
+        mSelectedTimeTextView.setText("Time: " + h + ":" + m);
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimePicked(int hourOfDay, int minute) {
+        String h = (hourOfDay < 10) ? DateUtils.convertSingleDateToDouble(hourOfDay) : String.valueOf(hourOfDay);
+        String m = (minute < 10) ? DateUtils.convertSingleDateToDouble(minute) : String.valueOf(minute);
+
+        final Calendar c = Calendar.getInstance();
+        int currentHour = c.get(Calendar.HOUR_OF_DAY);
+        int currentMin = c.get(Calendar.MINUTE);
+
+
+        if (hourOfDay*60 + minute > currentHour*60 + currentMin)
+        {
+            String time = h + ":" + m;
+            mHour = hourOfDay;
+            mMin = minute;
+            mSelectedTimeTextView.setText("Time: " + time);
+        }
+        else
+        {
+            Toast.makeText(SearchActivity.this, "Those rides passed! Choose correct time.", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
+
+
 }
