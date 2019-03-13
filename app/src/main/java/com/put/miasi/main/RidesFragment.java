@@ -23,12 +23,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.BuildConfig;
+import com.put.miasi.MapsActivity;
 import com.put.miasi.R;
 import com.put.miasi.main.offer.FromActivity;
 import com.put.miasi.main.search.RideCalendar;
 import com.put.miasi.main.search.SearchActivity;
+import com.put.miasi.utils.CurrentUserProfile;
+import com.put.miasi.utils.Database;
 import com.put.miasi.utils.LocationUtils;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.OfferLog;
 
 import static com.put.miasi.utils.LocationUtils.REQUEST_CODE_FINE_LOCATION_PERMISSIONS;
@@ -37,10 +46,16 @@ import static com.put.miasi.utils.LocationUtils.REQUEST_CODE_FINE_LOCATION_PERMI
 public class RidesFragment extends Fragment {
     private static final String TAG = "RidesFragment";
 
+    private Button mTestbtn;
     private Button mOfferButton;
     private Button mSearchButton;
     
     private Snackbar mSnackbar;
+
+    private DatabaseReference mRootRef;
+    private DatabaseReference mRidesRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mNotificationsRef;
 
     public RidesFragment() {
         // Required empty public constructor
@@ -52,6 +67,48 @@ public class RidesFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: ");
 
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = mRootRef.child(Database.USERS);
+        mRidesRef = mRootRef.child(Database.RIDES);
+        mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
+
+        mTestbtn = rootView.findViewById(R.id.testButton);
+        mTestbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // startActivity(new Intent(getActivity(), MapsActivity.class));
+
+                Notification notification = new Notification();
+                notification.setSenderUid(CurrentUserProfile.uid);
+                notification.setRate(32.0f);
+                notification.setRideUid("asddsfv3wd43243");
+                notification.setNotificationType(Notification.NotificationType.RATED_AS_DRIVER);
+
+                String newUid = mNotificationsRef.push().getKey();
+                mNotificationsRef.child(newUid).setValue(notification);
+
+                CurrentUserProfile.notificationsMap.put(newUid, false);
+                mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(CurrentUserProfile.notificationsMap);
+
+            }
+
+        });
+
+        // mNotificationsRef..addListenerForSingleValueEvent(new ValueEventListener() {
+        //     @Override
+        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        //         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        //             Notification notification = ds.getValue(Notification.class);
+        //             Log.d(TAG, "onDataChange: " + notification);
+        //         }
+        //     }
+        //
+        //     @Override
+        //     public void onCancelled(@NonNull DatabaseError databaseError) {
+        //
+        //     }
+        // });
 
         mOfferButton = rootView.findViewById(R.id.offerButton);
         mOfferButton.setOnClickListener(new View.OnClickListener() {

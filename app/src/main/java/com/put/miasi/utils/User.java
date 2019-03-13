@@ -22,6 +22,7 @@ public class User implements Serializable {
     // private List<String> offeredRides;
     private HashMap<String, Boolean> offeredRides;
     private HashMap<String, Boolean> participatedRides;
+    private HashMap<String, Boolean> notifications;
     // private List<String> participatedRides;
     private float driverRating;
     private int numberOfDriverRatings;
@@ -89,6 +90,14 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public HashMap<String, Boolean> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(HashMap<String, Boolean> notifications) {
+        this.notifications = notifications;
     }
 
     // public List<String> getOfferedRides() {
@@ -199,6 +208,7 @@ public class User implements Serializable {
                 "\n, surname='" + surname + '\'' +
                 "\n, email='" + email + '\'' +
                 "\n, phone='" + phone + '\'' +
+                "\n, notifications=" + notifications +
                 "\n, offeredRides=" + offeredRides +
                 "\n, participatedRides=" + participatedRides +
                 "\n, driverRating=" + driverRating +
