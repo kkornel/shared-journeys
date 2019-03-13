@@ -4,15 +4,29 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.Database;
+import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.NotificationListItemClickListener;
+import com.put.miasi.utils.RideOffer;
+import com.put.miasi.utils.User;
+import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
@@ -23,6 +37,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private final NotificationListItemClickListener mOnClickListener;
 
     private List<Notification> mNotifications;
+    private HashMap<String, User> mUsers;
+    private HashMap<String,RideOffer> mRides;
+
+
 
     public NotificationAdapter(Context context, NotificationListItemClickListener onClickListener, List<Notification> notifications) {
         mContext = context;
@@ -41,6 +59,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
         NotificationViewHolder viewHolder = new NotificationViewHolder(view);
 
+
+
+
         return viewHolder;
     }
 
@@ -50,6 +71,41 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.mDateTextView.setText(mContext.getString(R.string.no_data));
         } else {
             Notification notification = mNotifications.get(position);
+            User sender = mUsers.get(notification.getSenderUid());
+            RideOffer ride = mRides.get(notification.getRideUid());
+
+            Picasso.get()
+                    .load(sender.getAvatarUrl())
+                    .placeholder(R.drawable.ic_account_circle_black_24dp)
+                    .error(R.drawable.ic_error_red_24dp)
+                    .into(viewHolder.mImageView);
+
+            String title = "";
+            Notification.NotificationType notificationType = notification.getNotificationType();
+
+            switch (notificationType) {
+                case NEW_PASSENGER:
+                    title = "New passenger for your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
+                    break;
+                case RIDE_CANCELED:
+                    title = sender.getFullname() + " cancelled ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
+                    break;
+                case RIDE_DECLINED:
+                    title = sender.getFullname() + " declined your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
+                    break;
+                case PASSENGER_RESIGNED:
+                    title = sender.getFullname() + " resigned from your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
+                    break;
+                case RATED_AS_DRIVER:
+                    title = "New rate as driver: " + notification.getRate();
+                    break;
+                case RATED_AS_PASSENGER:
+                    title = "New rate as passenger: " + notification.getRate();
+                    break;
+            }
+            viewHolder.mTitleNotification.setText(title);
+
+            viewHolder.mDateTextView.setText(DateUtils.getDate(notification.getTimeStamp(), DateUtils.STANDARD_DATE_FORMAT));
         }
     }
 
@@ -63,22 +119,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         notifyDataSetChanged();
     }
 
+    public void loadNewData(List<Notification> newNotifications, HashMap<String, User> user, HashMap<String, RideOffer> rides) {
+        mNotifications = newNotifications;
+        mUsers = user;
+        mRides = rides;
+        notifyDataSetChanged();
+    }
+
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private CardView mCardView;
+        private ImageView mImageView;
+        private TextView mTitleNotification;
         private TextView mDateTextView;
-        private TextView mStartCityTextView;
-        private TextView mDestinationCityTextView;
-        private TextView mStartTimeTextView;
-        private TextView mArrivalTextView;
 
         public NotificationViewHolder(View itemView) {
             super(itemView);
-            this.mCardView = itemView.findViewById(R.id.myCircle);
+            this.mImageView = itemView.findViewById(R.id.imageView);
+            this.mTitleNotification = itemView.findViewById(R.id.titleNotificationTextView);
             this.mDateTextView = itemView.findViewById(R.id.dateTextView);
-            this.mStartCityTextView = itemView.findViewById(R.id.startCityTextView);
-            this.mDestinationCityTextView = itemView.findViewById(R.id.destinationCityTextView);
-            this.mStartTimeTextView = itemView.findViewById(R.id.startTimeTextView);
-            this.mArrivalTextView = itemView.findViewById(R.id.arrivalTimeTextView);
             itemView.setOnClickListener(this);
         }
 

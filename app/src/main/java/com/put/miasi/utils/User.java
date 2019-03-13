@@ -165,6 +165,11 @@ public class User implements Serializable {
         this.numberOfPassengerRatings = numberOfPassengerRatings;
     }
 
+    @Exclude
+    public String getFullname() {
+        return this.firstName + " " + this.surname;
+    }
+
     public List<String> getOfferedRidesList() {
         List<String> offered = new ArrayList<>();
         for (String key : this.offeredRides.keySet()) {

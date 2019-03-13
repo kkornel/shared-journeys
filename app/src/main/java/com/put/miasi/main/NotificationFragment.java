@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,8 +29,11 @@ import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.NotificationListItemClickListener;
 import com.put.miasi.utils.RideOffer;
+import com.put.miasi.utils.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,8 +48,11 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mUsersRef;
     private DatabaseReference mRidesRef;
+    private DatabaseReference mNotificationsRef;
 
     private List<Notification> mNotifications;
+    private HashMap<String, User> mSenders;
+    private HashMap<String,RideOffer> mRides;
 
     public NotificationFragment() {
 
@@ -63,19 +70,6 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        // TODO remove
-        mNotifications = new ArrayList<>();
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-        mNotifications.add(new Notification());
-
         mNotificationAdapter = new NotificationAdapter(getContext(), this, mNotifications);
         mRecyclerView.setAdapter(mNotificationAdapter);
 
@@ -91,23 +85,18 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     public void onStart() {
         super.onStart();
 
+        Log.d(TAG, "onStart: ");
+        
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
         mRidesRef = mDatabaseRef.child(Database.RIDES);
+        mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
 
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        mNotifications = new ArrayList<>();
+        mSenders = new HashMap<>();
+        mRides = new HashMap<>();
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-
-        mRidesRef.addListenerForSingleValueEvent(listener);
+        getNotifications();
     }
 
     @Override
@@ -115,12 +104,140 @@ public class NotificationFragment extends Fragment implements NotificationListIt
 
     }
 
+    private void getNotificationsFromProfile() {
+        DatabaseReference userProfileNotificationsRef = mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS);
+
+        ValueEventListener userProfileNotificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<Notification, Boolean> not = (HashMap<Notification, Boolean>) dataSnapshot.getValue();
+                Log.d(TAG, "!!!!: " + not);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        userProfileNotificationsRef.addListenerForSingleValueEvent(userProfileNotificationListener);
+    }
+
+    private void getNotifications() {
+        getNotificationsFromProfile();
+
+        Log.d(TAG, "getNotifications: ");
+        
+        mNotifications = new ArrayList<>();
+        mSenders = new HashMap<>();
+        mRides = new HashMap<>();
+
+        DatabaseReference userNotificationsRef = mNotificationsRef.child(CurrentUserProfile.uid);
+
+        ValueEventListener userNotificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Notification notification = ds.getValue(Notification.class);
+                    notification.setNotificationUid(ds.getKey());
+
+                    String senderUid = notification.getSenderUid();
+                    mSenders.put(senderUid, null);
+
+                    final String rideUid = notification.getRideUid();
+                    mRides.put(rideUid, null);
+                    
+                    mNotifications.add(notification);
+                    Log.d(TAG, "onDataChange: " + notification.toString());
+                }
+                Log.d(TAG, "onDataChange: DONE NOTIFICATIONS: " + mNotifications);
+                getAllSenders();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        userNotificationsRef.addListenerForSingleValueEvent(userNotificationListener);
+    }
+    
+    private int mIndex;
+    
+    private void getAllSenders() {
+        mIndex = mSenders.size();
+        Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mSenders.size() = " + mSenders.size());
+        
+        for (final String senderUid : mSenders.keySet()) {
+            ValueEventListener userListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User sender = dataSnapshot.getValue(User.class);
+                    sender.setUid(senderUid);
+                    mSenders.put(senderUid, sender);
+                    mIndex--;
+
+                    Log.d(TAG, "onDataChange: mIndex = " + mIndex);
+                    if (mIndex <= 0) {
+                        Log.d(TAG, "onDataChange: DONE SENDERS ");
+                        getAllRides();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                }
+            };
+            mUsersRef.child(senderUid).addListenerForSingleValueEvent(userListener);
+        }
+    }
+
+    private void getAllRides() {
+        mIndex = mRides.size();
+        Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mRides.size() = " + mRides.size());
+        
+        for (final String rideUid : mRides.keySet()) {
+            ValueEventListener rideListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    RideOffer ride = dataSnapshot.getValue(RideOffer.class);
+                    ride.setKey(rideUid);
+                    mRides.put(rideUid, ride);
+                    mIndex--;
+
+                    Log.d(TAG, "onDataChange: mIndex = " + mIndex);
+                    if (mIndex <= 0) {
+                        Log.d(TAG, "onDataChange: DONE RIDES ");
+                        loadNewData();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                }
+            };
+            mRidesRef.child(rideUid).addListenerForSingleValueEvent(rideListener);
+        }
+    }
+    
+    
+
     public void setNotificationList(List<Notification> notifications) {
+        Log.d(TAG, "setNotificationList: ");
         mNotifications = notifications;
     }
 
+    public void loadNewData() {
+        Log.d(TAG, "loadNewData: ");
+        sortListByDate(mNotifications);
+        setNotificationList(mNotifications);
+        checkIfListIsEmpty();
+        mNotificationAdapter.loadNewData(mNotifications, mSenders, mRides);
+    }
+
     public void loadNewData(List<Notification> notifications) {
-        // DateUtils.sortListByDate(ridesList);
+        sortListByDate(notifications);
         setNotificationList(notifications);
         checkIfListIsEmpty();
         mNotificationAdapter.loadNewData(notifications);
@@ -133,5 +250,15 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         } else {
             mNoDataInfoTextView.setVisibility(View.GONE);
         }
+    }
+
+    public void sortListByDate(List<Notification> list) {
+        Collections.sort(list, new Comparator<Notification>() {
+            public int compare(Notification o1, Notification o2) {
+                if (DateUtils.getDateFromMilli(o1.getTimeStamp()) == null || DateUtils.getDateFromMilli(o2.getTimeStamp()) == null)
+                    return 0;
+                return DateUtils.getDateFromMilli(o2.getTimeStamp()).compareTo(DateUtils.getDateFromMilli(o1.getTimeStamp()));
+            }
+        });
     }
 }

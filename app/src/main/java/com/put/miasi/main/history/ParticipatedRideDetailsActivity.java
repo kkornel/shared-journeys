@@ -266,7 +266,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
         Notification notification = new Notification(
-                Notification.NotificationType.RIDE_CANCELED,
+                Notification.NotificationType.PASSENGER_RESIGNED,
                 CurrentUserProfile.uid,
                 mRide.getKey());
 

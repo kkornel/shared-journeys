@@ -133,4 +133,8 @@ public class DateUtils {
         Calendar now = Calendar.getInstance();
         return now.getTime().before(date);
     }
+
+    public static long getTimeStamp() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
 }

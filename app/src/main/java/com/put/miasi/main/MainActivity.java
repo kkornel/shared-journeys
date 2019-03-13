@@ -30,7 +30,12 @@ import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.LocationUtils;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
     // private ActionBar mToolbar;
     private Toolbar mToolbar;
+
+    private List<Notification> mNotifications;
+
+    private FirebaseAuth mAuth;
+    private String mUserUid;
+    private DatabaseReference mRootRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mNotificationsRef;
 
     private BottomNavigationView mNavigation;
 
@@ -64,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     mToolbar.setTitle(getString(R.string.title_notifications));
                     resetNavIcon();
                     fragment = new NotificationFragment();
+                    //((NotificationFragment) fragment).setNotificationList(mNotifications);
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_options:
@@ -106,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mNavigation.setSelectedItemId(R.id.navigation_rides);
 
+        mAuth = FirebaseAuth.getInstance();
+        mUserUid = mAuth.getCurrentUser().getUid();
+        CurrentUserProfile.uid = mUserUid;
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = mRootRef.child(Database.USERS);
+        mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
+
+        mNotifications = new ArrayList<>();
+
         loadFragment(new RidesFragment());
     }
 
@@ -137,49 +160,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getUserProfile();
-
+        getNotifications();
         Log.d(TAG, "onStart: ");
-        
-        // if (!LocationUtils.hasLocationPermissions(this)) {
-        //     LocationUtils.requestLocationPermissions(this,this, findViewById(R.id.container));
-        // }
+    }
 
+    private void getNotifications() {
+        // HashMap<String, Boolean> notificationsMap = CurrentUserProfile.notificationsMap;
+        DatabaseReference userNotificationsRef = mNotificationsRef.child(mUserUid);
 
+        ValueEventListener userNotificationListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Notification notification = ds.getValue(Notification.class);
+                    notification.setNotificationUid(ds.getKey());
+                    Log.d(TAG, "onDataChange: " + notification.toString());
+                    mNotifications.add(notification);
+                }
+            }
 
-
-
-        // Snackbar snackbar = Snackbar.make(
-        //         findViewById(R.id.container),
-        //         R.string.permission_rationale,
-        //         Snackbar.LENGTH_INDEFINITE)
-        //         .setAction(R.string.ok, new View.OnClickListener() {
-        //             @Override
-        //             public void onClick(View view) {
-        //
-        //             }
-        //         });
-        //
-        // CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
-        // layoutParams.setAnchorId(R.id.navigation);
-        // layoutParams.anchorGravity = Gravity.TOP;
-        // layoutParams.gravity = Gravity.TOP;
-        // snackbar.getView().setLayoutParams(layoutParams);
-        // snackbar.show();
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        userNotificationsRef.addListenerForSingleValueEvent(userNotificationListener);
     }
 
     private void getUserProfile() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        final String userUid = auth.getCurrentUser().getUid();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference usersRef = database.getReference(Database.USERS).child(userUid);
+        final DatabaseReference usersRef = mUsersRef.child(mUserUid);
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                CurrentUserProfile.loadUserData(userUid, user);
+                CurrentUserProfile.loadUserData(mUserUid, user);
             }
 
             @Override
