@@ -1,8 +1,11 @@
 package com.put.miasi.main;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,20 +28,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
 import com.put.miasi.main.history.HistoryAdapter;
+import com.put.miasi.main.history.OfferedRideDetailsActivity;
 import com.put.miasi.main.notifications.NotificationAdapter;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.NotificationListItemClickListener;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
+import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 
 
 public class NotificationFragment extends Fragment implements NotificationListItemClickListener {
@@ -50,9 +62,10 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     private DatabaseReference mRidesRef;
     private DatabaseReference mNotificationsRef;
 
+    private HashMap<String, Boolean> mNotificationsFromProfile;
     private List<Notification> mNotifications;
     private HashMap<String, User> mSenders;
-    private HashMap<String,RideOffer> mRides;
+    private HashMap<String, RideOffer> mRides;
 
     public NotificationFragment() {
 
@@ -92,26 +105,61 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         mRidesRef = mDatabaseRef.child(Database.RIDES);
         mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
 
+        mNotificationsFromProfile = new HashMap<>();
         mNotifications = new ArrayList<>();
         mSenders = new HashMap<>();
         mRides = new HashMap<>();
 
-        getNotifications();
+        getNotificationsFromProfile();
     }
 
     @Override
-    public void onListItemClick(Notification notification) {
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onListItemClick(Notification notification, String title) {
+        Notification.NotificationType notificationType = notification.getNotificationType();
+
+        switch (notificationType) {
+            case NEW_PASSENGER:
+            case PASSENGER_RESIGNED:
+                showNotificationDialogToActivity(notification, title);
+                break;
+            case RIDE_CANCELED:
+            case RIDE_DECLINED:
+            case RATED_AS_DRIVER:
+            case RATED_AS_PASSENGER:
+                showNotificationDialog(notification, title);
+                break;
+        }
     }
 
     private void getNotificationsFromProfile() {
+        mNotificationsFromProfile = new HashMap<>();
+
         DatabaseReference userProfileNotificationsRef = mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS);
 
         ValueEventListener userProfileNotificationListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                HashMap<Notification, Boolean> not = (HashMap<Notification, Boolean>) dataSnapshot.getValue();
-                Log.d(TAG, "!!!!: " + not);
+                mNotificationsFromProfile = (HashMap<String, Boolean>) dataSnapshot.getValue();
+                getNotifications();
+                Log.d(TAG, "getNotificationsFromProfile: " + mNotifications);
             }
 
             @Override
@@ -123,10 +171,8 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     }
 
     private void getNotifications() {
-        getNotificationsFromProfile();
-
         Log.d(TAG, "getNotifications: ");
-        
+
         mNotifications = new ArrayList<>();
         mSenders = new HashMap<>();
         mRides = new HashMap<>();
@@ -138,14 +184,16 @@ public class NotificationFragment extends Fragment implements NotificationListIt
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Notification notification = ds.getValue(Notification.class);
-                    notification.setNotificationUid(ds.getKey());
+
+                    String notificationUid = ds.getKey();
+                    notification.setNotificationUid(notificationUid);
 
                     String senderUid = notification.getSenderUid();
                     mSenders.put(senderUid, null);
 
-                    final String rideUid = notification.getRideUid();
+                    String rideUid = notification.getRideUid();
                     mRides.put(rideUid, null);
-                    
+
                     mNotifications.add(notification);
                     Log.d(TAG, "onDataChange: " + notification.toString());
                 }
@@ -233,15 +281,15 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         sortListByDate(mNotifications);
         setNotificationList(mNotifications);
         checkIfListIsEmpty();
-        mNotificationAdapter.loadNewData(mNotifications, mSenders, mRides);
+        mNotificationAdapter.loadNewData(mNotificationsFromProfile, mNotifications, mSenders, mRides);
     }
 
-    public void loadNewData(List<Notification> notifications) {
-        sortListByDate(notifications);
-        setNotificationList(notifications);
-        checkIfListIsEmpty();
-        mNotificationAdapter.loadNewData(notifications);
-    }
+    // public void loadNewData(List<Notification> notifications) {
+    //     sortListByDate(notifications);
+    //     setNotificationList(notifications);
+    //     checkIfListIsEmpty();
+    //     mNotificationAdapter.loadNewData(notifications);
+    // }
 
     private void checkIfListIsEmpty() {
         if (mNotifications.size() == 0) {
@@ -260,5 +308,120 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                 return DateUtils.getDateFromMilli(o2.getTimeStamp()).compareTo(DateUtils.getDateFromMilli(o1.getTimeStamp()));
             }
         });
+    }
+
+    private void showNotificationDialogToActivity(final Notification notification, String title) {
+        final User user = mSenders.get(notification.getSenderUid());
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        final LayoutInflater inflater = getLayoutInflater();
+
+        View vView = inflater.inflate(R.layout.dialog_notification_to_activity, null);
+        final ImageView avatarImageView = vView.findViewById(R.id.avatarImageView);
+        final TextView notificationTitleTextView = vView.findViewById(R.id.notificationTitle);
+        final Button seeRideButton = vView.findViewById(R.id.seeRideButton);
+
+        Picasso.get()
+                .load(user.getAvatarUrl())
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_error_red_24dp)
+                .into(avatarImageView);
+
+        notificationTitleTextView.setText(title);
+
+        seeRideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), OfferedRideDetailsActivity.class);
+
+                intent.putExtra(RIDE_INTENT_EXTRA, mRides.get(notification.getRideUid()));
+                intent.putExtra(RATED_RIDE_INTENT_EXTRA, false);
+
+                startActivity(intent);
+            }
+        });
+
+        final AlertDialog dialog;
+
+        builder.setView(vView)
+                // .setTitle("Rate " + user.getFirstName())
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mNotificationsFromProfile.put(notification.getNotificationUid(), true);
+                        CurrentUserProfile.notificationsMap = mNotificationsFromProfile;
+                        mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(mNotificationsFromProfile);
+                        loadNewData();
+                    }
+                })
+                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mNotificationsFromProfile.remove(notification.getNotificationUid());
+                        mNotifications.remove(getIndex(notification.getNotificationUid()));
+                        CurrentUserProfile.notificationsMap = mNotificationsFromProfile;
+                        mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(mNotificationsFromProfile);
+                        mNotificationsRef.child(CurrentUserProfile.uid).child(notification.getNotificationUid()).removeValue();
+                        loadNewData();
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showNotificationDialog(final Notification notification, String title) {
+        final User user = mSenders.get(notification.getSenderUid());
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        final LayoutInflater inflater = getLayoutInflater();
+
+        View vView = inflater.inflate(R.layout.dialog_notification, null);
+        final ImageView avatarImageView = vView.findViewById(R.id.avatarImageView);
+        final TextView notificationTitleTextView = vView.findViewById(R.id.notificationTitle);
+
+        Picasso.get()
+                .load(user.getAvatarUrl())
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_error_red_24dp)
+                .into(avatarImageView);
+
+        notificationTitleTextView.setText(title);
+
+        final AlertDialog dialog;
+
+        builder.setView(vView)
+                // .setTitle("Rate " + user.getFirstName())
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mNotificationsFromProfile.put(notification.getNotificationUid(), true);
+                        CurrentUserProfile.notificationsMap = mNotificationsFromProfile;
+                        mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(mNotificationsFromProfile);
+                        loadNewData();
+                    }
+                })
+                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mNotificationsFromProfile.remove(notification.getNotificationUid());
+                        mNotifications.remove(getIndex(notification.getNotificationUid()));
+                        CurrentUserProfile.notificationsMap = mNotificationsFromProfile;
+                        mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(mNotificationsFromProfile);
+                        mNotificationsRef.child(CurrentUserProfile.uid).child(notification.getNotificationUid()).removeValue();
+                        loadNewData();
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    private int getIndex(String uid) {
+        int idx = 0;
+        for (Notification notification : mNotifications) {
+            if (notification.getNotificationUid().equals(uid)) {
+                break;
+            }
+        }
+        return idx;
     }
 }
