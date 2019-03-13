@@ -92,7 +92,7 @@ public class SearchActivity extends AppCompatActivity
     {
         ListView lv = (ListView) findViewById(R.id.listview);
         lv.setAdapter(null);
-        lv.setAdapter(new MyListAdapter(this, R.layout.list_item, data));
+        lv.setAdapter(new MyListAdapter(this, R.layout.list_item_offer, data));
         setListViewHeightBasedOnChildren(lv);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
