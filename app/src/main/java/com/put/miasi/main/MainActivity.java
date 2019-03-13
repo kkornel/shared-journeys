@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,8 +113,30 @@ public class MainActivity extends AppCompatActivity {
         getUserProfile();
 
         // if (!LocationUtils.hasLocationPermissions(this)) {
-        //     LocationUtils.requestLocationPermissions(this,this, mNavigation);
+        //     LocationUtils.requestLocationPermissions(this,this, findViewById(R.id.container));
         // }
+
+
+
+
+
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.container),
+                R.string.permission_rationale,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
+        layoutParams.setAnchorId(R.id.navigation);
+        layoutParams.anchorGravity = Gravity.TOP;
+        layoutParams.gravity = Gravity.TOP;
+        snackbar.getView().setLayoutParams(layoutParams);
+        snackbar.show();
 
     }
 

@@ -68,14 +68,14 @@ public class RidesFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if (!LocationUtils.hasLocationPermissions(getContext())) {
-            LocationUtils.requestLocationPermissions(getActivity(), getContext(), mSearchButton);
-        }
-        if (!LocationUtils.isGpsEnabled(getContext())) {
-            showNoGpsSnackBar();
-        } else if (LocationUtils.lastKnowLocation == null) {
-            LocationUtils.findUserLocation(getActivity(), getContext());
-        }
+        // if (!LocationUtils.hasLocationPermissions(getContext())) {
+        //     LocationUtils.requestLocationPermissions(getActivity(), getContext(), mSearchButton);
+        // }
+        // if (!LocationUtils.isGpsEnabled(getContext())) {
+        //     showNoGpsSnackBar();
+        // } else if (LocationUtils.lastKnowLocation == null) {
+        //     LocationUtils.findUserLocation(getActivity(), getContext());
+        // }
     }
 
     @Override
