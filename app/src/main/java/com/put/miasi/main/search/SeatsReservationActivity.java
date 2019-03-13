@@ -122,6 +122,7 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         driverNotifications.put(newNotificationUid, false);
 
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
+        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
 
         startActivity(new Intent(SeatsReservationActivity.this, MainActivity.class));
     }

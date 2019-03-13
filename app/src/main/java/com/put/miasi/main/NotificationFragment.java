@@ -158,6 +158,10 @@ public class NotificationFragment extends Fragment implements NotificationListIt
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mNotificationsFromProfile = (HashMap<String, Boolean>) dataSnapshot.getValue();
+
+                if (mNotificationsFromProfile == null || mNotificationsFromProfile.size() == 0) {
+                    noNewNotifications();
+                }
                 getNotifications();
                 Log.d(TAG, "getNotificationsFromProfile: " + mNotifications);
             }
@@ -293,11 +297,15 @@ public class NotificationFragment extends Fragment implements NotificationListIt
 
     private void checkIfListIsEmpty() {
         if (mNotifications.size() == 0) {
-            mNoDataInfoTextView.setVisibility(View.VISIBLE);
-            mNoDataInfoTextView.setText("No new notifications");
+            noNewNotifications();
         } else {
             mNoDataInfoTextView.setVisibility(View.GONE);
         }
+    }
+
+    private void noNewNotifications() {
+        mNoDataInfoTextView.setVisibility(View.VISIBLE);
+        mNoDataInfoTextView.setText("No new notifications");
     }
 
     public void sortListByDate(List<Notification> list) {
