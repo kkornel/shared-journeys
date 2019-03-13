@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
         // mToolbar = getSupportActionBar();
 
+        Log.d(TAG, "onCreate: ");
+        
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.title_rides));
@@ -108,10 +110,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+    
+    @Override
     protected void onStart() {
         super.onStart();
         getUserProfile();
 
+        Log.d(TAG, "onStart: ");
+        
         // if (!LocationUtils.hasLocationPermissions(this)) {
         //     LocationUtils.requestLocationPermissions(this,this, findViewById(R.id.container));
         // }
@@ -120,23 +148,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.container),
-                R.string.permission_rationale,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
-        layoutParams.setAnchorId(R.id.navigation);
-        layoutParams.anchorGravity = Gravity.TOP;
-        layoutParams.gravity = Gravity.TOP;
-        snackbar.getView().setLayoutParams(layoutParams);
-        snackbar.show();
+        // Snackbar snackbar = Snackbar.make(
+        //         findViewById(R.id.container),
+        //         R.string.permission_rationale,
+        //         Snackbar.LENGTH_INDEFINITE)
+        //         .setAction(R.string.ok, new View.OnClickListener() {
+        //             @Override
+        //             public void onClick(View view) {
+        //
+        //             }
+        //         });
+        //
+        // CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
+        // layoutParams.setAnchorId(R.id.navigation);
+        // layoutParams.anchorGravity = Gravity.TOP;
+        // layoutParams.gravity = Gravity.TOP;
+        // snackbar.getView().setLayoutParams(layoutParams);
+        // snackbar.show();
 
     }
 
