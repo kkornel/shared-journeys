@@ -77,7 +77,7 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.title_activity_timePicker));
+        getSupportActionBar().setTitle("Ride Location");
 
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
 

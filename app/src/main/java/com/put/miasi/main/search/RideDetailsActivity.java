@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,9 +26,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
+
 public class RideDetailsActivity extends AppCompatActivity
 {
     private Button btn_reservation;
+    private ImageButton ib_see_on_the_map;
     private ImageView iv_avatar;
     private TextView tv_available_seats;
     private TextView tv_distance;
@@ -57,6 +61,10 @@ public class RideDetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_details);
         initializeComponents();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Ride details");
 
         Intent intent = getIntent();
         rideKey = intent.getStringExtra("Uid");
@@ -96,6 +104,16 @@ public class RideDetailsActivity extends AppCompatActivity
                 startActivity(seatsReservationIntent);
             }
         });
+        ib_see_on_the_map = (ImageButton) findViewById(R.id.ib_see_on_the_map);
+        ib_see_on_the_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent locationIntent = new Intent(RideDetailsActivity.this, RideLocationActivity.class);
+                locationIntent.putExtra(RIDE_OFFER_INTENT, offer);
+                startActivity(locationIntent);
+            }
+        });
     }
     private void fillRideDetails()
     {
@@ -104,7 +122,7 @@ public class RideDetailsActivity extends AppCompatActivity
         tv_available_seats.setText("Available seats: " + offer.getSeats());
         tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");
         tv_car_color.setText(offer.getCar().getColor());
-        tv_rating.setText("4.4");
+        tv_rating.setText(String.valueOf(rider.getDriverRatingAvg()));
         // kalendarz i data
         Calendar cal = DateUtils.getCalendarFromMilliSecs(offer.getDate());
         String startHour = DateUtils.getHourFromCalendar(cal);
@@ -180,5 +198,11 @@ public class RideDetailsActivity extends AppCompatActivity
             }
         };
         offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

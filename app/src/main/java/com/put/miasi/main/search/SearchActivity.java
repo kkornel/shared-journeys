@@ -2,6 +2,7 @@ package com.put.miasi.main.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,15 +35,20 @@ import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.RideOffer;
+import com.put.miasi.utils.TimePickerFragment;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity
+public class SearchActivity extends AppCompatActivity implements TimePickerFragment.TimePickedListener
 {
     private ArrayList<Offer> data = new ArrayList<Offer>();
     final List<RideOffer> rideOffers = new ArrayList<>();
@@ -56,6 +62,12 @@ public class SearchActivity extends AppCompatActivity
     boolean startTextFilled = false;
     boolean destinationTextFilled = false;
 
+    private TextView mSelectedTimeTextView;
+    private Button mSelectTimeButton;
+    private int mHour;
+    private int mMin;
+
+
     private static String SEARCH_COUNTRY = "PL";
 
     @Override
@@ -64,13 +76,20 @@ public class SearchActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        listView = (ListView) findViewById(R.id.listview);
-
         Intent intent = getIntent();
         long dateInMs = intent.getLongExtra("date",0);
         date = DateUtils.getDate(dateInMs, DateUtils.STANDARD_DATE_FORMAT);
+
+
+        listView = (ListView) findViewById(R.id.listview);
         initializeSearchButton();
-        f();
+        initializeAutocompleteFragment("start");
+        initializeAutocompleteFragment("destination");
+        initializeTimer();
+
+
+
+
     }
 
     public void initializeSearchButton()
@@ -82,8 +101,6 @@ public class SearchActivity extends AppCompatActivity
             public void onClick(View v) {
                 listView.setAdapter(null);
                 firebaseInit();
-
-
             }
         });
     }
@@ -122,6 +139,7 @@ public class SearchActivity extends AppCompatActivity
             offer.from = "From: " + GeoUtils.getCityFromLatLng(this, x.getStartPoint().toLatLng());
             offer.to = "To: " + GeoUtils.getCityFromLatLng(this, x.getDestinationPoint().toLatLng());
             offer.price = String.valueOf(x.getPrice()) + " zł";
+            offer.hour_begin_ms = x.getDate();
 
             Calendar cal = DateUtils.getCalendarFromMilliSecs(x.getDate());
             String startHour = DateUtils.getHourFromCalendar(cal);
@@ -139,7 +157,23 @@ public class SearchActivity extends AppCompatActivity
             offer.seats = "Available seats: " + x.getSeats();
             data.add(offer);
         }
+        sortListByStartHour();
     }
+    private void sortListByStartHour()
+    {
+
+        for (int i = 0; i < data.size() - 1; i++)
+        {
+            for (int j = 0; j < data.size() - i - 1; j++)
+            {
+                if (data.get(j).hour_begin_ms > data.get(j+1).hour_begin_ms)
+                {
+                    Collections.swap(data,j, j+1);
+                }
+            }
+        }
+    }
+
 
     private class MyListAdapter extends ArrayAdapter<Offer>
     {
@@ -205,46 +239,59 @@ public class SearchActivity extends AppCompatActivity
         String from;
         String to;
         String price;
+        long hour_begin_ms;
         String hour_begin;
         String hour_end;
         String seats;
         String distance;
     }
 
-    private void f() {
+    private void initializeAutocompleteFragment(final String whichOne)
+    {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.title_activity_destination));
-
+        getSupportActionBar().setTitle("Search for available rides");
         // Initialize Places.
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
-
         // Create a new Places client instance.
         final PlacesClient placesClient = Places.createClient(this);
-
+        AutocompleteSupportFragment autocompleteFragment = null;
         // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        if (whichOne.equals("start"))
+        {
+            autocompleteFragment = (AutocompleteSupportFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+            autocompleteFragment.setHint("e.g. Poznań");
+        }
+        if (whichOne.equals("destination"))
+        {
+            autocompleteFragment = (AutocompleteSupportFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment2);
+            autocompleteFragment.setHint("e.g. Bydgoszcz");
+        }
 
-        // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
-
         autocompleteFragment.setCountry(SEARCH_COUNTRY);
-        autocompleteFragment.setHint("e.g. Poznań");
         autocompleteFragment.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
-
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place)
             {
-                startTextFilled = true;
-                startCity = place.getName();
-                if (destinationTextFilled && startTextFilled)
+                if (whichOne.equals("start"))
+                {
+                    startTextFilled = true;
+                    startCity = place.getName();
+                }
+                if (whichOne.equals("destination"))
+                {
+                    destinationTextFilled = true;
+                    destinationCity = place.getName();
+                }
+                if (destinationTextFilled  && startTextFilled)
                 {
                     btn_search.setVisibility(View.VISIBLE);
                 }
-                // Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -252,37 +299,29 @@ public class SearchActivity extends AppCompatActivity
                 Log.d(TAG,"An error occurred: " + status);
             }
         });
+    }
+    private void searchForFittingOffers(RideOffer rideOffer)
+    {
+        Calendar currentCalendar = Calendar.getInstance();
+        long currentTime = currentCalendar.getTimeInMillis();
+        long rideOfferTime = rideOffer.getDate();
+        int rideOfferSeats = rideOffer.getSeats();
+        String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
+        String rideOfferStartPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getStartPoint().toLatLng());
+        String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getDestinationPoint().toLatLng());
 
-        AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment2);
+        Calendar cal = DateUtils.getCalendarFromMilliSecs(rideOffer.getDate());
+        String startHour = DateUtils.getHourFromCalendar(cal);
+        String startMin = DateUtils.getMinFromCalendar(cal);
 
-        // Specify the types of place data to return.
-        autocompleteFragment2.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+        int startHourInMinutes = Integer.valueOf(startHour) * 60 + Integer.valueOf(startMin);
+        int timePickedInMinutes = mHour *60 + mMin;
 
-        autocompleteFragment2.setCountry(SEARCH_COUNTRY);
-        autocompleteFragment2.setHint("e.g. Bydgoszcz");
-        autocompleteFragment2.getView().setBackgroundColor(getResources().getColor(R.color.colorSearchBackground));
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                destinationTextFilled = true;
-                destinationCity = place.getName();
-                if (destinationTextFilled  && startTextFilled)
-                {
-                    btn_search.setVisibility(View.VISIBLE);
-                }
-                // Toast.makeText(SearchActivity.this, "List items was clicked "+ place.getName(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(Status status) {
-                Log.d(TAG, "An error occurred: " + status);
-            }
-        });
-
-
+        if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity)
+        && rideOfferTime > currentTime && rideOfferSeats > 0  && startHourInMinutes > timePickedInMinutes)
+        {
+            rideOffers.add(rideOffer);
+        }
     }
 
     /////////////////////////// FIREBASE //////////////////////////////////
@@ -296,14 +335,14 @@ public class SearchActivity extends AppCompatActivity
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {
                     RideOffer rideOffer = ds.getValue(RideOffer.class);
                     rideOffer.setKey(ds.getKey());
-                    String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
-                    String rideOfferStartPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getStartPoint().toLatLng());
-                    String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(SearchActivity.this, rideOffer.getDestinationPoint().toLatLng());
-                    //if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity))
-                    //{
-                        rideOffers.add(rideOffer);
-                    //}
+                    searchForFittingOffers(rideOffer);
                 }
+                if (rideOffers.size() == 0)
+                {
+                    Toast.makeText(SearchActivity.this, "No ride offers available!", Toast.LENGTH_LONG).show();
+                }
+
+
             }
 
             @Override
@@ -364,4 +403,63 @@ public class SearchActivity extends AppCompatActivity
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
+    private void initializeTimer()
+    {
+        mSelectedTimeTextView = findViewById(R.id.selectedTimeTextView);
+        mSelectTimeButton = findViewById(R.id.selectTimeButton);
+        mSelectTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(v);
+            }
+        });
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+
+        mHour = hour;
+        mMin = min;
+        String h = (hour < 10) ? DateUtils.convertSingleDateToDouble(hour) : String.valueOf(hour);
+        String m = (min < 10) ? DateUtils.convertSingleDateToDouble(min) : String.valueOf(min);
+        mSelectedTimeTextView.setText("Time: " + h + ":" + m);
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimePicked(int hourOfDay, int minute) {
+        String h = (hourOfDay < 10) ? DateUtils.convertSingleDateToDouble(hourOfDay) : String.valueOf(hourOfDay);
+        String m = (minute < 10) ? DateUtils.convertSingleDateToDouble(minute) : String.valueOf(minute);
+
+        final Calendar c = Calendar.getInstance();
+        int currentHour = c.get(Calendar.HOUR_OF_DAY);
+        int currentMin = c.get(Calendar.MINUTE);
+
+
+        if (hourOfDay*60 + minute > currentHour*60 + currentMin)
+        {
+            String time = h + ":" + m;
+            mHour = hourOfDay;
+            mMin = minute;
+            mSelectedTimeTextView.setText("Time: " + time);
+        }
+        else
+        {
+            Toast.makeText(SearchActivity.this, "Those rides passed! Choose correct time.", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
+
 }
