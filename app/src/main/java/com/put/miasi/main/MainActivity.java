@@ -1,10 +1,12 @@
 package com.put.miasi.main;
 
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.notifications.NotificationService;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
@@ -48,7 +51,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "beep";
+    private static final String TAG = "EntryActivity";
 
     // private ActionBar mToolbar;
     private Toolbar mToolbar;
@@ -137,26 +140,44 @@ public class MainActivity extends AppCompatActivity {
         mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
 
         String menuFragment = getIntent().getStringExtra("a");
-        Log.d("Halo", "onCreate: " + getIntent());
-        Log.d("Halo", "onCreate: " + getIntent().getExtras().getString("a"));
-        Log.d("Halo", "onCreate: " + getIntent().getExtras().keySet().size());
-        Log.d("Halo", "onCreate: " + menuFragment);
+        // Log.d("Halo", "onCreate: " + getIntent());
+        // Log.d("Halo", "onCreate: " + getIntent().getExtras().getString("a"));
+        // Log.d("Halo", "onCreate: " + getIntent().getExtras().keySet().size());
+        // Log.d("Halo", "onCreate: " + menuFragment);
         if (menuFragment != null) {
-            Log.d("Halo", "onCreate: != null" + menuFragment);
+            Log.d(TAG, "onCreate: != null" + menuFragment);
             mNavigation.setSelectedItemId(R.id.navigation_notifications);
             loadFragment(new NotificationFragment());
         } else {
-            Log.d("Halo", "onCreate: == null");
+            Log.d(TAG, "onCreate: == null");
             mNavigation.setSelectedItemId(R.id.navigation_rides);
             loadFragment(new RidesFragment());
         }
 
 
         // mNotifications = new ArrayList<>();
-        a();
+        //a();
         // loadFragment(new RidesFragment());
 
-        createNotificationChannel();
+        if (isMyServiceRunning(NotificationService.class)) {
+            Log.d(TAG, "onCreate: RUNNING");
+        } else {
+            Log.d(TAG, "onCreate: NOT RUNNING");
+            startService(new Intent(this, NotificationService.class));
+        }
+
+
+        // createNotificationChannel();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void createNotificationChannel() {
@@ -303,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
         // getNotifications();
         Log.d(TAG, "onStart: ");
 
-        Log.d(TAG, "onCreate: *******************" + getIntent().getStringExtra("menuFragment"));
+        // Log.d(TAG, "onCreate: *******************" + getIntent().getStringExtra("menuFragment"));
     }
 
     // private void getNotifications() {

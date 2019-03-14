@@ -73,6 +73,11 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <service
+            android:name="com.put.miasi.main.notifications.NotificationService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
