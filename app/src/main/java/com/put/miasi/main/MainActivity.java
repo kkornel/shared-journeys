@@ -1,10 +1,11 @@
 package com.put.miasi.main;
 
 
-import android.Manifest;
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -18,8 +19,10 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +33,7 @@ import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.LocationUtils;
-import com.put.miasi.utils.Notification;
+import com.put.miasi.utils.NotificationUtils;
 import com.put.miasi.utils.User;
 
 import java.util.ArrayList;
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     // private ActionBar mToolbar;
     private Toolbar mToolbar;
 
-    private List<Notification> mNotifications;
+    //private List<Notification> mNotifications;
 
     private FirebaseAuth mAuth;
     private String mUserUid;
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mNavigation.setSelectedItemId(R.id.navigation_rides);
+        // mNavigation.setSelectedItemId(R.id.navigation_rides);
 
         mAuth = FirebaseAuth.getInstance();
         mUserUid = mAuth.getCurrentUser().getUid();
@@ -127,9 +130,59 @@ public class MainActivity extends AppCompatActivity {
         mUsersRef = mRootRef.child(Database.USERS);
         mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
 
-        mNotifications = new ArrayList<>();
+        String menuFragment = getIntent().getStringExtra("menuFragment");
+        Log.d(TAG, "onCreate: " + getIntent());
+        Log.d(TAG, "onCreate: " + getIntent().getExtras().getString("menuFragment"));
+        Log.d(TAG, "onCreate: " + getIntent().getExtras().keySet().size());
+        Log.d(TAG, "onCreate: " + menuFragment);
+        if (menuFragment != null) {
+            Log.d(TAG, "onCreate: != null" + menuFragment);
+            mNavigation.setSelectedItemId(R.id.navigation_notifications);
+            loadFragment(new NotificationFragment());
+        } else {
+            mNavigation.setSelectedItemId(R.id.navigation_rides);
+            loadFragment(new RidesFragment());
+        }
 
-        loadFragment(new RidesFragment());
+
+        // mNotifications = new ArrayList<>();
+        a();
+        // loadFragment(new RidesFragment());
+    }
+
+
+    private void a() {
+        DatabaseReference userNotificationsRef = mNotificationsRef.child(mUserUid);
+
+
+        userNotificationsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Toast.makeText(getApplicationContext(), "!!!",Toast.LENGTH_SHORT).show();
+                Notification notification = NotificationUtils.createNotification(getApplication(), MainActivity.class);
+                NotificationUtils.notifyManager();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -160,32 +213,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getUserProfile();
-        getNotifications();
+        // getNotifications();
         Log.d(TAG, "onStart: ");
+
+        Log.d(TAG, "onCreate: *******************" + getIntent().getStringExtra("menuFragment"));
     }
 
-    private void getNotifications() {
-        // HashMap<String, Boolean> notificationsMap = CurrentUserProfile.notificationsMap;
-        DatabaseReference userNotificationsRef = mNotificationsRef.child(mUserUid);
-
-        ValueEventListener userNotificationListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Notification notification = ds.getValue(Notification.class);
-                    notification.setNotificationUid(ds.getKey());
-                    Log.d(TAG, "onDataChange: " + notification.toString());
-                    mNotifications.add(notification);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userNotificationsRef.addListenerForSingleValueEvent(userNotificationListener);
-    }
+    // private void getNotifications() {
+    //     // HashMap<String, Boolean> notificationsMap = CurrentUserProfile.notificationsMap;
+    //     DatabaseReference userNotificationsRef = mNotificationsRef.child(mUserUid);
+    //
+    //     ValueEventListener userNotificationListener = new ValueEventListener() {
+    //         @Override
+    //         public void onDataChange(DataSnapshot dataSnapshot) {
+    //             for (DataSnapshot ds : dataSnapshot.getChildren()) {
+    //                 Notification notification = ds.getValue(Notification.class);
+    //                 notification.setNotificationUid(ds.getKey());
+    //                 Log.d(TAG, "onDataChange: " + notification.toString());
+    //                 mNotifications.add(notification);
+    //             }
+    //         }
+    //
+    //         @Override
+    //         public void onCancelled(DatabaseError databaseError) {
+    //             Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+    //         }
+    //     };
+    //     userNotificationsRef.addListenerForSingleValueEvent(userNotificationListener);
+    // }
 
     private void getUserProfile() {
         final DatabaseReference usersRef = mUsersRef.child(mUserUid);

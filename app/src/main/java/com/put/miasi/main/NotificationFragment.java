@@ -69,6 +69,8 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     private HashMap<String, User> mSenders;
     private HashMap<String, RideOffer> mRides;
 
+    private boolean mHasDataChanged;
+
     public NotificationFragment() {
 
     }
@@ -95,11 +97,11 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        Toast.makeText(getActivity(), getString(R.string.refresh), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), getString(R.string.refresh), Toast.LENGTH_SHORT).show();
                         mNoDataInfoTextView.setText(getString(R.string.loading));
                         mNoDataInfoTextView.setVisibility(View.VISIBLE);
                         getNotificationsFromProfile();
-                        mSwipeRefresh.setRefreshing(false);
+                        // mSwipeRefresh.setRefreshing(false);
                     }
                 }
         );
@@ -125,6 +127,8 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         mNotifications = new ArrayList<>();
         mSenders = new HashMap<>();
         mRides = new HashMap<>();
+
+        mHasDataChanged = false;
 
         getNotificationsFromProfile();
     }
@@ -166,19 +170,48 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     }
 
     private void getNotificationsFromProfile() {
-        mNotificationsFromProfile = new HashMap<>();
+        // mNotificationsFromProfile = new HashMap<>();
 
         DatabaseReference userProfileNotificationsRef = mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS);
 
         ValueEventListener userProfileNotificationListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mNotificationsFromProfile = (HashMap<String, Boolean>) dataSnapshot.getValue();
+                HashMap<String, Boolean> notificationsFromProfile = (HashMap<String, Boolean>) dataSnapshot.getValue();
 
-                if (mNotificationsFromProfile == null || mNotificationsFromProfile.size() == 0) {
+                if (notificationsFromProfile == null || notificationsFromProfile.size() == 0) {
+                    mNotificationsFromProfile = new HashMap<>();
+                    mNotifications = new ArrayList<>();
+                    mSenders = new HashMap<>();
+                    mRides = new HashMap<>();
+                    mSwipeRefresh.setRefreshing(false);
+                    Toast.makeText(getActivity(), "No new data", Toast.LENGTH_SHORT).show();
                     noNewNotifications();
+                    loadNewData();
+                    return;
                 }
-                getNotifications();
+
+                Log.d("HALO", "onDataChange: notificationsFromProfile " + notificationsFromProfile.size());
+                Log.d("HALO", "onDataChange: mNotificationsFromProfile " + mNotificationsFromProfile.size());
+
+                if (mNotificationsFromProfile.size() == notificationsFromProfile.size()) {
+                    Log.d("HALO", "onDataChange: if");
+                    mHasDataChanged = false;
+                    mSwipeRefresh.setRefreshing(false);
+                    Toast.makeText(getActivity(), "No new data", Toast.LENGTH_SHORT).show();
+                    checkIfListIsEmpty();
+                } else {
+                    mNotificationsFromProfile = new HashMap<>();
+                    Log.d("HALO", "onDataChange: else");
+                    mHasDataChanged = true;
+                    mNotificationsFromProfile = notificationsFromProfile;
+                    if (mNotificationsFromProfile == null || mNotificationsFromProfile.size() == 0) {
+                        noNewNotifications();
+                    }
+                    getNotifications();
+                }
+
+
                 Log.d(TAG, "getNotificationsFromProfile: " + mNotifications);
             }
 
@@ -276,6 +309,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     Log.d(TAG, "onDataChange: mIndex = " + mIndex);
                     if (mIndex <= 0) {
                         Log.d(TAG, "onDataChange: DONE RIDES ");
+                        mSwipeRefresh.setRefreshing(false);
                         loadNewData();
                     }
                 }
