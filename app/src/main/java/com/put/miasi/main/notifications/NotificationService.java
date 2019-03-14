@@ -25,6 +25,7 @@ import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.Notification;
 
 public class NotificationService extends Service {
     private static final String TAG = "NotificationService";
@@ -64,7 +65,9 @@ public class NotificationService extends Service {
 
         mChildNotificationsListener = createChildNotificationListener();
 
-        createNotificationChannel();
+        //createNotificationChannel();
+
+        NotificationUtils.createNotification(getApplicationContext());
 
         handler = new Handler();
         runnable = new Runnable() {
@@ -100,9 +103,16 @@ public class NotificationService extends Service {
 
                 if(CurrentUserProfile.notificationsMap.containsKey(dataSnapshot.getKey())) {
                     Log.d(TAG, "onChildAdded: mam");
+                    // NotificationUtils.updateNotification("mam");
                 } else {
                     Log.d(TAG, "onChildAdded: nie mam");
-                    createNotification();
+                    // createNotification();
+
+                    Notification notification = dataSnapshot.getValue(Notification.class);
+                    Notification.NotificationType notificationType = notification.getNotificationType();
+
+                    // NotificationUtils.notifyManager();
+                    NotificationUtils.updateNotification(createTitle(notificationType));
                 }
 
 
@@ -124,6 +134,31 @@ public class NotificationService extends Service {
         };
     }
 
+    private String createTitle(Notification.NotificationType notificationType) {
+        String title = "";
+
+        switch (notificationType) {
+            case NEW_PASSENGER:
+                title = "New passenger signed up!";
+                break;
+            case PASSENGER_RESIGNED:
+                title = "Passenger resigned";
+                break;
+            case RIDE_CANCELED:
+                title = "Ride was canceled";
+                break;
+            case RIDE_DECLINED:
+                title = "Driver declined your ride";
+                break;
+            case RATED_AS_DRIVER:
+                title = "New rating as driver";
+                break;
+            case RATED_AS_PASSENGER:
+                title = "New rating as passenger";
+                break;
+        }
+        return title;
+    }
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
