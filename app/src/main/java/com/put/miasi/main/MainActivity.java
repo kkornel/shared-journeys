@@ -115,10 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
         boolean openNotifications = getIntent().getBooleanExtra(NOTIFICATION_INTENT_EXTRA, false);
         if (openNotifications) {
+            mNavigation.setSelectedItemId(R.id.navigation_notifications);
             mToolbar.setTitle(getString(R.string.title_notifications));
             resetNavIcon();
             loadFragment(new NotificationFragment());
         } else {
+            mNavigation.setSelectedItemId(R.id.navigation_rides);
             mToolbar.setTitle(getString(R.string.title_rides));
             resetNavIcon();
             loadFragment(new RidesFragment());
