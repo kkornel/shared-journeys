@@ -2,7 +2,11 @@ package com.put.miasi.main;
 
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +16,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,7 +48,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "beep";
 
     // private ActionBar mToolbar;
     private Toolbar mToolbar;
@@ -130,16 +136,17 @@ public class MainActivity extends AppCompatActivity {
         mUsersRef = mRootRef.child(Database.USERS);
         mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
 
-        String menuFragment = getIntent().getStringExtra("menuFragment");
-        Log.d(TAG, "onCreate: " + getIntent());
-        Log.d(TAG, "onCreate: " + getIntent().getExtras().getString("menuFragment"));
-        Log.d(TAG, "onCreate: " + getIntent().getExtras().keySet().size());
-        Log.d(TAG, "onCreate: " + menuFragment);
+        String menuFragment = getIntent().getStringExtra("a");
+        Log.d("Halo", "onCreate: " + getIntent());
+        Log.d("Halo", "onCreate: " + getIntent().getExtras().getString("a"));
+        Log.d("Halo", "onCreate: " + getIntent().getExtras().keySet().size());
+        Log.d("Halo", "onCreate: " + menuFragment);
         if (menuFragment != null) {
-            Log.d(TAG, "onCreate: != null" + menuFragment);
+            Log.d("Halo", "onCreate: != null" + menuFragment);
             mNavigation.setSelectedItemId(R.id.navigation_notifications);
             loadFragment(new NotificationFragment());
         } else {
+            Log.d("Halo", "onCreate: == null");
             mNavigation.setSelectedItemId(R.id.navigation_rides);
             loadFragment(new RidesFragment());
         }
@@ -148,8 +155,73 @@ public class MainActivity extends AppCompatActivity {
         // mNotifications = new ArrayList<>();
         a();
         // loadFragment(new RidesFragment());
+
+        createNotificationChannel();
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.main_notification_channel_name);
+            String description = "notification_description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public static final int NOTIFICATION_ID = 1138;
+
+    private static final int PENDING_INTENT_ID = 3417;
+    private static final String CHANNEL_ID = "moon_runner_notification_channel_01";
+
+    private void noti2() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("a", "a");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_edit_white_24dp)
+                .setContentTitle("title")
+                .setContentText("text")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    private void noti() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("a", "a");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_edit_white_24dp)
+                .setContentTitle("title")
+                .setContentText("text")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 
     private void a() {
         DatabaseReference userNotificationsRef = mNotificationsRef.child(mUserUid);
@@ -159,8 +231,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Toast.makeText(getApplicationContext(), "!!!",Toast.LENGTH_SHORT).show();
-                Notification notification = NotificationUtils.createNotification(getApplication(), MainActivity.class);
-                NotificationUtils.notifyManager();
+                // Notification notification = NotificationUtils.createNotification(getApplication(), MainActivity.class);
+                // NotificationUtils.notifyManager();
+
+                if(CurrentUserProfile.notificationsMap.containsKey(dataSnapshot.getKey())) {
+                    Log.d("halo", "onChildAdded: mam");
+                } else {
+                    Log.d("halo", "onChildAdded: nie mam");
+                }
+
+                Log.d("halo", "onChildAdded: " + dataSnapshot);
+                Log.d("halo", "onChildAdded: " + s);
+                noti2();
             }
 
             @Override
@@ -201,6 +283,11 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
+        // String menuFragment = getIntent().getStringExtra("a");
+        // Log.d("Halo", "onCreate: " + getIntent());
+        // Log.d("Halo", "onCreate: " + getIntent().getExtras().getString("a"));
+        // Log.d("Halo", "onCreate: " + getIntent().getExtras().keySet().size());
+        // Log.d("Halo", "onCreate: " + menuFragment);
     }
 
     @Override
