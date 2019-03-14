@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -29,6 +28,8 @@ import com.put.miasi.utils.Database;
 
 public class NotificationService extends Service {
     private static final String TAG = "NotificationService";
+
+    public static String NOTIFICATION_INTENT_EXTRA = "open_notifications";
 
     private static final int NOTIFICATION_ID = 1302;
     private static final String CHANNEL_ID = "miasi_notification_channel_01";
@@ -94,17 +95,17 @@ public class NotificationService extends Service {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(getApplicationContext(), "!!!",Toast.LENGTH_SHORT).show();
-                // Notification notification = NotificationUtils.createNotification(getApplication(), MainActivity.class);
-                // NotificationUtils.notifyManager();
+                Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
+                Log.d(TAG, "onChildAdded: s " + s);
 
                 if(CurrentUserProfile.notificationsMap.containsKey(dataSnapshot.getKey())) {
                     Log.d(TAG, "onChildAdded: mam");
                 } else {
                     Log.d(TAG, "onChildAdded: nie mam");
+                    createNotification();
                 }
 
-                createNotification();
+
             }
 
             @Override
@@ -144,7 +145,7 @@ public class NotificationService extends Service {
         Intent intent = new Intent(this, MainActivity.class);
         // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("a", "a");
+        intent.putExtra(NOTIFICATION_INTENT_EXTRA, true);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
