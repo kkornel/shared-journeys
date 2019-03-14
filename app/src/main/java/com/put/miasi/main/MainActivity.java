@@ -29,7 +29,7 @@ import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.User;
 
-import static com.put.miasi.main.notifications.NotificationService.NOTIFICATION_INTENT_EXTRA;
+import static com.put.miasi.main.notifications.NotificationUtils.NOTIFICATION_INTENT_EXTRA;
 
 
 public class MainActivity extends AppCompatActivity {

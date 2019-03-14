@@ -1,6 +1,5 @@
 package com.put.miasi.main.notifications;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
