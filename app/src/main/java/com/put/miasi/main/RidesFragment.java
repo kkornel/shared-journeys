@@ -2,6 +2,8 @@ package com.put.miasi.main;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,18 +15,30 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.BuildConfig;
+import com.put.miasi.MapsActivity;
 import com.put.miasi.R;
 import com.put.miasi.main.offer.FromActivity;
 import com.put.miasi.main.search.RideCalendar;
 import com.put.miasi.main.search.SearchActivity;
+import com.put.miasi.utils.CurrentUserProfile;
+import com.put.miasi.utils.Database;
 import com.put.miasi.utils.LocationUtils;
+import com.put.miasi.utils.Notification;
+import com.put.miasi.utils.OfferLog;
 
 import static com.put.miasi.utils.LocationUtils.REQUEST_CODE_FINE_LOCATION_PERMISSIONS;
 
@@ -32,8 +46,16 @@ import static com.put.miasi.utils.LocationUtils.REQUEST_CODE_FINE_LOCATION_PERMI
 public class RidesFragment extends Fragment {
     private static final String TAG = "RidesFragment";
 
+    private Button mTestbtn;
     private Button mOfferButton;
     private Button mSearchButton;
+    
+    private Snackbar mSnackbar;
+
+    private DatabaseReference mRootRef;
+    private DatabaseReference mRidesRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mNotificationsRef;
 
     public RidesFragment() {
         // Required empty public constructor
@@ -43,6 +65,51 @@ public class RidesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rides, container, false);
 
+        Log.d(TAG, "onCreateView: ");
+
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = mRootRef.child(Database.USERS);
+        mRidesRef = mRootRef.child(Database.RIDES);
+        mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
+
+        mTestbtn = rootView.findViewById(R.id.testButton);
+        mTestbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // startActivity(new Intent(getActivity(), MapsActivity.class));
+
+                Notification notification = new Notification();
+                notification.setSenderUid(CurrentUserProfile.uid);
+                notification.setRate(32.0f);
+                notification.setRideUid("asddsfv3wd43243");
+                notification.setNotificationType(Notification.NotificationType.RATED_AS_DRIVER);
+
+                String newUid = mNotificationsRef.push().getKey();
+                mNotificationsRef.child(newUid).setValue(notification);
+
+                CurrentUserProfile.notificationsMap.put(newUid, false);
+                mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(CurrentUserProfile.notificationsMap);
+
+            }
+
+        });
+
+        // mNotificationsRef..addListenerForSingleValueEvent(new ValueEventListener() {
+        //     @Override
+        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        //         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        //             Notification notification = ds.getValue(Notification.class);
+        //             Log.d(TAG, "onDataChange: " + notification);
+        //         }
+        //     }
+        //
+        //     @Override
+        //     public void onCancelled(@NonNull DatabaseError databaseError) {
+        //
+        //     }
+        // });
+
         mOfferButton = rootView.findViewById(R.id.offerButton);
         mOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,12 +118,20 @@ public class RidesFragment extends Fragment {
             }
         });
 
-
-
         mSearchButton = rootView.findViewById(R.id.searchButton);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!LocationUtils.hasLocationPermissions(getContext())) {
+                    requestLocationPermissions();
+                    return;
+                }
+                if (!LocationUtils.isGpsEnabled(getContext())) {
+                    showNoGpsSnackBar();
+                    return;
+                }
+                LocationUtils.findUserLocation(getActivity(), getContext());
+
                 startActivity(new Intent(getActivity(), RideCalendar.class));
             }
         });
@@ -67,15 +142,44 @@ public class RidesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: ");
 
-        // if (!LocationUtils.hasLocationPermissions(getContext())) {
-        //     LocationUtils.requestLocationPermissions(getActivity(), getContext(), mSearchButton);
-        // }
-        // if (!LocationUtils.isGpsEnabled(getContext())) {
-        //     showNoGpsSnackBar();
-        // } else if (LocationUtils.lastKnowLocation == null) {
-        //     LocationUtils.findUserLocation(getActivity(), getContext());
-        // }
+        if (!LocationUtils.hasLocationPermissions(getContext())) {
+            requestLocationPermissions();
+            return;
+        }
+        if (!LocationUtils.isGpsEnabled(getContext())) {
+            showNoGpsSnackBar();
+            return;
+        }
+        LocationUtils.findUserLocation(getActivity(), getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        if (mSnackbar != null) {
+            mSnackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
     }
 
     @Override
@@ -88,15 +192,18 @@ public class RidesFragment extends Fragment {
                         // permission was granted, yay! Do the
                         // location-related task you need to do.
                         LocationUtils.findUserLocation(getActivity(), getContext());
+
+                        Log.d(TAG, "onRequestPermissionsResult: if");
                     }
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Snackbar.make(
-                            mOfferButton,
+                    Log.d(TAG, "onRequestPermissionsResult: else");
+                    mSnackbar = Snackbar.make(
+                            getActivity().findViewById(R.id.container),
                             R.string.permission_denied_explanation,
                             Snackbar.LENGTH_INDEFINITE)
-                            .setAction(R.string.settings, new View.OnClickListener() {
+                            .setAction("Allow", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
 
@@ -122,24 +229,90 @@ public class RidesFragment extends Fragment {
                                         startActivity(intent);
                                     }
                                 }
-                            })
-                            .show();
+                            });
+                    CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mSnackbar.getView().getLayoutParams();
+                    layoutParams.setAnchorId(R.id.navigation);
+                    layoutParams.anchorGravity = Gravity.TOP;
+                    layoutParams.gravity = Gravity.TOP;
+                    mSnackbar.getView().setLayoutParams(layoutParams);
+                    mSnackbar.show();
                 }
         }
     }
 
+    private void requestLocationPermissions() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Should we show an explanation?
+            Log.d(TAG, "requestLocationPermissions: if");
+            boolean shouldProvideRationale = shouldShowRequestPermissionRationale(
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+
+            // Provide an additional rationale to the user. This would happen if the user denied the
+            // request previously, but didn't check the "Don't ask again" checkbox.
+            if (shouldProvideRationale) {
+                Log.d(TAG, "requestLocationPermissions: if if");
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                mSnackbar = Snackbar.make(
+                        getActivity().findViewById(R.id.container),
+                        R.string.permission_rationale,
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.ok, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                requestPermissions(
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        REQUEST_CODE_FINE_LOCATION_PERMISSIONS);
+                            }
+                        });
+
+                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mSnackbar.getView().getLayoutParams();
+                layoutParams.setAnchorId(R.id.navigation);
+                layoutParams.anchorGravity = Gravity.TOP;
+                layoutParams.gravity = Gravity.TOP;
+                mSnackbar.getView().setLayoutParams(layoutParams);
+                mSnackbar.show();
+            } else {
+                // No explanation needed; request the permission
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+                // Request permission. It's possible this can be auto answered if device policy
+                // sets the permission in a given state or the user denied the permission
+                // previously and checked "Never ask again".
+                Log.d(TAG, "requestLocationPermissions: if else");
+                requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_CODE_FINE_LOCATION_PERMISSIONS);
+            }
+        } else {
+            Log.d(TAG, "requestLocationPermissions: else ");
+            LocationUtils.findUserLocation(getActivity(), getContext());
+        }
+    }
+
     private void showNoGpsSnackBar() {
-        Snackbar.make(
-                mOfferButton,
+        mSnackbar = Snackbar.make(
+                getActivity().findViewById(R.id.container),
                 R.string.enable_gps_to_check_weather,
-                Snackbar.LENGTH_LONG)
+                Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         openLocationSettings();
                     }
-                })
-                .show();
+                });
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mSnackbar.getView().getLayoutParams();
+        layoutParams.setAnchorId(R.id.navigation);
+        layoutParams.anchorGravity = Gravity.TOP;
+        layoutParams.gravity = Gravity.TOP;
+        mSnackbar.getView().setLayoutParams(layoutParams);
+        mSnackbar.show();
     }
 
     private void openLocationSettings() {

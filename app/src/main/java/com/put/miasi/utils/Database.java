@@ -4,6 +4,7 @@ public class Database {
     public static final String USERS = "users";
     public static final String OFFERED_RIDES = "offeredRides";
     public static final String RIDES = "rides";
+    public static final String NOTIFICATIONS = "notifications";
 
     public static final String STORAGE_AVATARS = "avatars";
     public static final String DEFAULT_IMG_NAME = "default.jpg";
@@ -20,4 +21,9 @@ public class Database {
     public static final String NUMBER_OF_DRIVER_RATING = "numberOfDriverRatings";
     public static final String PASSENGER_RATING = "passengerRating";
     public static final String NUMBER_OF_PASSENGER_RATING = "numberOfPassengerRatings";
+    public static final String NOTIFICATION_UID = "notificationUid";
+    public static final String NOTIFICATION_TYPE = "notificationType";
+    public static final String SENDER_UID = "senderUid";
+    public static final String RATE = "rate";
+    public static final String RIDE_UID = "rideUid";
 }

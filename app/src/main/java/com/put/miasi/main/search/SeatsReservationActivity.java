@@ -17,6 +17,7 @@ import com.put.miasi.R;
 import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 
@@ -37,6 +38,8 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mUsersRef;
     private DatabaseReference mRidesRef;
+    private DatabaseReference mNotificationsRef;
+
 
     private int mNumOfSeatsPicked;
     private User mDriver;
@@ -51,6 +54,7 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
         mRidesRef = mDatabaseRef.child(Database.RIDES);
+        mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
 
         mBookButton = findViewById(R.id.btn_reservation);
         mBookButton.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +107,22 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
 
         mRidesRef.child(mOffer.getKey()).child(Database.PASSENGERS).setValue(passengers);
         mRidesRef.child(mOffer.getKey()).child(Database.SEATS).setValue(availableSeats);
+
+        String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
+        Notification notification = new Notification(
+                Notification.NotificationType.NEW_PASSENGER,
+                CurrentUserProfile.uid,
+                mOffer.getKey(),
+                mNumOfSeatsPicked);
+
+        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        if (driverNotifications == null) {
+            driverNotifications = new HashMap<>();
+        }
+        driverNotifications.put(newNotificationUid, false);
+
+        mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
+        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
 
         startActivity(new Intent(SeatsReservationActivity.this, MainActivity.class));
     }

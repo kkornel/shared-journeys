@@ -109,12 +109,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
         android:text="\u27f6"
         android:textColor="@color/colorText"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/startTimeTextView"
+        app:layout_constraintEnd_toStartOf="@+id/arrivalTimeTextView"
         app:layout_constraintStart_toEndOf="@+id/startTimeTextView"
         app:layout_constraintTop_toTopOf="@+id/startTimeTextView"
         app:layout_constraintVertical_bias="0.85" />
@@ -123,11 +126,9 @@
         android:id="@+id/arrivalTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:textColor="@color/colorText"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/arrowTimeTextView"
+        app:layout_constraintStart_toStartOf="@+id/destinationCityTextView"
         app:layout_constraintTop_toTopOf="@+id/startTimeTextView"
         tools:text="19:00" />
 

@@ -77,7 +77,7 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Ride Location");
+        getSupportActionBar().setTitle("Pick the time");
 
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
 
@@ -115,7 +115,8 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         });
 
         final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int hour = c.get(Calendar.HOUR_OF_DAY) + 1;
+        int min = c.get(Calendar.MINUTE);
 
         mHour = hour;
         mMin = 0;

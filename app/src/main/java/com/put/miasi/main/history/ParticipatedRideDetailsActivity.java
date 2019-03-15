@@ -26,6 +26,7 @@ import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
@@ -68,6 +69,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mUsersRef;
     private DatabaseReference mRidesRef;
+    private DatabaseReference mNotificationsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
         mRidesRef = mDatabaseRef.child(Database.RIDES);
+        mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
 
         Calendar cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         int durationHours = DateUtils.getDurationHoursFromLongSeconds(mRide.getDuration());
@@ -207,8 +210,25 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         mDriver.setDriverRating(driverRate);
         mDriver.setNumberOfDriverRatings(numOfDriverRatings);
 
+        String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
+        Notification notification = new Notification(
+                Notification.NotificationType.RATED_AS_DRIVER,
+                CurrentUserProfile.uid,
+                mRide.getKey(),
+                mRating);
+
+        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        if (driverNotifications == null) {
+            driverNotifications = new HashMap<>();
+        }
+        driverNotifications.put(newNotificationUid, false);
+
         mUsersRef.child(mDriver.getUid()).child(Database.DRIVER_RATING).setValue(driverRate);
         mUsersRef.child(mDriver.getUid()).child(Database.NUMBER_OF_DRIVER_RATING).setValue(numOfDriverRatings);
+
+        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
+
+        mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
         // Passenger
         HashMap<String, Boolean> participatedRidesMap = CurrentUserProfile.participatedRidesMap;
@@ -243,6 +263,21 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         participatedRides.remove(rideUid);
 
         CurrentUserProfile.offeredRidesMap = participatedRides;
+
+        String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
+        Notification notification = new Notification(
+                Notification.NotificationType.PASSENGER_RESIGNED,
+                CurrentUserProfile.uid,
+                mRide.getKey());
+
+        HashMap<String, Boolean> passengerNotifications = mDriver.getNotifications();
+        if (passengerNotifications == null) {
+            passengerNotifications = new HashMap<>();
+        }
+        passengerNotifications.put(newNotificationUid, false);
+
+        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+        mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
         mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
 

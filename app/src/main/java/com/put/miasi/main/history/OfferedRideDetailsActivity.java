@@ -31,6 +31,7 @@ import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.Passenger;
 import com.put.miasi.utils.RideOffer;
@@ -75,6 +76,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mUsersRef;
     private DatabaseReference mRidesRef;
+    private DatabaseReference mNotificationsRef;
 
     private List<Passenger> mPassengersList;
 
@@ -93,6 +95,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabaseRef.child(Database.USERS);
         mRidesRef = mDatabaseRef.child(Database.RIDES);
+        mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
 
         Calendar cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         int durationHours = DateUtils.getDurationHoursFromLongSeconds(mRide.getDuration());
@@ -281,8 +284,24 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         user.setPassengerRating(passengerRate);
         user.setNumberOfPassengerRatings(numOfPassRatings);
 
+        String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+        Notification notification = new Notification(
+                Notification.NotificationType.RATED_AS_PASSENGER,
+                CurrentUserProfile.uid,
+                mRide.getKey(),
+                mRating);
+
+        HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+        if (passengerNotifications == null) {
+            passengerNotifications = new HashMap<>();
+        }
+        passengerNotifications.put(newNotificationUid, false);
+
         mUsersRef.child(user.getUid()).child(Database.PASSENGER_RATING).setValue(passengerRate);
         mUsersRef.child(user.getUid()).child(Database.NUMBER_OF_PASSENGER_RATING).setValue(numOfPassRatings);
+        mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+
+        mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
     }
 
     private void makeRated() {
@@ -361,6 +380,22 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         mRide.getPassengers().remove(user.getUid());
 
+        String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+        Notification notification = new Notification(
+                Notification.NotificationType.RIDE_DECLINED,
+                CurrentUserProfile.uid,
+                mRide.getKey());
+
+        HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+        if (passengerNotifications == null) {
+            passengerNotifications = new HashMap<>();
+        }
+        passengerNotifications.put(newNotificationUid, false);
+
+        mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+
+        mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
+
         mRidesRef.child(mRide.getKey()).child(Database.PASSENGERS).setValue(mRide.getPassengers());
         mRidesRef.child(mRide.getKey()).child(Database.SEATS).setValue(availableSeats);
         // mRidesRef.child(mRide.getKey()).setValue(mRide);
@@ -402,9 +437,25 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         String userUid = CurrentUserProfile.uid;
 
         for (Passenger passenger : mPassengersList) {
+            User user = passenger.getUser();
+
+            String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+            Notification notification = new Notification(
+                    Notification.NotificationType.RIDE_CANCELED,
+                    CurrentUserProfile.uid,
+                    mRide.getKey());
+
+            HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+            if (passengerNotifications == null) {
+                passengerNotifications = new HashMap<>();
+            }
+            passengerNotifications.put(newNotificationUid, false);
+
             HashMap<String, Boolean> participatedRides = passenger.getUser().getParticipatedRides();
             participatedRides.remove(rideUid);
             mUsersRef.child(passenger.getUser().getUid()).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
+            mUsersRef.child(passenger.getUser().getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+            mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
         }
 
         HashMap<String, Boolean> offeredRides = CurrentUserProfile.offeredRidesMap;

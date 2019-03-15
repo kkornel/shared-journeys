@@ -1,20 +1,17 @@
 package com.put.miasi.main;
 
 
-import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,18 +23,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.notifications.NotificationService;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
-import com.put.miasi.utils.LocationUtils;
 import com.put.miasi.utils.User;
+
+import static com.put.miasi.main.notifications.NotificationUtils.NOTIFICATION_INTENT_EXTRA;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "EntryActivity";
 
-    // private ActionBar mToolbar;
     private Toolbar mToolbar;
+
+    private FirebaseAuth mAuth;
+    private String mUserUid;
+    private DatabaseReference mRootRef;
+    private DatabaseReference mUsersRef;
 
     private BottomNavigationView mNavigation;
 
@@ -94,64 +97,86 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // mToolbar = getSupportActionBar();
-
+        Log.d(TAG, "onCreate: ");
+        
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.title_rides));
 
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mNavigation.setSelectedItemId(R.id.navigation_rides);
+        // mNavigation.setSelectedItemId(R.id.navigation_rides);
 
-        loadFragment(new RidesFragment());
+        mAuth = FirebaseAuth.getInstance();
+        mUserUid = mAuth.getCurrentUser().getUid();
+        CurrentUserProfile.uid = mUserUid;
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = mRootRef.child(Database.USERS);
+
+        boolean openNotifications = getIntent().getBooleanExtra(NOTIFICATION_INTENT_EXTRA, false);
+        if (openNotifications) {
+            mNavigation.setSelectedItemId(R.id.navigation_notifications);
+            mToolbar.setTitle(getString(R.string.title_notifications));
+            resetNavIcon();
+            loadFragment(new NotificationFragment());
+        } else {
+            mNavigation.setSelectedItemId(R.id.navigation_rides);
+            mToolbar.setTitle(getString(R.string.title_rides));
+            resetNavIcon();
+            loadFragment(new RidesFragment());
+        }
+    }
+
+    private void startNotificationService() {
+        if (isMyServiceRunning(NotificationService.class)) {
+            Log.d(TAG, "onCreate: Service -> RUNNING");
+        } else {
+            Log.d(TAG, "onCreate: Service -> NOT RUNNING");
+            startService(new Intent(this, NotificationService.class));
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: ");
         getUserProfile();
+    }
 
-        // if (!LocationUtils.hasLocationPermissions(this)) {
-        //     LocationUtils.requestLocationPermissions(this,this, findViewById(R.id.container));
-        // }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
 
-
-
-        Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.container),
-                R.string.permission_rationale,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) snackbar.getView().getLayoutParams();
-        layoutParams.setAnchorId(R.id.navigation);
-        layoutParams.anchorGravity = Gravity.TOP;
-        layoutParams.gravity = Gravity.TOP;
-        snackbar.getView().setLayoutParams(layoutParams);
-        snackbar.show();
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
     }
 
     private void getUserProfile() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        final String userUid = auth.getCurrentUser().getUid();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference usersRef = database.getReference(Database.USERS).child(userUid);
+        final DatabaseReference usersRef = mUsersRef.child(mUserUid);
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                CurrentUserProfile.loadUserData(userUid, user);
+                CurrentUserProfile.loadUserData(mUserUid, user);
+
+                startNotificationService();
             }
 
             @Override
@@ -163,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
-        // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
@@ -181,5 +205,15 @@ public class MainActivity extends AppCompatActivity {
             item.setVisible(false);
         }
         return true;
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
