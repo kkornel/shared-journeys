@@ -1,14 +1,21 @@
 package com.put.miasi.main.search;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,20 +23,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.CircleTransform;
+import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
-public class RideDetailsActivity extends AppCompatActivity
-{
+public class RideDetailsActivity extends AppCompatActivity  {
     private Button btn_reservation;
     private ImageButton ib_see_on_the_map;
     private ImageView iv_avatar;
@@ -96,12 +108,15 @@ public class RideDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                Intent seatsReservationIntent = new Intent(RideDetailsActivity.this, SeatsReservationActivity.class);
-                seatsReservationIntent.putExtra("size", String.valueOf(offer.seats));
-                seatsReservationIntent.putExtra("driver", rider);
-                seatsReservationIntent.putExtra("ride", offer);
+                showSpinnerDialog();
 
-                startActivity(seatsReservationIntent);
+                // TODO: jezeli dziala to potem wywalic
+                // Intent seatsReservationIntent = new Intent(RideDetailsActivity.this, SeatsReservationActivity.class);
+                // seatsReservationIntent.putExtra("size", String.valueOf(offer.seats));
+                // seatsReservationIntent.putExtra("driver", rider);
+                // seatsReservationIntent.putExtra("ride", offer);
+                //
+                // startActivity(seatsReservationIntent);
             }
         });
         ib_see_on_the_map = (ImageButton) findViewById(R.id.ib_see_on_the_map);
@@ -114,7 +129,102 @@ public class RideDetailsActivity extends AppCompatActivity
                 startActivity(locationIntent);
             }
         });
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = mDatabaseRef.child(Database.USERS);
+        mRidesRef = mDatabaseRef.child(Database.RIDES);
+        mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
+
+        mNumOfSeatsPicked = 1;
+
     }
+
+    private List<String> numbersList = null;
+    private Spinner spinner = null;
+
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mRidesRef;
+    private DatabaseReference mNotificationsRef;
+
+
+    private int mNumOfSeatsPicked;
+    private User mDriver;
+    private RideOffer mOffer;
+
+    private void showSpinnerDialog () {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final LayoutInflater inflater = getLayoutInflater();
+
+        View vView = inflater.inflate(R.layout.dialog_seats_reservation, null);
+        final Spinner spinner = vView.findViewById(R.id.spinner);
+
+        int size = Integer.valueOf(offer.getSeats());
+        fillListWithNumbers(size);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,numbersList);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+
+        spinner.setAdapter(adapter);
+
+        final AlertDialog dialog;
+
+        builder.setView(vView)
+                // .setTitle("Rate " + user.getFirstName())
+                .setPositiveButton("Book", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mNumOfSeatsPicked = spinner.getSelectedItemPosition() + 1;
+                        bookSeats();
+                        Toast.makeText(getApplicationContext(), "Booked: " + mNumOfSeatsPicked, Toast.LENGTH_SHORT).show();
+
+                        // TODO startActivity or finish?
+                        startActivity(new Intent(RideDetailsActivity.this, MainActivity.class));
+                        // finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    private void fillListWithNumbers(int size)
+    {
+        numbersList = new ArrayList<String>();
+        for (int i=0; i<size; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    numbersList.add("1");
+                    break;
+                case 1:
+                    numbersList.add("2");
+                    break;
+                case 2:
+                    numbersList.add("3");
+                    break;
+                case 3:
+                    numbersList.add("4");
+                    break;
+                case 4:
+                    numbersList.add("5");
+                    break;
+                case 5:
+                    numbersList.add("6");
+                    break;
+                case 6:
+                    numbersList.add("7");
+                    break;
+            }
+        }
+    }
+
     private void fillRideDetails()
     {
         Picasso.get().load(rider.getAvatarUrl()).transform(new CircleTransform()).into(iv_avatar);
@@ -151,6 +261,55 @@ public class RideDetailsActivity extends AppCompatActivity
     }
 
     ////////////////////// FIREBASE ///////////////////
+
+    private void bookSeats() {
+        HashMap<String, Boolean> participatedRidesMap = CurrentUserProfile.participatedRidesMap;
+        participatedRidesMap.put(mOffer.getKey(), false);
+
+        CurrentUserProfile.participatedRidesMap = participatedRidesMap;
+
+        mUsersRef.child(CurrentUserProfile.uid).child(Database.PARTICIPATED_RIDES).setValue(participatedRidesMap);
+
+        int availableSeats = mOffer.getSeats();
+        availableSeats -= mNumOfSeatsPicked;
+
+        mOffer.setSeats(availableSeats);
+
+        HashMap<String, Integer> passengers = mOffer.getPassengers();
+        if (passengers == null) {
+            passengers = new HashMap<>();
+        }
+
+        if (passengers.containsKey(CurrentUserProfile.uid)) {
+            int alreadyReserved = passengers.get(CurrentUserProfile.uid);
+            alreadyReserved += mNumOfSeatsPicked;
+            passengers.put(CurrentUserProfile.uid, alreadyReserved);
+        } else {
+            passengers.put(CurrentUserProfile.uid, mNumOfSeatsPicked);
+        }
+
+        mOffer.setPassengers(passengers);
+
+        mRidesRef.child(mOffer.getKey()).child(Database.PASSENGERS).setValue(passengers);
+        mRidesRef.child(mOffer.getKey()).child(Database.SEATS).setValue(availableSeats);
+
+        String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
+        Notification notification = new Notification(
+                Notification.NotificationType.NEW_PASSENGER,
+                CurrentUserProfile.uid,
+                mOffer.getKey(),
+                mNumOfSeatsPicked);
+
+        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        if (driverNotifications == null) {
+            driverNotifications = new HashMap<>();
+        }
+        driverNotifications.put(newNotificationUid, false);
+
+        mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
+        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
+    }
+
     private void firebaseInit() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
@@ -165,6 +324,7 @@ public class RideDetailsActivity extends AppCompatActivity
                     if (uid.equals(user.getUid()))
                     {
                         rider = user;
+                        mDriver = rider;
                     }
                 }
                 fillRideDetails();
@@ -186,6 +346,8 @@ public class RideDetailsActivity extends AppCompatActivity
                     if (rideKey.equals(rideOffer.getKey()))
                     {
                         offer = rideOffer;
+                        mOffer = offer;
+
                         uid = rideOffer.getDriverUid();
                         usersRef.addListenerForSingleValueEvent(usersListener);
                     }

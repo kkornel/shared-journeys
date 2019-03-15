@@ -48,6 +48,8 @@ public class SeatsReservationActivity extends AppCompatActivity implements Adapt
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // TODO: jezeli dziala to potem wywalic
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seats_reservation);
 
