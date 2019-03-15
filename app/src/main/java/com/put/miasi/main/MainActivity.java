@@ -4,7 +4,9 @@ package com.put.miasi.main;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -176,7 +178,13 @@ public class MainActivity extends AppCompatActivity {
                 User user = dataSnapshot.getValue(User.class);
                 CurrentUserProfile.loadUserData(mUserUid, user);
 
-                startNotificationService();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startNotificationService();
+                    }
+                }, 1000);
             }
 
             @Override

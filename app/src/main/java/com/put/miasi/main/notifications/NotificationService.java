@@ -90,7 +90,8 @@ public class NotificationService extends Service {
 
                 boolean hasBeenSeenByUser = false;
 
-                if (CurrentUserProfile.notificationsMap != null) {
+                if (CurrentUserProfile.notificationsMap != null && CurrentUserProfile.notificationsMap.size() != 0) {
+                    Log.d(TAG, "onChildAdded: " + CurrentUserProfile.notificationsMap);
                     hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
                 }
                 Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
