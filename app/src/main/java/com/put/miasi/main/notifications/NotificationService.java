@@ -83,15 +83,18 @@ public class NotificationService extends Service {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                // TODO think about new way of retrieving
 
+                String notificationUid = dataSnapshot.getKey();
                 Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
                 Log.d(TAG, "onChildAdded: s " + s);
 
-                if(CurrentUserProfile.notificationsMap.containsKey(dataSnapshot.getKey())) {
-                    Log.d(TAG, "onChildAdded: mam");
+                boolean hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
+                Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
+
+                if (hasBeenSeenByUser) {
+                    Log.d(TAG, "onChildAdded: not new");
                 } else {
-                    Log.d(TAG, "onChildAdded: nie mam");
+                    Log.d(TAG, "onChildAdded: new");
 
                     Notification notification = dataSnapshot.getValue(Notification.class);
                     Notification.NotificationType notificationType = notification.getNotificationType();

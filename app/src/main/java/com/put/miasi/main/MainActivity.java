@@ -125,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
             resetNavIcon();
             loadFragment(new RidesFragment());
         }
+    }
 
+    private void startNotificationService() {
         if (isMyServiceRunning(NotificationService.class)) {
             Log.d(TAG, "onCreate: Service -> RUNNING");
         } else {
@@ -173,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 CurrentUserProfile.loadUserData(mUserUid, user);
+
+                startNotificationService();
             }
 
             @Override
