@@ -69,6 +69,8 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     private HashMap<String, User> mSenders;
     private HashMap<String, RideOffer> mRides;
 
+    private int mIndex;
+
     private boolean mHasDataChanged;
 
     public NotificationFragment() {
@@ -191,18 +193,20 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     return;
                 }
 
-                Log.d("HALO", "onDataChange: notificationsFromProfile " + notificationsFromProfile.size());
-                Log.d("HALO", "onDataChange: mNotificationsFromProfile " + mNotificationsFromProfile.size());
+                Log.d(TAG, "onDataChange: notificationsFromProfile " + notificationsFromProfile);
+                Log.d(TAG, "onDataChange: notificationsFromProfile " + notificationsFromProfile.size());
+                Log.d(TAG, "onDataChange: notificationsFromProfile " + mNotificationsFromProfile);
+                Log.d(TAG, "onDataChange: mNotificationsFromProfile " + mNotificationsFromProfile.size());
 
                 if (mNotificationsFromProfile.size() == notificationsFromProfile.size()) {
-                    Log.d("HALO", "onDataChange: if");
+                    Log.d(TAG, "onDataChange: if");
                     mHasDataChanged = false;
                     mSwipeRefresh.setRefreshing(false);
                     Toast.makeText(getActivity(), "No new data", Toast.LENGTH_SHORT).show();
                     checkIfListIsEmpty();
                 } else {
                     mNotificationsFromProfile = new HashMap<>();
-                    Log.d("HALO", "onDataChange: else");
+                    Log.d(TAG, "onDataChange: else");
                     mHasDataChanged = true;
                     mNotificationsFromProfile = notificationsFromProfile;
                     if (mNotificationsFromProfile == null || mNotificationsFromProfile.size() == 0) {
@@ -262,8 +266,6 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         userNotificationsRef.addListenerForSingleValueEvent(userNotificationListener);
     }
     
-    private int mIndex;
-    
     private void getAllSenders() {
         mIndex = mSenders.size();
         Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mSenders.size() = " + mSenders.size());
@@ -322,8 +324,6 @@ public class NotificationFragment extends Fragment implements NotificationListIt
             mRidesRef.child(rideUid).addListenerForSingleValueEvent(rideListener);
         }
     }
-    
-    
 
     public void setNotificationList(List<Notification> notifications) {
         Log.d(TAG, "setNotificationList: ");
