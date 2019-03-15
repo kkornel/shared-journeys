@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
@@ -105,6 +107,14 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
                 int min = mMin;
 
                 cl.set(year, month, day, hour, min);
+
+                Log.d(TAG, "onClick: " + Calendar.getInstance().getTime());
+                Log.d(TAG, "onClick: " + cl.getTime());
+
+                if (Calendar.getInstance().getTime().getTime() > cl.getTime().getTime()) {
+                    Toast.makeText(getApplicationContext(), "The chosen time has elapsed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 mRideOffer.setDate(cl.getTime().getTime());
 

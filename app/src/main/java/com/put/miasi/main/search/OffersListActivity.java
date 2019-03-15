@@ -79,7 +79,7 @@ public class OffersListActivity extends AppCompatActivity {
     {
         ListView lv = (ListView) findViewById(R.id.listview);
         lv.setAdapter(null);
-        lv.setAdapter(new MyListAdapter(this, R.layout.list_item, data));
+        lv.setAdapter(new MyListAdapter(this, R.layout.list_item_offer, data));
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
