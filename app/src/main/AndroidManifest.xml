@@ -76,9 +76,8 @@
             android:required="false" />
 
         <service
-            android:name="com.put.miasi.main.notifications.NotificationService"
-            android:exported="false"/>
-
+            android:name=".main.notifications.NotificationService"
+            android:exported="false" />
     </application>
 
 </manifest>
