@@ -53,7 +53,7 @@ import java.io.IOException;
 
 public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG = "EditProfileActivity";
-    
+
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private Button mBrowseButton;
@@ -406,15 +406,17 @@ public class EditProfileActivity extends AppCompatActivity {
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mEmail).matches()) {
                 mEmailEditText.setError(getString(R.string.register_invalid_email));
                 valid = false;
-            } else {
-                mEmailEditText.setError(null);
             }
+        } else {
+            mEmailEditText.setError(null);
         }
 
         mPhone = mPhoneEditText.getText().toString();
-        if (!PhoneNumberUtils.isGlobalPhoneNumber(mPhone)) {
-            mPhoneEditText.setError(getString(R.string.register_invalid_phone));
-            valid = false;
+        if (!TextUtils.isEmpty(mPhone)) {
+            if (!PhoneNumberUtils.isGlobalPhoneNumber(mPhone)) {
+                mPhoneEditText.setError(getString(R.string.register_invalid_phone));
+                valid = false;
+            }
         } else {
             mPhoneEditText.setError(null);
         }
