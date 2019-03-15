@@ -25,8 +25,10 @@ import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
+import com.put.miasi.utils.LocationUtils;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
+import com.put.miasi.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -122,7 +124,9 @@ public class OffersListActivity extends AppCompatActivity {
             String arrivalHour = DateUtils.getHourFromCalendar(cal);
             String arrivalMin = DateUtils.getMinFromCalendar(cal);
             offer.hour_end =arrivalHour + ":" + arrivalMin;
-            offer.distance = "5km" + " from you";
+
+
+            offer.distance = String.format("%.1f", LocationUtils.distanceToYou(x.getStartPoint().toLatLng()) / 1000) + " km from you";
             offer.seats = "Available seats: " + x.getSeats();
             data.add(offer);
         }

@@ -85,13 +85,7 @@
 
     <!-- Notifications -->
 
-    <string name="location_tracking_notification_title">MoonRunner</string>
-    <string name="location_tracking_notification_body">00:00:00</string>
     <string name="main_notification_channel_name">Primary</string>
-    <string name="resume_action_button">Resume</string>
-    <string name="pause_action_button">Pause</string>
-    <string name="pause_action_content_text">Paused</string>
-
 
     <!-- Permissions -->
 
@@ -100,10 +94,10 @@
     <string name="request_location_updates">Request location updates</string>
     <string name="remove_location_updates">Remove location updates</string>
     <string name="enable_gps">Enable GPS</string>
-    <string name="enable_internet">Internet connection is required to save training</string>
+    <string name="enable_internet">Internet connection is required</string>
     <string name="internet_connection_needed">Internet connection is required</string>
     <string name="internet_rationale">Internet connection is needed for core functionality</string>
-    <string name="enable_gps_to_check_weather">Enable GPS in order to check weather</string>
+    <string name="enable_gps_to_check_weather">Enable GPS in order to search rides</string>
 
 
     <!-- Confirm Password Dialog -->
