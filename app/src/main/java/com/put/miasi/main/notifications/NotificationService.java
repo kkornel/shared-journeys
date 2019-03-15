@@ -88,7 +88,11 @@ public class NotificationService extends Service {
                 Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
                 Log.d(TAG, "onChildAdded: s " + s);
 
-                boolean hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
+                boolean hasBeenSeenByUser = false;
+
+                if (CurrentUserProfile.notificationsMap != null) {
+                    hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
+                }
                 Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
 
                 if (hasBeenSeenByUser) {

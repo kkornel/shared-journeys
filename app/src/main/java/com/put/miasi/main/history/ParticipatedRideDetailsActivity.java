@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.search.RideLocationActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
@@ -36,12 +38,14 @@ import java.util.HashMap;
 
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private static final String TAG = "ParticipatedRideDetails";
 
     private Button btn_action;
     private ImageView iv_avatar;
+    private ImageButton btn_location;
     private TextView tv_distance;
     private TextView tv_car_color;
     private TextView tv_rating;
@@ -119,6 +123,16 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         callDriverButton = findViewById(R.id.callDriverButton);
         tv_price = findViewById(R.id.tv_price);
         tv_endedOrActive = findViewById(R.id.tv_endedOrActive);
+
+        btn_location = findViewById(R.id.btn_location);
+        btn_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent locationIntent = new Intent(ParticipatedRideDetailsActivity.this, RideLocationActivity.class);
+                locationIntent.putExtra(RIDE_OFFER_INTENT, mRide);
+                startActivity(locationIntent);
+            }
+        });
 
         btn_action = findViewById(R.id.actionButton);
 

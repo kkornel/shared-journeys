@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
+import com.put.miasi.main.search.RideDetailsActivity;
+import com.put.miasi.main.search.RideLocationActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
@@ -45,11 +48,13 @@ import java.util.List;
 
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
+import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class OfferedRideDetailsActivity extends AppCompatActivity implements ListItemClickListener {
     private static final String TAG = "OfferedRideDetailsActiv";
 
     private Button btn_action;
+    private ImageButton btn_location;
     private TextView tv_distance;
     private TextView tv_car_color;
     private TextView tv_hour_end;
@@ -138,6 +143,17 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         passengersRecyclerView.setAdapter(mPassengersListAdapter);
 
         tv_noPassengers.setVisibility(View.INVISIBLE);
+
+        btn_location = findViewById(R.id.btn_location);
+        btn_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent locationIntent = new Intent(OfferedRideDetailsActivity.this, RideLocationActivity.class);
+                locationIntent.putExtra(RIDE_OFFER_INTENT, mRide);
+                startActivity(locationIntent);
+            }
+        });
+
 
         btn_action = findViewById(R.id.actionButton);
         btn_action.setText("Cancel offer");

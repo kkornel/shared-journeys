@@ -40,7 +40,7 @@ public class NotificationUtils {
 
         mNotificationBuilder =
                 new NotificationCompat.Builder(context, MIASI_NOTIFICATION_CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setLargeIcon(largeIcon(context))
                     // .setContentTitle("title")
                     // .setContentText("text")
@@ -87,7 +87,7 @@ public class NotificationUtils {
 
         Bitmap largeIcon = BitmapFactory.decodeResource(
                 resources,
-                R.drawable.ic_notifications_black_24dp);
+                R.drawable.ic_notification);
 
         return largeIcon;
     }
