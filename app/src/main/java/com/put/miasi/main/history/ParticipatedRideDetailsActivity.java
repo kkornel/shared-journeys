@@ -276,7 +276,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         participatedRides.remove(rideUid);
 
-        CurrentUserProfile.offeredRidesMap = participatedRides;
+        CurrentUserProfile.participatedRidesMap = participatedRides;
 
         String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
         Notification notification = new Notification(
@@ -284,13 +284,13 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
                 CurrentUserProfile.uid,
                 mRide.getKey());
 
-        HashMap<String, Boolean> passengerNotifications = mDriver.getNotifications();
-        if (passengerNotifications == null) {
-            passengerNotifications = new HashMap<>();
+        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        if (driverNotifications == null) {
+            driverNotifications = new HashMap<>();
         }
-        passengerNotifications.put(newNotificationUid, false);
+        driverNotifications.put(newNotificationUid, false);
 
-        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
         mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
@@ -303,15 +303,18 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
             idx++;
         }
 
-        mRide.passengers.remove(idx);
+        int bookedSeats = mRide.passengers.get(userUid);
+
+        mRide.passengers.remove(userUid);
 
         int seats = mRide.getSeats();
-        seats++;
+        seats += bookedSeats;
         mRide.setSeats(seats);
 
         mRidesRef.child(rideUid).setValue(mRide);
 
         CurrentUserProfile.getUserProfile();
+        finish();
     }
 
     private void fillRideDetails() {
