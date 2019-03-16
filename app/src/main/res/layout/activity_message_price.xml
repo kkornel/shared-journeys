@@ -35,10 +35,9 @@
         android:layout_marginRight="8dp"
         android:background="@color/colorSearchBackground"
         android:ems="10"
-        android:hint="e.g. 25"
+        android:hint="Price"
         android:inputType="number"
         android:padding="8dp"
-        android:text="43"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/priceTextView" />
@@ -72,10 +71,9 @@
         android:layout_marginRight="16dp"
         android:background="@color/colorSearchBackground"
         android:ems="10"
-        android:hint="e.g. I will be waiting at the gas station "
+        android:hint="Provide more details"
         android:inputType="textMultiLine"
         android:padding="8dp"
-        android:text="No dogs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageTextView" />
