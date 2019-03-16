@@ -85,6 +85,8 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
     private List<Passenger> mPassengersList;
 
+    private HashMap<User, Boolean> mWasRated; /* So you cant rate him twice */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +115,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mIsEnded = !DateUtils.isNowBeforeDate(cal.getTime());
 
         mPassengersList = new ArrayList<>();
+        mWasRated = new HashMap<>();
 
         initializeComponents();
         getPassengersProfiles();
@@ -185,7 +188,11 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
             if(mIsAlreadyRated) {
                 Toast.makeText(getApplicationContext(), "You've already rated passengers", Toast.LENGTH_SHORT).show();
             } else {
-                ratePassengersDialog(mPassengersList.get(clickedItemIndex));
+                if (mWasRated.containsKey(mPassengersList.get(clickedItemIndex).getUser())) {
+                    Toast.makeText(getApplicationContext(), "You've already rated that passenger", Toast.LENGTH_SHORT).show();
+                } else {
+                    ratePassengersDialog(mPassengersList.get(clickedItemIndex));
+                }
             }
         } else {
             rejectCallDialog(mPassengersList.get(clickedItemIndex));
@@ -318,6 +325,10 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
 
         mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
+
+        mWasRated.put(user, true);
+
+        loadNewData(mPassengersList);
     }
 
     private void makeRated() {

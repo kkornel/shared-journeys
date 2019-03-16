@@ -20,9 +20,10 @@ public class User implements Serializable {
     private String email;
     private String phone;
     // private List<String> offeredRides;
-    private HashMap<String, Boolean> offeredRides;
-    private HashMap<String, Boolean> participatedRides;
-    private HashMap<String, Boolean> notifications;
+
+    private HashMap<String, Boolean> offeredRides;      /* String - RideUid, Boolean - has passengers were rated, true if yes, and you cant rate them later */
+    private HashMap<String, Boolean> participatedRides; /* String - RideUid, Boolean - has passengers were rated, true if yes, and you cant rate them later */
+    private HashMap<String, Boolean> notifications;     /* String - NotificationUid, Boolean - has notification was seen? true if yes (you have to open dialog and click OK to make it seen */
     // private List<String> participatedRides;
     private float driverRating;
     private int numberOfDriverRatings;

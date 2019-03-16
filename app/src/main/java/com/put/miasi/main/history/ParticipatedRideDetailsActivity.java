@@ -254,7 +254,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         btn_action.setEnabled(false);
 
-        tv_rating.setText(String.valueOf(driverRate));
+        tv_rating.setText(String.format("%.1f", driverRate));
         tv_numRatings.setText(String.valueOf(numOfDriverRatings));
     }
 
@@ -359,7 +359,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
             }
         });
 
-        tv_rating.setText(String.valueOf(mDriver.getDriverRatingAvg()));
+        tv_rating.setText(String.format("%.1f", mDriver.getDriverRatingAvg()));
         tv_numRatings.setText(String.valueOf(mDriver.getNumberOfDriverRatings()));
 
         tv_car.setText(mRide.getCar().getBrand() + " " + mRide.getCar().getModel());

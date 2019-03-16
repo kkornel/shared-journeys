@@ -60,7 +60,7 @@ public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAd
 
             viewHolder.mNameTextView.setText(user.getFirstName() + " " + user.getSurname());
             viewHolder.mSeatsTextView.setText(passenger.getNumOfSeatsReserved() + "");
-            viewHolder.mAvgPassRateTextView.setText(user.getPassengerRatingAvg() + "");
+            viewHolder.mAvgPassRateTextView.setText(String.format("%.1f", user.getPassengerRatingAvg()));
             viewHolder.mNumPassRateTextView.setText(user.getNumberOfPassengerRatings() + "");
         }
     }

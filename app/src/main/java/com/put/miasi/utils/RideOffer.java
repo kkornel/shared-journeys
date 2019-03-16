@@ -23,6 +23,8 @@ public class RideOffer implements Serializable {
     public int price;
     public String message;
     // public List<String> passengers;
+
+    // String - passenger UID, Integer - number of seats booked
     public HashMap<String, Integer> passengers;
 
     public RideOffer() {
