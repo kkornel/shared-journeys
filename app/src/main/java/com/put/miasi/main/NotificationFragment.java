@@ -303,8 +303,18 @@ public class NotificationFragment extends Fragment implements NotificationListIt
             ValueEventListener rideListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "asd-> " + dataSnapshot.toString());
+
                     RideOffer ride = dataSnapshot.getValue(RideOffer.class);
                     // TODO 'void com.put.miasi.utils.RideOffer.setKey(java.lang.String)' on a null object reference
+                    // if (ride != null) {
+                    //     ride.setKey(rideUid);
+                    //     mRides.put(rideUid, ride);
+                    // } else {
+                    //     mNotificationsFromProfile.remove(rideUid);
+                    //     mNotifications.remove(getIndex(rideUid));
+                    // }
+
                     ride.setKey(rideUid);
                     mRides.put(rideUid, ride);
                     mIndex--;
