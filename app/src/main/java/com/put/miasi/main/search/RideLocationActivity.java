@@ -1,7 +1,6 @@
 package com.put.miasi.main.search;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +17,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.put.miasi.R;
-import com.put.miasi.main.offer.OfferSummaryActivity;
-import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.FetchURL;
 import com.put.miasi.utils.LocationUtils;
 import com.put.miasi.utils.OfferLog;
@@ -65,8 +62,6 @@ public class RideLocationActivity extends AppCompatActivity implements OnMapRead
         });
 
         mRideOffer = (RideOffer) getIntent().getSerializableExtra(RIDE_OFFER_INTENT);
-        mRideOffer.getStartPoint().getLatitude();
-
 
         mStartLatLng = mRideOffer.getStartPoint().toLatLng();
         mDestinationLatLng =  mRideOffer.getDestinationPoint().toLatLng();
@@ -76,9 +71,6 @@ public class RideLocationActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-
 
         Marker startMarker = mMap.addMarker(new MarkerOptions()
                 .position(mStartLatLng)
@@ -100,8 +92,14 @@ public class RideLocationActivity extends AppCompatActivity implements OnMapRead
         // builder.include(destMarker.getPosition());
         builder.include(youMarker.getPosition());
 
-        LatLngBounds bounds = builder.build();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_MAP_PADDING));
+        final LatLngBounds bounds = builder.build();
+
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_MAP_PADDING));
+            }
+        });
 
         new FetchURL(RideLocationActivity.this).execute(getUrl(mStartLatLng, mDestinationLatLng, "driving"), "driving");
     }
