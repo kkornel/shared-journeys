@@ -7,7 +7,7 @@ public class Database {
     public static final String NOTIFICATIONS = "notifications";
 
     public static final String STORAGE_AVATARS = "avatars";
-    public static final String DEFAULT_IMG_NAME = "default.jpg";
+    public static final String DEFAULT_IMG_NAME = "default.png";
 
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";

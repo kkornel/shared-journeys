@@ -36,7 +36,6 @@ import static com.put.miasi.utils.LocationUtils.REQUEST_CODE_FINE_LOCATION_PERMI
 public class RidesFragment extends Fragment {
     private static final String TAG = "RidesFragment";
 
-    private Button mTestbtn;
     private Button mOfferButton;
     private Button mSearchButton;
     
@@ -61,28 +60,6 @@ public class RidesFragment extends Fragment {
         mUsersRef = mRootRef.child(Database.USERS);
         mRidesRef = mRootRef.child(Database.RIDES);
         mNotificationsRef = mRootRef.child(Database.NOTIFICATIONS);
-
-        mTestbtn = rootView.findViewById(R.id.testButton);
-        mTestbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // startActivity(new Intent(getActivity(), MapsActivity.class));
-
-                Notification notification = new Notification();
-                notification.setSenderUid(CurrentUserProfile.uid);
-                notification.setRate(32.0f);
-                notification.setRideUid("asddsfv3wd43243");
-                notification.setNotificationType(Notification.NotificationType.RATED_AS_DRIVER);
-
-                String newUid = mNotificationsRef.push().getKey();
-                mNotificationsRef.child(newUid).setValue(notification);
-
-                CurrentUserProfile.notificationsMap.put(newUid, false);
-                mUsersRef.child(CurrentUserProfile.uid).child(Database.NOTIFICATIONS).setValue(CurrentUserProfile.notificationsMap);
-
-            }
-
-        });
 
         mOfferButton = rootView.findViewById(R.id.offerButton);
         mOfferButton.setOnClickListener(new View.OnClickListener() {
