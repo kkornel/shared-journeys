@@ -82,10 +82,8 @@ public class OptionsFragment extends Fragment {
     }
     private void fillComponents()
     {
-        currentUser = new User();
         CurrentUserProfile.getUserProfile();
-        CurrentUserProfile.loadUserData(CurrentUserProfile.uid,currentUser);
-        Picasso.get().load(currentUser.getAvatarUrl()   ).transform(new CircleTransform()).into(iv_avatar);
+        Picasso.get().load(CurrentUserProfile.avatarUrl).transform(new CircleTransform()).into(iv_avatar);
         tv_nick.setText(CurrentUserProfile.firstName + " " + CurrentUserProfile.surname);
         tv_driverRating.setText("");
         tv_numberOfDriverRatings.setText("");
