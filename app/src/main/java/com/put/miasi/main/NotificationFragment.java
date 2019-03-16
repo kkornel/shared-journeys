@@ -306,9 +306,8 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                 loadNewData();
             }
 
-
             if (rideUid == null) {
-
+                loadNewData();
                 continue;
             }
 

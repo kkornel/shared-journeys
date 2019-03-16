@@ -254,7 +254,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         btn_action.setEnabled(false);
 
-        tv_rating.setText(String.format("%.1f", driverRate));
+        tv_rating.setText(String.format("%.1f", driverRate / numOfDriverRatings));
         tv_numRatings.setText(String.valueOf(numOfDriverRatings));
     }
 
