@@ -300,6 +300,18 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mRides.size() = " + mRides.size());
         
         for (final String rideUid : mRides.keySet()) {
+
+            if (rideUid == null && mRides.size() == 1) {
+                mSwipeRefresh.setRefreshing(false);
+                loadNewData();
+            }
+
+
+            if (rideUid == null) {
+
+                continue;
+            }
+
             ValueEventListener rideListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

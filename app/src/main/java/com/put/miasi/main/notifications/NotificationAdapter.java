@@ -70,6 +70,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             User sender = mUsers.get(notification.getSenderUid());
             RideOffer ride = mRides.get(notification.getRideUid());
 
+            String destinationFromCanceled = notification.getDestinationFromCanceled();
+
             Picasso.get()
                     .load(sender.getAvatarUrl())
                     .placeholder(R.drawable.ic_account_circle_black_24dp)
@@ -84,7 +86,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     title = "New passenger for your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
                     break;
                 case RIDE_CANCELED:
-                    title = sender.getFullname() + " canceled ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
+                    title = sender.getFullname() + " canceled ride to " + destinationFromCanceled;
                     break;
                 case RIDE_DECLINED:
                     title = sender.getFullname() + " declined your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());

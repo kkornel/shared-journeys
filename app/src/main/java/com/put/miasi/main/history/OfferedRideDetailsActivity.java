@@ -3,6 +3,8 @@ package com.put.miasi.main.history;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.service.autofill.Dataset;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -458,31 +460,86 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
                 null);
     }
 
+    private void removeExistingNotificationsFromPassengers() {
+
+    }
+
     private void cancel() {
-        String rideUid = mRide.getKey();
-        String userUid = CurrentUserProfile.uid;
+        final String rideUid = mRide.getKey();
+        final String userUid = CurrentUserProfile.uid;
 
-        for (Passenger passenger : mPassengersList) {
-            User user = passenger.getUser();
+        for (final Passenger passenger : mPassengersList) {
+            final User user = passenger.getUser();
+            mNotificationsRef.child(passenger.getUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Notification notification1 = ds.getValue(Notification.class);
+                        String notification1Uid = ds.getKey();
 
-            String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
-            Notification notification = new Notification(
-                    Notification.NotificationType.RIDE_CANCELED,
-                    CurrentUserProfile.uid,
-                    mRide.getKey());
+                        if (notification1.getRideUid().equals(rideUid)) {
+                            mNotificationsRef.child(passenger.getUser().getUid()).child(notification1Uid).removeValue();
+                        }
+                    }
+                }
 
-            HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-            if (passengerNotifications == null) {
-                passengerNotifications = new HashMap<>();
-            }
-            passengerNotifications.put(newNotificationUid, false);
-
-            HashMap<String, Boolean> participatedRides = passenger.getUser().getParticipatedRides();
-            participatedRides.remove(rideUid);
-            mUsersRef.child(passenger.getUser().getUid()).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
-            mUsersRef.child(passenger.getUser().getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
-            mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+                }
+            });
         }
+
+        mNotificationsRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Notification notification1 = ds.getValue(Notification.class);
+                    String notification1Uid = ds.getKey();
+
+                    if (notification1.getRideUid().equals(rideUid)) {
+                        mNotificationsRef.child(userUid).child(notification1Uid).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+                for (final Passenger passenger : mPassengersList) {
+                    final User user = passenger.getUser();
+
+
+                    final String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+                    Notification notification = new Notification(
+                            Notification.NotificationType.RIDE_CANCELED,
+                            CurrentUserProfile.uid,
+                            GeoUtils.getCityFromLatLng(getApplicationContext(), mRide.destinationPoint.toLatLng()));
+
+                    HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+                    if (passengerNotifications == null) {
+                        passengerNotifications = new HashMap<>();
+                    }
+                    passengerNotifications.put(newNotificationUid, false);
+
+                    HashMap<String, Boolean> participatedRides = user.getParticipatedRides();
+                    participatedRides.remove(rideUid);
+                    mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
+                    mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+                    mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
+                }
+            }
+        };
+
+        handler.postDelayed(runnable, 2000);
+
+
 
         HashMap<String, Boolean> offeredRides = CurrentUserProfile.offeredRidesMap;
 

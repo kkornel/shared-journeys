@@ -22,6 +22,7 @@ public class Notification implements Serializable {
     private float rate;
     private int seatsBooked;
     private String rideUid;
+    private String destinationFromCanceled;
     private long timeStamp;
 
     public Notification() {
@@ -44,10 +45,14 @@ public class Notification implements Serializable {
         this.timeStamp = DateUtils.getTimeStamp();
     }
 
-    public Notification(NotificationType notificationType, String senderUid, String rideUid) {
+    public Notification(NotificationType notificationType, String senderUid, String s) {
         this.notificationType = notificationType;
         this.senderUid = senderUid;
-        this.rideUid = rideUid;
+        if (notificationType == NotificationType.RIDE_CANCELED) {
+            this.destinationFromCanceled = s;
+        } else {
+            this.rideUid = s;
+        }
         this.timeStamp = DateUtils.getTimeStamp();
     }
 
@@ -107,6 +112,14 @@ public class Notification implements Serializable {
 
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getDestinationFromCanceled() {
+        return destinationFromCanceled;
+    }
+
+    public void setDestinationFromCanceled(String destinationFromCanceled) {
+        this.destinationFromCanceled = destinationFromCanceled;
     }
 
     @Override
