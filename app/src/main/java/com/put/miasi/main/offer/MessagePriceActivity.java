@@ -22,20 +22,6 @@ public class MessagePriceActivity extends AppCompatActivity {
 
     private RideOffer mRideOffer;
 
-    // TODO remove
-    void tests() {
-        String msg = "Ride or die";
-        String price = "39";
-        int pricePerSeat = Integer.valueOf(price);
-
-        mRideOffer.setMessage(msg);
-        mRideOffer.setPrice(pricePerSeat);
-
-        Intent intent = new Intent(MessagePriceActivity.this, OfferSummaryActivity.class);
-        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
-        startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +62,6 @@ public class MessagePriceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // TODO remove
-        // tests();
     }
 
     @Override

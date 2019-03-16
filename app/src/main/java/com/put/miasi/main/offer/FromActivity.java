@@ -46,17 +46,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private LatLng mStartLatLng;
 
-    // TODO remove
-    void tests() {
-        double lat = 52.406374, lon = 16.9251681;
-        RideOffer rideOffer = new RideOffer();
-        rideOffer.setStartPoint(new LatLon(new LatLng(lat, lon)));
-
-        Intent intent = new Intent(FromActivity.this, DestinationActivity.class);
-        intent.putExtra(RIDE_OFFER_INTENT, rideOffer);
-        startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,9 +122,6 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
-
-        // TODO remove
-        // tests();
     }
 
     @Override

@@ -36,6 +36,7 @@ import com.squareup.picasso.Picasso;
 
 public class OptionsFragment extends Fragment {
     private static final String TAG = "OptionsFragment";
+
     private ImageView iv_avatar;
     private TextView tv_nick;
     private TextView tv_driverRating;
@@ -47,7 +48,6 @@ public class OptionsFragment extends Fragment {
     private TextView tv_telephoneNumber;
     private TextView tv_email;
     private User currentUser;
-
 
     public OptionsFragment() {
         // Required empty public constructor
@@ -67,9 +67,7 @@ public class OptionsFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
-    private void initializeComponents(View view)
-    {
+    private void initializeComponents(View view) {
         iv_avatar = (ImageView) view.findViewById(R.id.iv_avatar);
         tv_nick = (TextView) view.findViewById(R.id.tv_nick);
         tv_driverRating = (TextView) view.findViewById(R.id.tv_driverRating);
@@ -81,11 +79,11 @@ public class OptionsFragment extends Fragment {
         tv_telephoneNumber = (TextView) view.findViewById(R.id.tv_telephoneNumber);
         tv_email = (TextView) view.findViewById(R.id.tv_email);
     }
-    private void fillComponents()
-    {
+
+    private void fillComponents() {
         Picasso.get().load(currentUser.getAvatarUrl()).transform(new CircleTransform()).into(iv_avatar);
         tv_nick.setText(currentUser.getFirstName() + " " + currentUser.getSurname());
-        tv_driverRating.setText("Driver rating: " + String.format("%.1f", currentUser.getDriverRatingAvg()) +"/5");
+        tv_driverRating.setText("Driver rating: " + String.format("%.1f", currentUser.getDriverRatingAvg()) + "/5");
         tv_numberOfDriverRatings.setText("Number of ratings: " + currentUser.getNumberOfDriverRatings());
         tv_numberOfDriverOffers.setText("Number of offered rides: " + currentUser.getOfferedRidesList().size());
         tv_passenger_rating.setText("Passenger rating: " + String.format("%.1f", currentUser.getPassengerRatingAvg()) + "/5");
@@ -113,40 +111,32 @@ public class OptionsFragment extends Fragment {
         }
     }
 
-
-
     ///////////////////// FIREBASE /////////////////////////////
-    private void firebaseInit()
-    {
-        Log.i(TAG,CurrentUserProfile.uid);
-    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-    final DatabaseReference usersRef = database.child(Database.USERS);
-    final ValueEventListener usersListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            for (DataSnapshot ds :dataSnapshot.getChildren()) {
-                User user = ds.getValue(User.class);
-                user.setUid(ds.getKey());
-                if (CurrentUserProfile.uid.equals(user.getUid()))
-                {
-                   currentUser = user;
-                   fillComponents();
+    private void firebaseInit() {
+        Log.i(TAG, CurrentUserProfile.uid);
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference usersRef = database.child(Database.USERS);
+        final ValueEventListener usersListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    User user = ds.getValue(User.class);
+                    user.setUid(ds.getKey());
+                    if (CurrentUserProfile.uid.equals(user.getUid())) {
+                        currentUser = user;
+                        fillComponents();
+                    }
                 }
             }
-        }
 
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-        }
-    };
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
 
         usersRef.addListenerForSingleValueEvent(usersListener);
-
     }
-
-
-
 }
 
 

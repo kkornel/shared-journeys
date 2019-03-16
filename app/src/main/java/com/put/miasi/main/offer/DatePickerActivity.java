@@ -12,10 +12,7 @@ import android.widget.CalendarView;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
-
-import java.util.Date;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
@@ -28,28 +25,6 @@ public class DatePickerActivity extends AppCompatActivity {
     private RideOffer mRideOffer;
     private long mTimePickedMilliSecs;
 
-    // TODO remove
-    void tests() {
-        if (mTimePickedMilliSecs == 0) {
-            mTimePickedMilliSecs = mCalendarView.getDate();
-        }
-        mRideOffer.setDate(mTimePickedMilliSecs);
-
-        Calendar cl = Calendar.getInstance();
-
-        // TODO remove
-        // ********************************************************************
-        Logger.d("MyDate", "*************************************************");
-        Logger.d("MyDate", "DatePicker: " + mCalendarView.getDate());
-        Logger.d("MyDate", "DatePicker: " + cl.toString());
-        Logger.d("MyDate", "DatePicker: " + new Date(mCalendarView.getDate()));
-        Logger.d("MyDate", "*************************************************");
-        // ********************************************************************
-
-        Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);
-        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
-        startActivity(intent);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +66,6 @@ public class DatePickerActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // TODO remove
-        // tests();
     }
 
     @Override

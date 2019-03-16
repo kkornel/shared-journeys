@@ -16,25 +16,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.main.history.HistoryAdapter;
 import com.put.miasi.main.history.OfferedRideDetailsActivity;
 import com.put.miasi.main.notifications.NotificationAdapter;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.NotificationListItemClickListener;
 import com.put.miasi.utils.RideOffer;
@@ -99,11 +94,9 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        // Toast.makeText(getActivity(), getString(R.string.refresh), Toast.LENGTH_SHORT).show();
                         mNoDataInfoTextView.setText(getString(R.string.loading));
                         mNoDataInfoTextView.setVisibility(View.VISIBLE);
                         getNotificationsFromProfile();
-                        // mSwipeRefresh.setRefreshing(false);
                     }
                 }
         );
@@ -193,20 +186,20 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     return;
                 }
 
-                Log.d(TAG, "onDataChange: notificationsFromProfile " + notificationsFromProfile);
-                Log.d(TAG, "onDataChange: notificationsFromProfile " + notificationsFromProfile.size());
-                Log.d(TAG, "onDataChange: notificationsFromProfile " + mNotificationsFromProfile);
-                Log.d(TAG, "onDataChange: mNotificationsFromProfile " + mNotificationsFromProfile.size());
+                // Log.d(TAG, "onDataChange: notificationsFromProfile " + notificationsFromProfile);
+                // Log.d(TAG, "onDataChange: notificationsFromProfile " + notificationsFromProfile.size());
+                // Log.d(TAG, "onDataChange: notificationsFromProfile " + mNotificationsFromProfile);
+                // Log.d(TAG, "onDataChange: mNotificationsFromProfile " + mNotificationsFromProfile.size());
 
                 if (mNotificationsFromProfile.size() == notificationsFromProfile.size()) {
-                    Log.d(TAG, "onDataChange: if");
+                    // Log.d(TAG, "onDataChange: if");
                     mHasDataChanged = false;
                     mSwipeRefresh.setRefreshing(false);
                     Toast.makeText(getActivity(), "No new data", Toast.LENGTH_SHORT).show();
                     checkIfListIsEmpty();
                 } else {
                     mNotificationsFromProfile = new HashMap<>();
-                    Log.d(TAG, "onDataChange: else");
+                    // Log.d(TAG, "onDataChange: else");
                     mHasDataChanged = true;
                     mNotificationsFromProfile = notificationsFromProfile;
                     if (mNotificationsFromProfile == null || mNotificationsFromProfile.size() == 0) {
@@ -215,8 +208,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     getNotifications();
                 }
 
-
-                Log.d(TAG, "getNotificationsFromProfile: " + mNotifications);
+                // Log.d(TAG, "getNotificationsFromProfile: " + mNotifications);
             }
 
             @Override
@@ -228,7 +220,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     }
 
     private void getNotifications() {
-        Log.d(TAG, "getNotifications: ");
+        // Log.d(TAG, "getNotifications: ");
 
         mNotifications = new ArrayList<>();
         mSenders = new HashMap<>();
@@ -252,9 +244,9 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     mRides.put(rideUid, null);
 
                     mNotifications.add(notification);
-                    Log.d(TAG, "onDataChange: " + notification.toString());
+                    // Log.d(TAG, "onDataChange: " + notification.toString());
                 }
-                Log.d(TAG, "onDataChange: DONE NOTIFICATIONS: " + mNotifications);
+                // Log.d(TAG, "onDataChange: DONE NOTIFICATIONS: " + mNotifications);
                 getAllSenders();
             }
 
@@ -268,7 +260,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     
     private void getAllSenders() {
         mIndex = mSenders.size();
-        Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mSenders.size() = " + mSenders.size());
+        // Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mSenders.size() = " + mSenders.size());
         
         for (final String senderUid : mSenders.keySet()) {
             ValueEventListener userListener = new ValueEventListener() {
@@ -279,9 +271,9 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     mSenders.put(senderUid, sender);
                     mIndex--;
 
-                    Log.d(TAG, "onDataChange: mIndex = " + mIndex);
+                    // Log.d(TAG, "onDataChange: mIndex = " + mIndex);
                     if (mIndex <= 0) {
-                        Log.d(TAG, "onDataChange: DONE SENDERS ");
+                        // Log.d(TAG, "onDataChange: DONE SENDERS ");
                         getAllRides();
                     }
                 }
@@ -297,7 +289,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
 
     private void getAllRides() {
         mIndex = mRides.size();
-        Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mRides.size() = " + mRides.size());
+        // Log.d(TAG, "getAllSenders: mIndex = " + mIndex + " mRides.size() = " + mRides.size());
         
         for (final String rideUid : mRides.keySet()) {
 
@@ -314,25 +306,17 @@ public class NotificationFragment extends Fragment implements NotificationListIt
             ValueEventListener rideListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "asd-> " + dataSnapshot.toString());
+                    // Log.d(TAG, "asd-> " + dataSnapshot.toString());
 
                     RideOffer ride = dataSnapshot.getValue(RideOffer.class);
-                    // TODO 'void com.put.miasi.utils.RideOffer.setKey(java.lang.String)' on a null object reference
-                    // if (ride != null) {
-                    //     ride.setKey(rideUid);
-                    //     mRides.put(rideUid, ride);
-                    // } else {
-                    //     mNotificationsFromProfile.remove(rideUid);
-                    //     mNotifications.remove(getIndex(rideUid));
-                    // }
 
                     ride.setKey(rideUid);
                     mRides.put(rideUid, ride);
                     mIndex--;
 
-                    Log.d(TAG, "onDataChange: mIndex = " + mIndex);
+                    // Log.d(TAG, "onDataChange: mIndex = " + mIndex);
                     if (mIndex <= 0) {
-                        Log.d(TAG, "onDataChange: DONE RIDES ");
+                        // Log.d(TAG, "onDataChange: DONE RIDES ");
                         mSwipeRefresh.setRefreshing(false);
                         loadNewData();
                     }
@@ -348,24 +332,17 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     }
 
     public void setNotificationList(List<Notification> notifications) {
-        Log.d(TAG, "setNotificationList: ");
+        // Log.d(TAG, "setNotificationList: ");
         mNotifications = notifications;
     }
 
     public void loadNewData() {
-        Log.d(TAG, "loadNewData: ");
+        // Log.d(TAG, "loadNewData: ");
         sortListByDate(mNotifications);
         setNotificationList(mNotifications);
         checkIfListIsEmpty();
         mNotificationAdapter.loadNewData(mNotificationsFromProfile, mNotifications, mSenders, mRides);
     }
-
-    // public void loadNewData(List<Notification> notifications) {
-    //     sortListByDate(notifications);
-    //     setNotificationList(notifications);
-    //     checkIfListIsEmpty();
-    //     mNotificationAdapter.loadNewData(notifications);
-    // }
 
     private void checkIfListIsEmpty() {
         if (mNotifications.size() == 0) {
@@ -425,7 +402,6 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         final AlertDialog dialog;
 
         builder.setView(vView)
-                // .setTitle("Rate " + user.getFirstName())
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mNotificationsFromProfile.put(notification.getNotificationUid(), true);
@@ -471,7 +447,6 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         final AlertDialog dialog;
 
         builder.setView(vView)
-                // .setTitle("Rate " + user.getFirstName())
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mNotificationsFromProfile.put(notification.getNotificationUid(), true);

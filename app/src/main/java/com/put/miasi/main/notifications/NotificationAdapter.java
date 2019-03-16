@@ -1,8 +1,8 @@
 package com.put.miasi.main.notifications;
 
+
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,13 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.Notification;
@@ -28,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
+
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
     private static final String TAG = "NotificationAdapter";
@@ -105,10 +100,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             viewHolder.mDateTextView.setText(DateUtils.getDate(notification.getTimeStamp(), DateUtils.STANDARD_DATE_FORMAT));
 
-            Log.d(TAG, "onBindViewHolder: " + mNotificationsFromProfile);
-
-            // TODO po usunieciu
-            // 'boolean java.lang.Boolean.booleanValue()' on a null object reference
             boolean wasRead = mNotificationsFromProfile.get(notification.getNotificationUid());
             if (!wasRead) {
                 viewHolder.mNewNotificationTextView.setVisibility(View.VISIBLE);
@@ -122,11 +113,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public int getItemCount() {
         return ((mNotifications != null) && (mNotifications.size() != 0) ? mNotifications.size() : 0);
     }
-
-    // public void loadNewData(HashMap<Notification, Boolean> newNotifications) {
-    //     mNotifications = newNotifications;
-    //     notifyDataSetChanged();
-    // }
 
     public void loadNewData(HashMap<String, Boolean> newNotificationsFromProfile, List<Notification> newNotifications, HashMap<String, User> user, HashMap<String, RideOffer> rides) {
         mNotificationsFromProfile = newNotificationsFromProfile;

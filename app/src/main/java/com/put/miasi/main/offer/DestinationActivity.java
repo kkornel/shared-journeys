@@ -45,17 +45,6 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
     private RideOffer mRideOffer;
     private LatLng mDestinationLatLng;
 
-    // TODO remove
-    void tests() {
-        double lat = 52.2296756, lon = 21.0122287;
-
-        mRideOffer.setDestinationPoint(new LatLon(new LatLng(lat, lon)));
-
-        Intent intent = new Intent(DestinationActivity.this, DatePickerActivity.class);
-        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
-        startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,9 +121,6 @@ public class DestinationActivity extends AppCompatActivity implements OnMapReady
                 startActivity(intent);
             }
         });
-
-        // TODO remove
-        // tests();
     }
 
     @Override

@@ -57,7 +57,6 @@ public class RidesFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: ");
 
-
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mRootRef.child(Database.USERS);
         mRidesRef = mRootRef.child(Database.RIDES);
@@ -84,21 +83,6 @@ public class RidesFragment extends Fragment {
             }
 
         });
-
-        // mNotificationsRef..addListenerForSingleValueEvent(new ValueEventListener() {
-        //     @Override
-        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        //         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-        //             Notification notification = ds.getValue(Notification.class);
-        //             Log.d(TAG, "onDataChange: " + notification);
-        //         }
-        //     }
-        //
-        //     @Override
-        //     public void onCancelled(@NonNull DatabaseError databaseError) {
-        //
-        //     }
-        // });
 
         mOfferButton = rootView.findViewById(R.id.offerButton);
         mOfferButton.setOnClickListener(new View.OnClickListener() {
@@ -183,12 +167,13 @@ public class RidesFragment extends Fragment {
                         // location-related task you need to do.
                         LocationUtils.findUserLocation(getActivity(), getContext());
 
-                        Log.d(TAG, "onRequestPermissionsResult: if");
+                        // Log.d(TAG, "onRequestPermissionsResult: if");
                     }
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Log.d(TAG, "onRequestPermissionsResult: else");
+
+                    // Log.d(TAG, "onRequestPermissionsResult: else");
                     mSnackbar = Snackbar.make(
                             getActivity().findViewById(R.id.container),
                             R.string.permission_denied_explanation,
@@ -235,14 +220,16 @@ public class RidesFragment extends Fragment {
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
             // Should we show an explanation?
-            Log.d(TAG, "requestLocationPermissions: if");
+
+            // Log.d(TAG, "requestLocationPermissions: if");
             boolean shouldProvideRationale = shouldShowRequestPermissionRationale(
                     Manifest.permission.ACCESS_FINE_LOCATION);
 
             // Provide an additional rationale to the user. This would happen if the user denied the
             // request previously, but didn't check the "Don't ask again" checkbox.
             if (shouldProvideRationale) {
-                Log.d(TAG, "requestLocationPermissions: if if");
+                // Log.d(TAG, "requestLocationPermissions: if if");
+
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -274,13 +261,14 @@ public class RidesFragment extends Fragment {
                 // Request permission. It's possible this can be auto answered if device policy
                 // sets the permission in a given state or the user denied the permission
                 // previously and checked "Never ask again".
-                Log.d(TAG, "requestLocationPermissions: if else");
+
+                // Log.d(TAG, "requestLocationPermissions: if else");
                 requestPermissions(
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_FINE_LOCATION_PERMISSIONS);
             }
         } else {
-            Log.d(TAG, "requestLocationPermissions: else ");
+            // Log.d(TAG, "requestLocationPermissions: else ");
             LocationUtils.findUserLocation(getActivity(), getContext());
         }
     }

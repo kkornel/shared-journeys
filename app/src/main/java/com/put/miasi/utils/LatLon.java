@@ -1,8 +1,5 @@
 package com.put.miasi.utils;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
@@ -10,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// public class LatLon implements Parcelable {
 public class LatLon implements Serializable {
     private static final long serialVersionUID = 1L;
     private double latitude;

@@ -1,8 +1,5 @@
 package com.put.miasi.utils;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -10,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// public class User implements Parcelable {
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -20,12 +16,11 @@ public class User implements Serializable {
     private String surname;
     private String email;
     private String phone;
-    // private List<String> offeredRides;
 
     private HashMap<String, Boolean> offeredRides;      /* String - RideUid, Boolean - has passengers were rated, true if yes, and you cant rate them later */
     private HashMap<String, Boolean> participatedRides; /* String - RideUid, Boolean - has passengers were rated, true if yes, and you cant rate them later */
     private HashMap<String, Boolean> notifications;     /* String - NotificationUid, Boolean - has notification was seen? true if yes (you have to open dialog and click OK to make it seen */
-    // private List<String> participatedRides;
+
     private float driverRating;
     private int numberOfDriverRatings;
     private float passengerRating;
@@ -101,23 +96,6 @@ public class User implements Serializable {
     public void setNotifications(HashMap<String, Boolean> notifications) {
         this.notifications = notifications;
     }
-
-    // public List<String> getOfferedRides() {
-    //     return offeredRides;
-    // }
-    //
-    // public void setOfferedRides(List<String> offeredRides) {
-    //     this.offeredRides = offeredRides;
-    // }
-    //
-    // public List<String> getParticipatedRides() {
-    //     return participatedRides;
-    // }
-    //
-    // public void setParticipatedRides(List<String> participatedRides) {
-    //     this.participatedRides = participatedRides;
-    // }
-
 
     public HashMap<String, Boolean> getOfferedRides() {
         return offeredRides;

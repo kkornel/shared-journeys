@@ -16,7 +16,6 @@
         android:roundIcon="@mipmap/ic_main_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.profile.ProfileActivity"></activity>
         <activity android:name=".main.search.OffersListActivity" />
         <activity android:name=".main.search.RideLocationActivity" />
         <activity android:name=".main.search.RideCalendar" />
@@ -27,9 +26,6 @@
         <activity android:name=".main.offer.MessagePriceActivity" />
         <activity android:name=".main.offer.CarDetailsActivity" />
         <activity android:name=".main.offer.TimePickerActivity" />
-        <activity
-            android:name=".main.search.SeatsReservationActivity"
-            android:theme="@style/AppTheme.CustomTheme" />
         <activity android:name=".main.search.RideDetailsActivity" />
         <activity android:name=".main.offer.DatePickerActivity" />
         <activity android:name=".main.offer.DestinationActivity" />
@@ -66,10 +62,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
 
         <uses-library
             android:name="org.apache.http.legacy"

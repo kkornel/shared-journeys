@@ -12,12 +12,10 @@ import android.widget.Toast;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TimePickerFragment;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
@@ -31,46 +29,6 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
     private RideOffer mRideOffer;
     private int mHour;
     private int mMin;
-
-    // TODO remove
-    void tests() {
-        Calendar cl = Calendar.getInstance();
-        Logger.d("MyDate", "*************************************************");
-        Logger.d("MyDate", "TimePicker: " + cl.toString());
-
-        cl.setTimeInMillis(mRideOffer.getDate());
-        Logger.d("MyDate", "TimePicker: " + cl.toString());
-
-        int year = cl.get(Calendar.YEAR);
-        Logger.d("MyDate", "TimePicker: year " + year);
-
-        int month = cl.get(Calendar.MONTH);
-        Logger.d("MyDate", "TimePicker: month " + month);
-
-        int day = cl.get(Calendar.DAY_OF_MONTH);
-        Logger.d("MyDate", "TimePicker: day " + day);
-
-        int hour = mHour;
-        Logger.d("MyDate", "TimePicker: mHour " + mHour);
-        int min = mMin;
-        Logger.d("MyDate", "TimePicker: mMin " + mMin);
-
-        cl.set(year, month, day, hour, min);
-
-        mRideOffer.setDate(cl.getTime().getTime());
-
-        // TODO remove
-        // ********************************************************************
-
-        Logger.d("MyDate", "TimePicker: " + cl.toString());
-        Logger.d("MyDate", "TimePicker: " + new Date(cl.getTime().getTime()));
-        Logger.d("MyDate", "*************************************************");
-        // ********************************************************************
-
-        Intent intent = new Intent(TimePickerActivity.this, CarDetailsActivity.class);
-        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
-        startActivity(intent);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,9 +92,6 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         String h = (hour < 10) ? DateUtils.convertSingleDateToDouble(hour) : String.valueOf(hour);
 
         mSelectedTimeTextView.setText(h + ":00");
-
-        // TODO remove
-        // tests();
     }
 
     public void showTimePickerDialog(View v) {

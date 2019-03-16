@@ -178,8 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 User user = dataSnapshot.getValue(User.class);
                 String userUid = dataSnapshot.getKey();
 
-                Logger.d("MA ul ds " + dataSnapshot.toString());
-                Logger.d("MA ul u " + user.toStringy());
+                // Logger.d("MA ul u " + user.toStringy());
 
                 CurrentUserProfile.loadUserData(userUid, user);
 

@@ -27,22 +27,6 @@ public class CarDetailsActivity extends AppCompatActivity {
 
     private RideOffer mRideOffer;
 
-    // TODO remove
-    void tests() {
-        String brand = "Opel";
-        String model = "Corsa";
-        String color = "Silver";
-
-        Car car = new Car(brand, model, color);
-        mRideOffer.setCar(car);
-        mRideOffer.setSeats(Integer.valueOf(mSpaceSpinner.getSelectedItem().toString()));
-        mRideOffer.setLuggage(mLuggageSpinner.getSelectedItem().toString());
-
-        Intent intent = new Intent(CarDetailsActivity.this, MessagePriceActivity.class);
-        intent.putExtra(RIDE_OFFER_INTENT, mRideOffer);
-        startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,9 +71,6 @@ public class CarDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // TODO remove
-        // tests();
     }
 
     @Override

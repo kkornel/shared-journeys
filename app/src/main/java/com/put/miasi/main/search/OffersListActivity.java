@@ -29,7 +29,6 @@ import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.LocationUtils;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
-import com.put.miasi.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,11 +37,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class OffersListActivity extends AppCompatActivity {
+    private static final String TAG = "OffersListActivity";
 
     private ArrayList<Offer> data = new ArrayList<Offer>();
     final List<RideOffer> rideOffers = new ArrayList<>();
     final List<User> users = new ArrayList<>();
-    private String TAG = "OffersListActivity";
     private ListView listView;
 
     private String startCity;
@@ -61,13 +60,11 @@ public class OffersListActivity extends AppCompatActivity {
         listView.setAdapter(null);
         firebaseInit();
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Available rides list");
-
-
     }
+
     private void getFromIntent()
     {
         Intent intent = getIntent();
@@ -78,6 +75,7 @@ public class OffersListActivity extends AppCompatActivity {
         startCity = intent.getStringExtra("startCity");
         date = intent.getStringExtra("date");
     }
+
     public void generateListView()
     {
         ListView lv = (ListView) findViewById(R.id.listview);
@@ -133,9 +131,9 @@ public class OffersListActivity extends AppCompatActivity {
         }
         sortListByStartHour();
     }
+
     private void sortListByStartHour()
     {
-
         for (int i = 0; i < data.size() - 1; i++)
         {
             for (int j = 0; j < data.size() - i - 1; j++)
@@ -148,15 +146,16 @@ public class OffersListActivity extends AppCompatActivity {
         }
     }
 
-
     private class MyListAdapter extends ArrayAdapter<Offer>
     {
         private int layout;
+
         private MyListAdapter(Context context, int resource, List<Offer> objects)
         {
             super(context,resource,objects);
             layout = resource;
         }
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent)
         {
@@ -193,6 +192,7 @@ public class OffersListActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
     public class ViewHolder
     {
         ImageView avatar;
@@ -205,6 +205,7 @@ public class OffersListActivity extends AppCompatActivity {
         TextView seats;
         TextView distance;
     }
+
     public class Offer
     {
         String uid;
@@ -219,7 +220,6 @@ public class OffersListActivity extends AppCompatActivity {
         String seats;
         String distance;
     }
-
 
     private void searchForFittingOffers(RideOffer rideOffer)
     {
@@ -295,6 +295,7 @@ public class OffersListActivity extends AppCompatActivity {
         };
         usersRef.addListenerForSingleValueEvent(usersListener);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

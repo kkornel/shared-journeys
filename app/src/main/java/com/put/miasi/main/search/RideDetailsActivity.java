@@ -42,6 +42,8 @@ import java.util.List;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
 
 public class RideDetailsActivity extends AppCompatActivity  {
+    private static final String TAG = "RideDetailsActivity";
+
     private Button btn_reservation;
     private ImageButton ib_see_on_the_map;
     private ImageView iv_avatar;
@@ -61,11 +63,22 @@ public class RideDetailsActivity extends AppCompatActivity  {
     private TextView tv_price;
     private TextView tv_rating_quantity;
     private TextView tv_telephone;
-    private String TAG = "RideDetailsActivity";
     private String rideKey = null;
     private String uid = null;
     private RideOffer offer;
     private User rider;
+
+    private List<String> numbersList = null;
+    private Spinner spinner = null;
+
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mUsersRef;
+    private DatabaseReference mRidesRef;
+    private DatabaseReference mNotificationsRef;
+
+    private int mNumOfSeatsPicked;
+    private User mDriver;
+    private RideOffer mOffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -107,18 +120,10 @@ public class RideDetailsActivity extends AppCompatActivity  {
         btn_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showSpinnerDialog();
-
-                // TODO: jezeli dziala to potem wywalic
-                // Intent seatsReservationIntent = new Intent(RideDetailsActivity.this, SeatsReservationActivity.class);
-                // seatsReservationIntent.putExtra("size", String.valueOf(offer.seats));
-                // seatsReservationIntent.putExtra("driver", rider);
-                // seatsReservationIntent.putExtra("ride", offer);
-                //
-                // startActivity(seatsReservationIntent);
             }
         });
+
         ib_see_on_the_map = (ImageButton) findViewById(R.id.ib_see_on_the_map);
         ib_see_on_the_map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,21 +141,7 @@ public class RideDetailsActivity extends AppCompatActivity  {
         mNotificationsRef = mDatabaseRef.child(Database.NOTIFICATIONS);
 
         mNumOfSeatsPicked = 1;
-
     }
-
-    private List<String> numbersList = null;
-    private Spinner spinner = null;
-
-    private DatabaseReference mDatabaseRef;
-    private DatabaseReference mUsersRef;
-    private DatabaseReference mRidesRef;
-    private DatabaseReference mNotificationsRef;
-
-
-    private int mNumOfSeatsPicked;
-    private User mDriver;
-    private RideOffer mOffer;
 
     private void showSpinnerDialog () {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -171,7 +162,6 @@ public class RideDetailsActivity extends AppCompatActivity  {
         final AlertDialog dialog;
 
         builder.setView(vView)
-                // .setTitle("Rate " + user.getFirstName())
                 .setPositiveButton("Book", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mNumOfSeatsPicked = spinner.getSelectedItemPosition() + 1;
@@ -362,6 +352,7 @@ public class RideDetailsActivity extends AppCompatActivity  {
         offeredRidesRef.addListenerForSingleValueEvent(ridesListener);
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

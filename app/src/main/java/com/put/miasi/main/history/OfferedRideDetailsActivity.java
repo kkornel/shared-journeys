@@ -1,10 +1,10 @@
 package com.put.miasi.main.history;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.service.autofill.Dataset;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +50,7 @@ import java.util.List;
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
+
 
 public class OfferedRideDetailsActivity extends AppCompatActivity implements ListItemClickListener {
     private static final String TAG = "OfferedRideDetailsActiv";
@@ -111,7 +112,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         cal.add(Calendar.HOUR_OF_DAY, durationHours);
         cal.add(Calendar.MINUTE, durationMins);
 
-        // TODO I changed it so now is ended while being in progress
+        // I changed it so now is ended while being in progress
         cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         mIsEnded = !DateUtils.isNowBeforeDate(cal.getTime());
 
@@ -185,7 +186,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
     @Override
     public void onListItemClick(int clickedItemIndex) {
         if (mIsEnded) {
-            Logger.d("rated", mIsAlreadyRated + "");
             if(mIsAlreadyRated) {
                 Toast.makeText(getApplicationContext(), "You've already rated passengers", Toast.LENGTH_SHORT).show();
             } else {
@@ -460,10 +460,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
                 null);
     }
 
-    private void removeExistingNotificationsFromPassengers() {
-
-    }
-
     private void cancel() {
         final String rideUid = mRide.getKey();
         final String userUid = CurrentUserProfile.uid;
@@ -537,9 +533,8 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
             }
         };
 
+        // I'm doing this after delay, because ^up is a code which deletes notification with that Ride ID
         handler.postDelayed(runnable, 2000);
-
-
 
         HashMap<String, Boolean> offeredRides = CurrentUserProfile.offeredRidesMap;
 

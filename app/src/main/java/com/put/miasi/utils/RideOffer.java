@@ -6,7 +6,6 @@ import com.google.firebase.database.Exclude;
 import java.io.Serializable;
 import java.util.HashMap;
 
-// public class RideOffer implements Parcelable {
 public class RideOffer implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +21,6 @@ public class RideOffer implements Serializable {
     public String luggage;
     public int price;
     public String message;
-    // public List<String> passengers;
 
     // String - passenger UID, Integer - number of seats booked
     public HashMap<String, Integer> passengers;

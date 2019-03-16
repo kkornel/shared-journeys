@@ -1,5 +1,6 @@
 package com.put.miasi.main.history;
 
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
 
 public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAdapter.PassengersListViewHolder> {
     private static final String TAG = "PassengersListAdapter";

@@ -13,9 +13,7 @@ import com.put.miasi.utils.DateUtils;
 
 import java.util.Calendar;
 
-
 public class RideCalendar extends AppCompatActivity {
-
     private CalendarView mCalendarView;
     private Button mNextButton;
 
@@ -27,11 +25,9 @@ public class RideCalendar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_calendar);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_datePicker));
-
 
         Calendar currentCalendar = Calendar.getInstance();
 
@@ -60,11 +56,10 @@ public class RideCalendar extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
-
 }

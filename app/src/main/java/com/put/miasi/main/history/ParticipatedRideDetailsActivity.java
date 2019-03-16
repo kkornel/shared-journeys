@@ -1,5 +1,6 @@
 package com.put.miasi.main.history;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
+
 
 public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private static final String TAG = "ParticipatedRideDetails";
@@ -97,7 +99,7 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         cal.add(Calendar.HOUR_OF_DAY, durationHours);
         cal.add(Calendar.MINUTE, durationMins);
 
-        // TODO I changed it so now is ended while being in progress
+        // I changed it so now is ended while being in progress
         cal = DateUtils.getCalendarFromMilliSecs(mRide.getDate());
         mIsEnded = !DateUtils.isNowBeforeDate(cal.getTime());
 

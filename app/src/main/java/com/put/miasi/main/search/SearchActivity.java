@@ -1,20 +1,12 @@
 package com.put.miasi.main.search;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,34 +16,17 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.utils.CircleTransform;
-import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.GeoUtils;
-import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TimePickerFragment;
-import com.put.miasi.utils.User;
-import com.squareup.picasso.Picasso;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements TimePickerFragment.TimePickedListener
 {
+    private static final String TAG = "SearchActivity";
 
-    private String TAG = "SearchActivity";
     private String date;
     long dateInMs;
     private Button btn_search;
@@ -78,15 +53,10 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
         dateInMs = intent.getLongExtra("date",0);
         date = DateUtils.getDate(dateInMs, DateUtils.STANDARD_DATE_FORMAT);
 
-
-
         initializeSearchButton();
         initializeAutocompleteFragment("start");
         initializeAutocompleteFragment("destination");
         initializeTimer();
-
-
-
 
     }
 
@@ -104,13 +74,9 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
                 offerListIntent.putExtra("hour", mHour);
                 offerListIntent.putExtra("min", mMin);
                 startActivity(offerListIntent);
-
-
             }
         });
     }
-
-
 
     private void initializeAutocompleteFragment(final String whichOne)
     {
@@ -167,8 +133,6 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
         });
     }
 
-
-
     private void initializeTimer()
     {
         mSelectedTimeTextView = findViewById(R.id.selectedTimeTextView);
@@ -216,10 +180,6 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
         Log.i(TAG,godzinki+minutki);
         Log.i(TAG,String.valueOf(hourOfDay)+String.valueOf(minute));
 
-
-
-
-
         if (!currentDate.equals(date))
         {
             String time = h + ":" + m;
@@ -249,7 +209,6 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
                 {
                     Toast.makeText(SearchActivity.this, "Those rides passed! Choose correct time.", Toast.LENGTH_LONG).show();
                 }
-
             }
             else
             {
@@ -265,7 +224,4 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
         onBackPressed();
         return true;
     }
-
-
-
 }

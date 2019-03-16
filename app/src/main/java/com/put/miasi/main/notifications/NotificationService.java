@@ -107,23 +107,22 @@ public class NotificationService extends Service {
     private void a(DataSnapshot dataSnapshot) {
         String notificationUid = dataSnapshot.getKey();
 
-        Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
+        // Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
 
         boolean hasBeenSeenByUser = false;
 
-        Log.d(TAG, "onChildAdded: " + CurrentUserProfile.toStringy());
+        // Log.d(TAG, "onChildAdded: " + CurrentUserProfile.toStringy());
 
         if (CurrentUserProfile.notificationsMap != null && CurrentUserProfile.notificationsMap.size() != 0) {
             Log.d(TAG, "onChildAdded: " + CurrentUserProfile.notificationsMap);
-            // TODO
             hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
         }
-        Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
+        // Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
 
         if (hasBeenSeenByUser) {
-            Log.d(TAG, "onChildAdded: not new");
+            // Log.d(TAG, "onChildAdded: not new");
         } else {
-            Log.d(TAG, "onChildAdded: new");
+            // Log.d(TAG, "onChildAdded: new");
 
             Notification notification = dataSnapshot.getValue(Notification.class);
             Notification.NotificationType notificationType = notification.getNotificationType();

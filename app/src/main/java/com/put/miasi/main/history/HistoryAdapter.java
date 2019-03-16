@@ -1,5 +1,6 @@
 package com.put.miasi.main.history;
 
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -18,6 +19,7 @@ import com.put.miasi.utils.RideOffer;
 
 import java.util.Calendar;
 import java.util.List;
+
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private static final String TAG = "HistoryAdapter";
@@ -82,7 +84,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             String arrivalMin = DateUtils.getMinFromCalendar(cal);
             viewHolder.mArrivalTextView.setText(arrivalHour + ":" + arrivalMin);
 
-            // TODO I changed it so now is ended while being in progress
+            // I changed it so now is ended while being in progress
             cal = DateUtils.getCalendarFromMilliSecs(ride.getDate());
 
             if (DateUtils.isNowBeforeDate(cal.getTime())) {
