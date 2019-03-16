@@ -181,7 +181,7 @@
         tools:text="Janusz" />
 
     <ImageView
-        android:id="@+id/iv_star"
+        android:id="@+id/iv_steeringWheel"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -201,9 +201,9 @@
         android:textColor="@color/colorText"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/iv_star"
-        app:layout_constraintRight_toLeftOf="@+id/iv_star"
-        app:layout_constraintTop_toTopOf="@+id/iv_star"
+        app:layout_constraintEnd_toStartOf="@+id/iv_steeringWheel"
+        app:layout_constraintRight_toLeftOf="@+id/iv_steeringWheel"
+        app:layout_constraintTop_toTopOf="@+id/iv_steeringWheel"
         tools:text="4,4" />
 
     <TextView
@@ -215,8 +215,8 @@
         android:textColor="@color/colorText"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_star"
-        app:layout_constraintEnd_toStartOf="@+id/iv_star"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_steeringWheel"
+        app:layout_constraintEnd_toStartOf="@+id/iv_steeringWheel"
         tools:text="9" />
 
     <View

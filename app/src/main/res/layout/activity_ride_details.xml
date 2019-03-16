@@ -69,7 +69,7 @@
                 app:srcCompat="@android:drawable/button_onoff_indicator_on" />
 
             <ImageView
-                android:id="@+id/iv_star"
+                android:id="@+id/iv_steeringWheel"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_below="@+id/splitter"
@@ -140,8 +140,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_toStartOf="@+id/iv_star"
-                android:layout_toLeftOf="@+id/iv_star"
+                android:layout_toStartOf="@+id/iv_steeringWheel"
+                android:layout_toLeftOf="@+id/iv_steeringWheel"
                 android:text="4,4"
                 android:textSize="20dp"
                 android:textColor="@color/colorText"/>
@@ -267,8 +267,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_toStartOf="@+id/iv_star"
-                android:layout_toLeftOf="@+id/iv_star"
+                android:layout_toStartOf="@+id/iv_steeringWheel"
+                android:layout_toLeftOf="@+id/iv_steeringWheel"
                 android:textColor="@color/colorText"/>
 
             <TextView

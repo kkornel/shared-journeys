@@ -31,10 +31,10 @@
             android:layout_marginTop="10dp"
             android:text="Janusz"
             android:textColor="@color/colorText"
-            android:textSize="25dp" />
+            android:textSize="24dp" />
 
         <ImageView
-            android:id="@+id/iv_star"
+            android:id="@+id/iv_steeringWheel"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_below="@+id/tv_nick"
@@ -47,32 +47,32 @@
 
 
         <TextView
-            android:id="@+id/tv_driver_rating"
+            android:id="@+id/tv_driverRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_alignTop="@id/iv_star"
-            android:layout_toEndOf="@+id/iv_star"
-            android:layout_toRightOf="@+id/iv_star"
+            android:layout_alignTop="@id/iv_steeringWheel"
+            android:layout_toEndOf="@+id/iv_steeringWheel"
+            android:layout_toRightOf="@+id/iv_steeringWheel"
             android:text="Driver rating: 4,4/5"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_numberOfDriverRatings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_driver_rating"
+            android:layout_below="@+id/tv_driverRating"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="3dp"
-            android:layout_toEndOf="@+id/iv_star"
-            android:layout_toRightOf="@+id/iv_star"
+            android:layout_toEndOf="@+id/iv_steeringWheel"
+            android:layout_toRightOf="@+id/iv_steeringWheel"
             android:text="Number of ratings: 0"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_numberOfDriverOffers"
@@ -82,11 +82,11 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="3dp"
-            android:layout_toEndOf="@+id/iv_star"
-            android:layout_toRightOf="@+id/iv_star"
+            android:layout_toEndOf="@+id/iv_steeringWheel"
+            android:layout_toRightOf="@+id/iv_steeringWheel"
             android:text="Number of offered rides: 0"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <View
             android:id="@+id/splitter"
@@ -123,7 +123,7 @@
             android:layout_toRightOf="@+id/iv_passsenger"
             android:text="Passenger rating: 4,4/5"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_numberOfPassengerRatings"
@@ -137,7 +137,7 @@
             android:layout_toRightOf="@+id/iv_passsenger"
             android:text="Number of ratings: 0"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_numberOfParticipatedRides"
@@ -151,7 +151,7 @@
             android:layout_toRightOf="@+id/iv_passsenger"
             android:text="Number of participated rides: 0"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
 
         <View
@@ -189,7 +189,7 @@
             android:layout_toRightOf="@+id/iv_contact"
             android:text="+48 123456789"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_email"
@@ -203,7 +203,8 @@
             android:layout_toRightOf="@+id/iv_contact"
             android:text="małpa@małpa.pl"
             android:textColor="@color/colorText"
-            android:textSize="20dp" />
+            android:textSize="18dp"
+            android:layout_marginBottom="70dp"/>
 
 
 
