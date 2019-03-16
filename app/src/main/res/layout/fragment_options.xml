@@ -1,10 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".main.OptionsFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_car" />
+        <TextView
+            android:id="@+id/tv_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_avatar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Janusz"
+            android:textColor="@color/colorText"
+            android:textSize="25dp" />
+
+        <ImageView
+            android:id="@+id/iv_star"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/tv_nick"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_steering_wheel" />
+
+
+        <TextView
+            android:id="@+id/tv_driver_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignTop="@id/iv_star"
+            android:layout_toEndOf="@+id/iv_star"
+            android:layout_toRightOf="@+id/iv_star"
+            android:text="Driver rating: 4,4/5"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_numberOfDriverRatings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_driver_rating"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/iv_star"
+            android:layout_toRightOf="@+id/iv_star"
+            android:text="Number of ratings: 0"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_numberOfDriverOffers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_numberOfDriverRatings"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/iv_star"
+            android:layout_toRightOf="@+id/iv_star"
+            android:text="Number of offered rides: 0"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+        <View
+            android:id="@+id/splitter"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@id/tv_numberOfDriverOffers"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
+        <ImageView
+            android:id="@+id/iv_passsenger"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_passenger" />
+
+
+        <TextView
+            android:id="@+id/tv_passenger_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignTop="@id/iv_passsenger"
+            android:layout_toEndOf="@+id/iv_passsenger"
+            android:layout_toRightOf="@+id/iv_passsenger"
+            android:text="Passenger rating: 4,4/5"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_numberOfPassengerRatings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_passenger_rating"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/iv_passsenger"
+            android:layout_toRightOf="@+id/iv_passsenger"
+            android:text="Number of ratings: 0"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_numberOfParticipatedRides"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_numberOfPassengerRatings"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/iv_passsenger"
+            android:layout_toRightOf="@+id/iv_passsenger"
+            android:text="Number of participated rides: 0"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+
+        <View
+            android:id="@+id/splitter2"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@id/tv_numberOfParticipatedRides"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
+
+        <ImageView
+            android:id="@+id/iv_contact"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/splitter2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_contact" />
+
+
+        <TextView
+            android:id="@+id/tv_telephoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignTop="@id/iv_contact"
+            android:layout_toEndOf="@+id/iv_contact"
+            android:layout_toRightOf="@+id/iv_contact"
+            android:text="+48 123456789"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_telephoneNumber"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/iv_contact"
+            android:layout_toRightOf="@+id/iv_contact"
+            android:text="małpa@małpa.pl"
+            android:textColor="@color/colorText"
+            android:textSize="20dp" />
+
+
+
+
+    </RelativeLayout>
+</ScrollView>
