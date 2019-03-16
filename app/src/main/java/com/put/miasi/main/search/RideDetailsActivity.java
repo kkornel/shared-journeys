@@ -232,7 +232,7 @@ public class RideDetailsActivity extends AppCompatActivity  {
         tv_available_seats.setText("Available seats: " + offer.getSeats());
         tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");
         tv_car_color.setText(offer.getCar().getColor());
-        tv_rating.setText(String.valueOf(rider.getDriverRatingAvg()));
+        tv_rating.setText(String.format("%.1f", rider.getDriverRatingAvg()) +"/5");
         // kalendarz i data
         Calendar cal = DateUtils.getCalendarFromMilliSecs(offer.getDate());
         String startHour = DateUtils.getHourFromCalendar(cal);

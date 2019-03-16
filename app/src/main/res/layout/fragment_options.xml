@@ -21,7 +21,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ic_car" />
+             />
         <TextView
             android:id="@+id/tv_nick"
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:layout_below="@+id/iv_avatar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Janusz"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="24dp" />
 
@@ -56,7 +56,7 @@
             android:layout_alignTop="@id/iv_steeringWheel"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
-            android:text="Driver rating: 4,4/5"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -70,7 +70,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
-            android:text="Number of ratings: 0"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -84,7 +84,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
-            android:text="Number of offered rides: 0"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -121,7 +121,7 @@
             android:layout_alignTop="@id/iv_passsenger"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
-            android:text="Passenger rating: 4,4/5"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -135,7 +135,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
-            android:text="Number of ratings: 0"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -149,7 +149,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
-            android:text="Number of participated rides: 0"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -187,7 +187,7 @@
             android:layout_alignTop="@id/iv_contact"
             android:layout_toEndOf="@+id/iv_contact"
             android:layout_toRightOf="@+id/iv_contact"
-            android:text="+48 123456789"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp" />
 
@@ -201,7 +201,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_contact"
             android:layout_toRightOf="@+id/iv_contact"
-            android:text="małpa@małpa.pl"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="18dp"
             android:layout_marginBottom="70dp"/>

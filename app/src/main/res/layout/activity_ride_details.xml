@@ -102,7 +102,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:text="Available seats: 5"
+                android:text=""
                 android:textSize="16dp"
                 android:textColor="@color/colorText"/>
 
@@ -115,7 +115,7 @@
                 android:layout_below="@id/tv_hour_end"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
-                android:text="Distance: 151 km"
+                android:text=""
                 android:textSize="16dp"
                 android:textColor="@color/colorText"/>
 
@@ -129,7 +129,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/iv_avatar"
                 android:layout_toRightOf="@+id/iv_avatar"
-                android:text="black"
+                android:text=""
                 android:textColor="@color/colorText"/>
 
             <TextView
@@ -142,8 +142,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_toStartOf="@+id/iv_steeringWheel"
                 android:layout_toLeftOf="@+id/iv_steeringWheel"
-                android:text="4,4"
-                android:textSize="20dp"
+
                 android:textColor="@color/colorText"/>
 
             <TextView
@@ -153,7 +152,7 @@
                 android:layout_below="@id/tv_hour_begin"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="60dp"
-                android:text="18:00"
+                android:text=""
                 android:textSize="20dp"
                 android:textColor="@color/colorText"/>
 
@@ -167,7 +166,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_toEndOf="@+id/iv_green_vertical_line"
                 android:layout_toRightOf="@+id/iv_green_vertical_line"
-                android:text="Poznan"
+                android:text=""
                 android:textSize="20dp"
                 android:textColor="@color/colorText"/>
 
@@ -181,7 +180,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/iv_avatar"
                 android:layout_toRightOf="@+id/iv_avatar"
-                android:text="Opel Insignia"
+                android:text=""
                 android:textColor="@color/colorText"/>
 
             <TextView
@@ -191,7 +190,7 @@
                 android:layout_below="@id/tv_date"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="15:00"
+                android:text=""
                 android:textSize="20dp"
                 android:textColor="@color/colorText"/>
 
@@ -205,7 +204,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@+id/iv_luggage_icon"
                 android:layout_toRightOf="@+id/iv_luggage_icon"
-                android:text="Luggage: duży"
+                android:text=""
                 android:textColor="@color/colorText"/>
 
             <TextView
@@ -218,7 +217,7 @@
                 android:layout_marginTop="9dp"
                 android:layout_toEndOf="@+id/iv_luggage_icon"
                 android:layout_toRightOf="@+id/iv_luggage_icon"
-                android:text="Tutaj wiadomość od Janusza ze w samochodzie nie można palić :)"
+                android:text=""
                 android:textColor="@color/colorText"/>
 
             <TextView
@@ -232,7 +231,7 @@
                 android:layout_toEndOf="@+id/iv_green_vertical_line"
                 android:layout_toRightOf="@+id/iv_green_vertical_line"
 
-                android:text="Bydgoszcz"
+                android:text=""
                 android:textSize="20dp"
                 android:textColor="@color/colorText"/>
 
@@ -242,7 +241,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Mon. 06 March"
+                android:text=""
                 android:textSize="30dp"
                 android:textColor="@color/colorText"/>
 
@@ -256,7 +255,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/iv_avatar"
                 android:layout_toRightOf="@+id/iv_avatar"
-                android:text="Janusz"
+                android:text=""
                 android:textColor="@color/colorText"/>
 
             <TextView
@@ -293,7 +292,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:text="for seat"
+                android:text=""
                 android:textSize="16dp"
                 android:textColor="@color/colorText"/>
 
@@ -307,7 +306,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:text="15 zł"
+                android:text=""
                 android:textSize="20dp"
                 android:textColor="@color/colorText"/>
 
@@ -323,7 +322,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
 
-                android:text="see on the map"
+                android:text=""
                 android:textSize="16dp"
                 android:textColor="@color/colorText"/>
 

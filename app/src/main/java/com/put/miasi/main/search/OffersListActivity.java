@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
 import com.put.miasi.utils.CircleTransform;
+import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
@@ -85,7 +86,7 @@ public class OffersListActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(OffersListActivity.this, "List items was clicked "+ position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(OffersListActivity.this, "List items was clicked "+ position, Toast.LENGTH_SHORT).show();
                 Intent rideDetailsIntent = new Intent(OffersListActivity.this, RideDetailsActivity.class);
                 rideDetailsIntent.putExtra("Uid", data.get(position).uid);
                 startActivity(rideDetailsIntent);
@@ -238,7 +239,8 @@ public class OffersListActivity extends AppCompatActivity {
         int timePickedInMinutes = mHour *60 + mMin;
 
         if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity)
-                && rideOfferTime > currentTime && rideOfferSeats > 0  && startHourInMinutes > timePickedInMinutes)
+                && rideOfferTime > currentTime && rideOfferSeats > 0  && startHourInMinutes > timePickedInMinutes
+                && !CurrentUserProfile.uid.equals(rideOffer.getDriverUid()))
         {
             rideOffers.add(rideOffer);
         }

@@ -3,6 +3,7 @@ package com.put.miasi.main;
 
 import android.content.Intent;
 import android.media.Image;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class OptionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_options, container, false);
         initializeComponents(view);
-        fillComponents();
+        firebaseInit();
         return view;
     }
 
@@ -82,17 +83,16 @@ public class OptionsFragment extends Fragment {
     }
     private void fillComponents()
     {
-        CurrentUserProfile.getUserProfile();
-        Picasso.get().load(CurrentUserProfile.avatarUrl).transform(new CircleTransform()).into(iv_avatar);
-        tv_nick.setText(CurrentUserProfile.firstName + " " + CurrentUserProfile.surname);
-        tv_driverRating.setText("");
-        tv_numberOfDriverRatings.setText("");
-        tv_numberOfDriverOffers.setText("");
-        tv_passenger_rating.setText("");
-        tv_numberOfPassengerRatings.setText("");
-        tv_numberOfParticipatedRides.setText("");
-        tv_telephoneNumber.setText("");
-        tv_email.setText("");
+        Picasso.get().load(currentUser.getAvatarUrl()).transform(new CircleTransform()).into(iv_avatar);
+        tv_nick.setText(currentUser.getFirstName() + " " + currentUser.getSurname());
+        tv_driverRating.setText("Driver rating: " + String.format("%.1f", currentUser.getDriverRatingAvg()) +"/5");
+        tv_numberOfDriverRatings.setText("Number of ratings: " + currentUser.getNumberOfDriverRatings());
+        tv_numberOfDriverOffers.setText("Number of offered rides: " + currentUser.getOfferedRidesList().size());
+        tv_passenger_rating.setText("Passenger rating: " + String.format("%.1f", currentUser.getPassengerRatingAvg()) + "/5");
+        tv_numberOfPassengerRatings.setText("Number of ratings: " + currentUser.getNumberOfPassengerRatings());
+        tv_numberOfParticipatedRides.setText("Number of participated rides: " + currentUser.getParticipatedRidesList().size());
+        tv_telephoneNumber.setText(currentUser.getPhone());
+        tv_email.setText(currentUser.getEmail());
     }
 
     @Override
@@ -113,4 +113,42 @@ public class OptionsFragment extends Fragment {
         }
     }
 
+
+
+    ///////////////////// FIREBASE /////////////////////////////
+    private void firebaseInit()
+    {
+        Log.i(TAG,CurrentUserProfile.uid);
+    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    final DatabaseReference usersRef = database.child(Database.USERS);
+    final ValueEventListener usersListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot ds :dataSnapshot.getChildren()) {
+                User user = ds.getValue(User.class);
+                user.setUid(ds.getKey());
+                if (CurrentUserProfile.uid.equals(user.getUid()))
+                {
+                   currentUser = user;
+                   fillComponents();
+                }
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+        }
+    };
+
+        usersRef.addListenerForSingleValueEvent(usersListener);
+
+    }
+
+
+
 }
+
+
+
+
