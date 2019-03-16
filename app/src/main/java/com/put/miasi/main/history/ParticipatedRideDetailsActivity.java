@@ -253,6 +253,9 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         CurrentUserProfile.getUserProfile();
 
         btn_action.setEnabled(false);
+
+        tv_rating.setText(String.valueOf(driverRate));
+        tv_numRatings.setText(String.valueOf(numOfDriverRatings));
     }
 
     private void cancelReservation() {
