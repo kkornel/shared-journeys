@@ -6,22 +6,27 @@
     android:descendantFocusability="blocksDescendants">
 
     <ImageView
+        android:layout_marginTop="10dp"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:id="@+id/list_item_avatar"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nickname"
         android:id="@+id/list_item_nick"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
+
         android:textSize="16dp"
         android:layout_toEndOf="@+id/list_item_avatar"
-        android:layout_toRightOf="@+id/list_item_avatar" />
+        android:layout_toRightOf="@+id/list_item_avatar"
+        android:textColor="@color/colorText"/>
 
     <TextView
         android:id="@+id/list_item_from"
@@ -32,7 +37,8 @@
         android:layout_below="@id/list_item_nick"
         android:textSize="16dp"
         android:text="From: "
-        android:layout_toRightOf="@+id/list_item_hour_begin" />
+        android:layout_toRightOf="@+id/list_item_hour_begin"
+        android:textColor="@color/colorText"/>
 
     <TextView
         android:id="@+id/list_item_to"
@@ -43,7 +49,8 @@
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:text="To: "
-        android:layout_toRightOf="@+id/list_item_hour_end" />
+        android:layout_toRightOf="@+id/list_item_hour_end"
+        android:textColor="@color/colorText"/>
 
     <TextView
         android:id="@+id/list_item_hour_begin"
@@ -54,7 +61,8 @@
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:text="15:00 "
-        android:layout_toRightOf="@+id/list_item_avatar" />
+        android:layout_toRightOf="@+id/list_item_avatar"
+        android:textColor="@color/colorText"/>
 
     <TextView
         android:id="@+id/list_item_hour_end"
@@ -65,7 +73,8 @@
         android:layout_marginLeft="5dp"
         android:textSize="16dp"
         android:text="18:00 "
-        android:layout_toRightOf="@+id/list_item_avatar" />
+        android:layout_toRightOf="@+id/list_item_avatar"
+        android:textColor="@color/colorText"/>
 
     <TextView
         android:id="@+id/list_item_price"
@@ -78,7 +87,8 @@
         android:textSize="20dp"
         android:text="Price"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="40dp" />
+        android:layout_marginRight="40dp"
+        android:textColor="@color/colorText"/>
 
     <TextView
         android:id="@+id/list_item_available_spaces"
@@ -89,6 +99,7 @@
         android:layout_marginRight="10dp"
         android:text="Available spaces: "
         android:textSize="16dp"
+        android:textColor="@color/colorText"
         />
 
     <TextView
@@ -99,7 +110,8 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/btn_location"
         android:text="5km from your locaton "
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:textColor="@color/colorText"/>
 
     <ImageButton
         android:id="@+id/btn_location"
@@ -114,7 +126,15 @@
         android:padding="10dp"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/marker" />
-
+    <View
+        android:id="@+id/splitter3"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/btn_location"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:background="#808080" />
 
 
 </RelativeLayout>
