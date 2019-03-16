@@ -35,6 +35,8 @@ public class CurrentUserProfile {
     public static int numberOfPassengerRatings;
 
     public static void loadUserData(String uids, User user) {
+        //Logger.d("CUP lud " + user.toString());
+
         uid = uids;
         avatarUrl = user.getAvatarUrl();
         firstName = user.getFirstName();
@@ -92,18 +94,7 @@ public class CurrentUserProfile {
 
     public static String toStringy() {
         return "CurrentUserProfile{" +
-                "\nuid='" + uid + '\'' +
-                "\n, avatarUrl='" + avatarUrl + '\'' +
-                "\n, firstName='" + firstName + '\'' +
-                "\n, surname='" + surname + '\'' +
-                "\n, email='" + email + '\'' +
-                "\n, phone='" + phone + '\'' +
-                "\n, offeredRides=" + offeredRidesMap +
-                "\n, participatedRides=" + participatedRidesMap +
-                "\n, driverRating=" + driverRating +
-                "\n, numberOfDriverRatings=" + numberOfDriverRatings +
-                "\n, passengerRating=" + passengerRating +
-                "\n, numberOfPassengerRatings=" + numberOfPassengerRatings +
+                "\n, notifications=" + notificationsMap +
                 '}';
     }
 }

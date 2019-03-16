@@ -12,7 +12,7 @@ import android.widget.CalendarView;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Date;
@@ -39,11 +39,11 @@ public class DatePickerActivity extends AppCompatActivity {
 
         // TODO remove
         // ********************************************************************
-        OfferLog.d("MyDate", "*************************************************");
-        OfferLog.d("MyDate", "DatePicker: " + mCalendarView.getDate());
-        OfferLog.d("MyDate", "DatePicker: " + cl.toString());
-        OfferLog.d("MyDate", "DatePicker: " + new Date(mCalendarView.getDate()));
-        OfferLog.d("MyDate", "*************************************************");
+        Logger.d("MyDate", "*************************************************");
+        Logger.d("MyDate", "DatePicker: " + mCalendarView.getDate());
+        Logger.d("MyDate", "DatePicker: " + cl.toString());
+        Logger.d("MyDate", "DatePicker: " + new Date(mCalendarView.getDate()));
+        Logger.d("MyDate", "*************************************************");
         // ********************************************************************
 
         Intent intent = new Intent(DatePickerActivity.this, TimePickerActivity.class);

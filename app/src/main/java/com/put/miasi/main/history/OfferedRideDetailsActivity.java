@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
-import com.put.miasi.main.search.RideDetailsActivity;
 import com.put.miasi.main.search.RideLocationActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
@@ -34,8 +33,8 @@ import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.Notification;
-import com.put.miasi.utils.OfferLog;
 import com.put.miasi.utils.Passenger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
@@ -184,7 +183,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
     @Override
     public void onListItemClick(int clickedItemIndex) {
         if (mIsEnded) {
-            OfferLog.d("rated", mIsAlreadyRated + "");
+            Logger.d("rated", mIsAlreadyRated + "");
             if(mIsAlreadyRated) {
                 Toast.makeText(getApplicationContext(), "You've already rated passengers", Toast.LENGTH_SHORT).show();
             } else {

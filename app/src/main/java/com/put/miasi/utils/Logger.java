@@ -2,12 +2,12 @@ package com.put.miasi.utils;
 
 import android.util.Log;
 
-public class OfferLog {
-    private static final String TAG = "OfferLog";
+public class Logger {
+    private static final String TAG = "Logger";
     private static boolean isDebuggable = true;
 
     public static void setDebuggable(final boolean isDebuggable) {
-        OfferLog.isDebuggable = isDebuggable;
+        Logger.isDebuggable = isDebuggable;
     }
 
     public static void d(final String tag, final String message) {

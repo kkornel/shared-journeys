@@ -13,6 +13,7 @@ import java.util.List;
 // public class User implements Parcelable {
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private String uid;
     private String avatarUrl;
     private String firstName;
@@ -203,6 +204,12 @@ public class User implements Serializable {
             return 0.0f;
         }
         return avg;
+    }
+
+    public String toStringy() {
+        return "User{" +
+                "\n, notifications=" + notifications +
+                '}';
     }
 
     @Override

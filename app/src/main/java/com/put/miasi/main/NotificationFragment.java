@@ -304,6 +304,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     RideOffer ride = dataSnapshot.getValue(RideOffer.class);
+                    // TODO 'void com.put.miasi.utils.RideOffer.setKey(java.lang.String)' on a null object reference
                     ride.setKey(rideUid);
                     mRides.put(rideUid, ride);
                     mIndex--;

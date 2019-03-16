@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
-import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TimePickerFragment;
 
@@ -35,25 +35,25 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
     // TODO remove
     void tests() {
         Calendar cl = Calendar.getInstance();
-        OfferLog.d("MyDate", "*************************************************");
-        OfferLog.d("MyDate", "TimePicker: " + cl.toString());
+        Logger.d("MyDate", "*************************************************");
+        Logger.d("MyDate", "TimePicker: " + cl.toString());
 
         cl.setTimeInMillis(mRideOffer.getDate());
-        OfferLog.d("MyDate", "TimePicker: " + cl.toString());
+        Logger.d("MyDate", "TimePicker: " + cl.toString());
 
         int year = cl.get(Calendar.YEAR);
-        OfferLog.d("MyDate", "TimePicker: year " + year);
+        Logger.d("MyDate", "TimePicker: year " + year);
 
         int month = cl.get(Calendar.MONTH);
-        OfferLog.d("MyDate", "TimePicker: month " + month);
+        Logger.d("MyDate", "TimePicker: month " + month);
 
         int day = cl.get(Calendar.DAY_OF_MONTH);
-        OfferLog.d("MyDate", "TimePicker: day " + day);
+        Logger.d("MyDate", "TimePicker: day " + day);
 
         int hour = mHour;
-        OfferLog.d("MyDate", "TimePicker: mHour " + mHour);
+        Logger.d("MyDate", "TimePicker: mHour " + mHour);
         int min = mMin;
-        OfferLog.d("MyDate", "TimePicker: mMin " + mMin);
+        Logger.d("MyDate", "TimePicker: mMin " + mMin);
 
         cl.set(year, month, day, hour, min);
 
@@ -62,9 +62,9 @@ public class TimePickerActivity extends AppCompatActivity implements TimePickerF
         // TODO remove
         // ********************************************************************
 
-        OfferLog.d("MyDate", "TimePicker: " + cl.toString());
-        OfferLog.d("MyDate", "TimePicker: " + new Date(cl.getTime().getTime()));
-        OfferLog.d("MyDate", "*************************************************");
+        Logger.d("MyDate", "TimePicker: " + cl.toString());
+        Logger.d("MyDate", "TimePicker: " + new Date(cl.getTime().getTime()));
+        Logger.d("MyDate", "*************************************************");
         // ********************************************************************
 
         Intent intent = new Intent(TimePickerActivity.this, CarDetailsActivity.class);

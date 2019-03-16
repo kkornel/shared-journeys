@@ -33,7 +33,7 @@ import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.FetchURL;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.LatLon;
-import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
 
@@ -232,7 +232,7 @@ public class OfferSummaryActivity extends AppCompatActivity implements OnMapRead
         String output = "json";
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
-        OfferLog.d(url);
+        Logger.d(url);
         return url;
     }
 

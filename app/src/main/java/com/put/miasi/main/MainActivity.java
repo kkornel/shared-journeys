@@ -4,7 +4,6 @@ package com.put.miasi.main;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -29,6 +28,7 @@ import com.put.miasi.main.notifications.NotificationService;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.User;
 
 import static com.put.miasi.main.notifications.NotificationUtils.NOTIFICATION_INTENT_EXTRA;
@@ -176,7 +176,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                CurrentUserProfile.loadUserData(mUserUid, user);
+                String userUid = dataSnapshot.getKey();
+
+                Logger.d("MA ul ds " + dataSnapshot.toString());
+                Logger.d("MA ul u " + user.toStringy());
+
+                CurrentUserProfile.loadUserData(userUid, user);
 
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

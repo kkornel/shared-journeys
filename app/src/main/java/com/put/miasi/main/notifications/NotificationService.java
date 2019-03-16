@@ -15,9 +15,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.Notification;
+import com.put.miasi.utils.User;
 
 public class NotificationService extends Service {
     private static final String TAG = "NotificationService";
@@ -57,7 +59,7 @@ public class NotificationService extends Service {
         handler = new Handler();
         runnable = new Runnable() {
             public void run() {
-                Log.d(TAG, "onCreate: Service is still running!");
+                // Log.d(TAG, "onCreate: Service is still running!");
                 handler.postDelayed(runnable, 10000);
             }
         };
@@ -79,32 +81,61 @@ public class NotificationService extends Service {
         removeChildEventListener();
     }
 
+    public void getUserProfile(final DataSnapshot ds) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final String userUid = auth.getCurrentUser().getUid();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference usersRef = database.getReference(Database.USERS).child(userUid);
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                CurrentUserProfile.loadUserData(userUid, user);
+                a(ds);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        usersRef.addListenerForSingleValueEvent(userListener);
+    }
+
+    private void a(DataSnapshot dataSnapshot) {
+        String notificationUid = dataSnapshot.getKey();
+
+        Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
+
+        boolean hasBeenSeenByUser = false;
+
+        Log.d(TAG, "onChildAdded: " + CurrentUserProfile.toStringy());
+
+        if (CurrentUserProfile.notificationsMap != null && CurrentUserProfile.notificationsMap.size() != 0) {
+            Log.d(TAG, "onChildAdded: " + CurrentUserProfile.notificationsMap);
+            // TODO
+            hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
+        }
+        Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
+
+        if (hasBeenSeenByUser) {
+            Log.d(TAG, "onChildAdded: not new");
+        } else {
+            Log.d(TAG, "onChildAdded: new");
+
+            Notification notification = dataSnapshot.getValue(Notification.class);
+            Notification.NotificationType notificationType = notification.getNotificationType();
+            NotificationUtils.updateNotification(createTitle(notificationType));
+        }
+    }
+
     private ChildEventListener createChildNotificationListener() {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                String notificationUid = dataSnapshot.getKey();
-                Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
-                Log.d(TAG, "onChildAdded: s " + s);
-
-                boolean hasBeenSeenByUser = false;
-
-                if (CurrentUserProfile.notificationsMap != null && CurrentUserProfile.notificationsMap.size() != 0) {
-                    Log.d(TAG, "onChildAdded: " + CurrentUserProfile.notificationsMap);
-                    hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
-                }
-                Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
-
-                if (hasBeenSeenByUser) {
-                    Log.d(TAG, "onChildAdded: not new");
-                } else {
-                    Log.d(TAG, "onChildAdded: new");
-
-                    Notification notification = dataSnapshot.getValue(Notification.class);
-                    Notification.NotificationType notificationType = notification.getNotificationType();
-                    NotificationUtils.updateNotification(createTitle(notificationType));
-                }
+                getUserProfile(dataSnapshot);
             }
 
             @Override

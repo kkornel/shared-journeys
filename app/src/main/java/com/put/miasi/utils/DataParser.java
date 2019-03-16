@@ -26,8 +26,8 @@ public class DataParser {
             JSONObject jdes = ((JSONObject) mjLegs.get(0)).getJSONObject("distance");
             // String s = jdes.getString("text");
             long distance = jdes.getLong("value");
-            OfferLog.d("kornel", jdes.toString());
-            OfferLog.d(String.valueOf(distance));
+            Logger.d("kornel", jdes.toString());
+            Logger.d(String.valueOf(distance));
             // OfferSummaryActivity.DISTANCE = s;
             OfferSummaryActivity.DISTANCE = distance;
         } catch (JSONException e) {
@@ -42,8 +42,8 @@ public class DataParser {
             JSONObject jdes = ((JSONObject) mjLegs.get(0)).getJSONObject("duration");
             // String s = jdes.getString("text");
             long duration = jdes.getLong("value");
-            OfferLog.d("kornel", jdes.toString());
-            OfferLog.d(String.valueOf(duration));
+            Logger.d("kornel", jdes.toString());
+            Logger.d(String.valueOf(duration));
             // OfferSummaryActivity.DISTANCE = s;
             OfferSummaryActivity.DURATION = duration;
         } catch (JSONException e) {

@@ -105,6 +105,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             Log.d(TAG, "onBindViewHolder: " + mNotificationsFromProfile);
 
+            // TODO po usunieciu
+            // 'boolean java.lang.Boolean.booleanValue()' on a null object reference
             boolean wasRead = mNotificationsFromProfile.get(notification.getNotificationUid());
             if (!wasRead) {
                 viewHolder.mNewNotificationTextView.setVisibility(View.VISIBLE);

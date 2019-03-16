@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.put.miasi.R;
 import com.put.miasi.utils.FetchURL;
 import com.put.miasi.utils.LocationUtils;
-import com.put.miasi.utils.OfferLog;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.TaskLoadedCallback;
 
@@ -117,7 +117,7 @@ public class RideLocationActivity extends AppCompatActivity implements OnMapRead
         String output = "json";
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
-        OfferLog.d(url);
+        Logger.d(url);
         return url;
     }
 
