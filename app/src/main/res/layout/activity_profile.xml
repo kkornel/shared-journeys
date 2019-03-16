@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:scrollbars="none"
-    >
+    tools:context=".main.profile.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".main.OptionsFragment">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/iv_avatar"
@@ -21,7 +19,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-             />
+            android:background="@drawable/ic_car" />
         <TextView
             android:id="@+id/tv_nick"
             android:layout_width="wrap_content"
@@ -29,9 +27,9 @@
             android:layout_below="@+id/iv_avatar"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text=""
+            android:text="Janusz"
             android:textColor="@color/colorText"
-            android:textSize="24dp" />
+            android:textSize="25dp" />
 
         <ImageView
             android:id="@+id/iv_steeringWheel"
@@ -42,7 +40,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/ic_steering_wheel" />
 
 
@@ -51,42 +49,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_alignTop="@id/iv_steeringWheel"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
-            android:text=""
+            android:text="Driver rating: 4,4/5"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_numberOfDriverRatings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_driverRating"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
-            android:text=""
+            android:text="Number of ratings: 0"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_numberOfDriverOffers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_numberOfDriverRatings"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
-            android:text=""
+            android:text="Number of offered rides: 0"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <View
             android:id="@+id/splitter"
@@ -94,7 +92,7 @@
             android:layout_height="2dip"
             android:layout_below="@id/tv_numberOfDriverOffers"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
             android:background="#808080" />
 
@@ -116,42 +114,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_alignTop="@id/iv_passsenger"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
-            android:text=""
+            android:text="Passenger rating: 4,4/5"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_numberOfPassengerRatings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_passenger_rating"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
-            android:text=""
+            android:text="Number of ratings: 0"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_numberOfParticipatedRides"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_numberOfPassengerRatings"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
-            android:text=""
+            android:text="Number of ratings: 0"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
 
         <View
@@ -182,33 +180,31 @@
             android:id="@+id/tv_telephoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_alignTop="@id/iv_contact"
             android:layout_toEndOf="@+id/iv_contact"
             android:layout_toRightOf="@+id/iv_contact"
-            android:text=""
+            android:text="+48 123456789"
             android:textColor="@color/colorText"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_telephoneNumber"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/iv_contact"
             android:layout_toRightOf="@+id/iv_contact"
-            android:text=""
+            android:text="małpa@małpa.pl"
             android:textColor="@color/colorText"
-            android:textSize="18dp"
-            android:layout_marginBottom="70dp"/>
+            android:textSize="20dp" />
 
 
 
 
     </RelativeLayout>
-
 </ScrollView>

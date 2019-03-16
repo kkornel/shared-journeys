@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_main_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.search.OffersListActivity"></activity>
+        <activity android:name=".main.profile.ProfileActivity"></activity>
+        <activity android:name=".main.search.OffersListActivity" />
         <activity android:name=".main.search.RideLocationActivity" />
         <activity android:name=".main.search.RideCalendar" />
         <activity android:name=".main.history.ParticipatedRideDetailsActivity" />
