@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -222,7 +223,8 @@ public class RideDetailsActivity extends AppCompatActivity  {
         tv_available_seats.setText("Available seats: " + offer.getSeats());
         tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");
         tv_car_color.setText(offer.getCar().getColor());
-        tv_rating.setText(String.format("%.1f", rider.getDriverRatingAvg()) +"/5");
+        String rating = "<b>" + String.format("%.1f", rider.getDriverRatingAvg()) + "</b> ";
+        tv_rating.setText(Html.fromHtml(rating));
         // kalendarz i data
         Calendar cal = DateUtils.getCalendarFromMilliSecs(offer.getDate());
         String startHour = DateUtils.getHourFromCalendar(cal);

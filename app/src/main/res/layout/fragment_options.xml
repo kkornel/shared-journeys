@@ -33,14 +33,24 @@
             android:textColor="@color/colorText"
             android:textSize="24dp" />
 
+        <View
+            android:id="@+id/splitter0"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_below="@id/tv_nick"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:background="#808080" />
+
         <ImageView
             android:id="@+id/iv_steeringWheel"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/tv_nick"
+            android:layout_below="@+id/splitter0"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/ic_steering_wheel" />
@@ -54,6 +64,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_alignTop="@id/iv_steeringWheel"
+            android:layout_marginTop="-15dp"
             android:layout_toEndOf="@+id/iv_steeringWheel"
             android:layout_toRightOf="@+id/iv_steeringWheel"
             android:text=""
@@ -94,7 +105,7 @@
             android:layout_height="2dip"
             android:layout_below="@id/tv_numberOfDriverOffers"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
             android:background="#808080" />
 
@@ -105,7 +116,7 @@
             android:layout_below="@+id/splitter"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/ic_passenger" />
@@ -119,6 +130,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_alignTop="@id/iv_passsenger"
+            android:layout_marginTop="-15dp"
             android:layout_toEndOf="@+id/iv_passsenger"
             android:layout_toRightOf="@+id/iv_passsenger"
             android:text=""
@@ -160,7 +172,7 @@
             android:layout_height="2dip"
             android:layout_below="@id/tv_numberOfParticipatedRides"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="10dp"
             android:background="#808080" />
 

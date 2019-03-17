@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -83,10 +84,12 @@ public class OptionsFragment extends Fragment {
     private void fillComponents() {
         Picasso.get().load(currentUser.getAvatarUrl()).transform(new CircleTransform()).into(iv_avatar);
         tv_nick.setText(currentUser.getFirstName() + " " + currentUser.getSurname());
-        tv_driverRating.setText("Driver rating: " + String.format("%.1f", currentUser.getDriverRatingAvg()) + "/5");
+        String driverRating = "Driver rating: " + "<b>" + String.format("%.1f", currentUser.getDriverRatingAvg()) + "</b> ";
+        tv_driverRating.setText(Html.fromHtml(driverRating));
         tv_numberOfDriverRatings.setText("Number of ratings: " + currentUser.getNumberOfDriverRatings());
         tv_numberOfDriverOffers.setText("Number of offered rides: " + currentUser.getOfferedRidesList().size());
-        tv_passenger_rating.setText("Passenger rating: " + String.format("%.1f", currentUser.getPassengerRatingAvg()) + "/5");
+        String passengerRating = "Passenger rating: " + "<b>" + String.format("%.1f", currentUser.getPassengerRatingAvg()) + "</b> ";
+        tv_passenger_rating.setText(Html.fromHtml(passengerRating));
         tv_numberOfPassengerRatings.setText("Number of ratings: " + currentUser.getNumberOfPassengerRatings());
         tv_numberOfParticipatedRides.setText("Number of participated rides: " + currentUser.getParticipatedRidesList().size());
         tv_telephoneNumber.setText(currentUser.getPhone());
