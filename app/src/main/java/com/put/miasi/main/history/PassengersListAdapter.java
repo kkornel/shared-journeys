@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.put.miasi.R;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.ListItemClickListener;
 import com.put.miasi.utils.Passenger;
 import com.put.miasi.utils.User;
@@ -54,11 +55,17 @@ public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAd
             Passenger passenger = mPassengersList.get(position);
             User user = passenger.getUser();
 
+            // Picasso.get()
+            //         .load(user.getAvatarUrl())
+            //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+            //         .error(R.drawable.ic_error_red_24dp)
+            //         .into(viewHolder.mAvatarImageView);
+
             Picasso.get()
                     .load(user.getAvatarUrl())
                     .placeholder(R.drawable.ic_account_circle_black_24dp)
                     .error(R.drawable.ic_error_red_24dp)
-                    .into(viewHolder.mAvatarImageView);
+                    .transform(new CircleTransform()).into(viewHolder.mAvatarImageView);
 
             viewHolder.mNameTextView.setText(user.getFirstName() + " " + user.getSurname());
             viewHolder.mSeatsTextView.setText(passenger.getNumOfSeatsReserved() + "");

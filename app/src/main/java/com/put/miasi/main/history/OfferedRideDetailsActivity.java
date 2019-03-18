@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
 import com.put.miasi.main.search.RideLocationActivity;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
@@ -262,11 +263,17 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         final TextView driverNameTextView = vView.findViewById(R.id.driverNameTextView);
         final RatingBar ratingBar = vView.findViewById(R.id.ratingBar);
 
+        // Picasso.get()
+        //         .load(user.getAvatarUrl())
+        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+        //         .error(R.drawable.ic_error_red_24dp)
+        //         .into(avatarImageView);
+
         Picasso.get()
                 .load(user.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
-                .into(avatarImageView);
+                .transform(new CircleTransform()).into(avatarImageView);
 
         driverNameTextView.setText(user.getFirstName() + " " + user.getSurname());
 
@@ -356,11 +363,17 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         final Button rejectButton = vView.findViewById(R.id.declineButton);
         final Button callButton = vView.findViewById(R.id.callButton);
 
+        // Picasso.get()
+        //         .load(user.getAvatarUrl())
+        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+        //         .error(R.drawable.ic_error_red_24dp)
+        //         .into(avatarImageView);
+
         Picasso.get()
                 .load(user.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
-                .into(avatarImageView);
+                .transform(new CircleTransform()).into(avatarImageView);
 
         passengerNameTextView.setText(user.getFirstName() + " " + user.getSurname());
         avgPassRateTextView.setText(user.getPassengerRatingAvg() + "");

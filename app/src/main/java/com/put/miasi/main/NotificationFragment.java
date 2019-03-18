@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
 import com.put.miasi.main.history.OfferedRideDetailsActivity;
 import com.put.miasi.main.notifications.NotificationAdapter;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
@@ -389,11 +390,17 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         final TextView notificationTitleTextView = vView.findViewById(R.id.notificationTitle);
         final Button seeRideButton = vView.findViewById(R.id.seeRideButton);
 
+        // Picasso.get()
+        //         .load(user.getAvatarUrl())
+        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+        //         .error(R.drawable.ic_error_red_24dp)
+        //         .into(avatarImageView);
+
         Picasso.get()
                 .load(user.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
-                .into(avatarImageView);
+                .transform(new CircleTransform()).into(avatarImageView);
 
         notificationTitleTextView.setText(title);
 
@@ -465,11 +472,17 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         final ImageView avatarImageView = vView.findViewById(R.id.avatarImageView);
         final TextView notificationTitleTextView = vView.findViewById(R.id.notificationTitle);
 
+        // Picasso.get()
+        //         .load(user.getAvatarUrl())
+        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+        //         .error(R.drawable.ic_error_red_24dp)
+        //         .into(avatarImageView);
+
         Picasso.get()
                 .load(user.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
-                .into(avatarImageView);
+                .transform(new CircleTransform()).into(avatarImageView);
 
         notificationTitleTextView.setText(title);
 

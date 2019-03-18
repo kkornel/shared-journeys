@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.put.miasi.R;
 import com.put.miasi.main.search.RideLocationActivity;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
@@ -180,11 +181,17 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         final TextView driverNameTextView = vView.findViewById(R.id.driverNameTextView);
         final RatingBar ratingBar = vView.findViewById(R.id.ratingBar);
 
+        // Picasso.get()
+        //         .load(mDriver.getAvatarUrl())
+        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+        //         .error(R.drawable.ic_error_red_24dp)
+        //         .into(avatarImageView);
+
         Picasso.get()
                 .load(mDriver.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
-                .into(avatarImageView);
+                .transform(new CircleTransform()).into(avatarImageView);
 
         driverNameTextView.setText(mDriver.getFirstName() + " " + mDriver.getSurname());
 
@@ -346,11 +353,17 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         int distance = (int) mRide.getDistance() / 1000;
         tv_distance.setText("Distance: " + distance + " km");
 
+        // Picasso.get()
+        //         .load(mDriver.getAvatarUrl())
+        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+        //         .error(R.drawable.ic_error_red_24dp)
+        //         .into(iv_avatar);
+
         Picasso.get()
                 .load(mDriver.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
                 .error(R.drawable.ic_error_red_24dp)
-                .into(iv_avatar);
+                .transform(new CircleTransform()).into(iv_avatar);
 
         tv_nick.setText(mDriver.getFirstName() + " " + mDriver.getSurname());
         callDriverButton.setOnClickListener(new View.OnClickListener() {

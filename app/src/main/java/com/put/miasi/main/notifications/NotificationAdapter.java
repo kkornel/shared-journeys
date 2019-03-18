@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.put.miasi.R;
+import com.put.miasi.utils.CircleTransform;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.Notification;
@@ -67,11 +68,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             String destinationFromCanceled = notification.getDestinationFromCanceled();
 
+            // Picasso.get()
+            //         .load(sender.getAvatarUrl())
+            //         .placeholder(R.drawable.ic_account_circle_black_24dp)
+            //         .error(R.drawable.ic_error_red_24dp)
+            //         .into(viewHolder.mImageView);
+
             Picasso.get()
                     .load(sender.getAvatarUrl())
                     .placeholder(R.drawable.ic_account_circle_black_24dp)
                     .error(R.drawable.ic_error_red_24dp)
-                    .into(viewHolder.mImageView);
+                    .transform(new CircleTransform()).into(viewHolder.mImageView);
 
             String title = "";
             Notification.NotificationType notificationType = notification.getNotificationType();
