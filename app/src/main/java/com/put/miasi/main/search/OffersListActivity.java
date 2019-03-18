@@ -27,6 +27,7 @@ import com.put.miasi.utils.Database;
 import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.LocationUtils;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
@@ -230,6 +231,9 @@ public class OffersListActivity extends AppCompatActivity {
         String rideOfferDate = DateUtils.getDate(rideOffer.getDate(), DateUtils.STANDARD_DATE_FORMAT);
         String rideOfferStartPoint = GeoUtils.getCityFromLatLng(OffersListActivity.this, rideOffer.getStartPoint().toLatLng());
         String rideOfferDestinationPoint = GeoUtils.getCityFromLatLng(OffersListActivity.this, rideOffer.getDestinationPoint().toLatLng());
+
+        Logger.d("GEO", "OffersListActivity: rideOfferStartPoint - " + rideOfferStartPoint);
+        Logger.d("GEO", "OffersListActivity: rideOfferDestinationPoint - " + rideOfferDestinationPoint);
 
         Calendar cal = DateUtils.getCalendarFromMilliSecs(rideOffer.getDate());
         String startHour = DateUtils.getHourFromCalendar(cal);

@@ -18,6 +18,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
 import com.put.miasi.utils.DateUtils;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.TimePickerFragment;
 
 import java.util.Arrays;
@@ -114,11 +115,15 @@ public class SearchActivity extends AppCompatActivity implements TimePickerFragm
                 {
                     startTextFilled = true;
                     startCity = place.getName();
+                    Logger.d("GEO", "SearchActivity: place - " + place);
+                    Logger.d("GEO", "SearchActivity: startCity - " + startCity);
                 }
                 if (whichOne.equals("destination"))
                 {
                     destinationTextFilled = true;
                     destinationCity = place.getName();
+                    Logger.d("GEO", "SearchActivity: place - " + place);
+                    Logger.d("GEO", "SearchActivity: destinationCity - " + destinationCity);
                 }
                 if (destinationTextFilled  && startTextFilled)
                 {

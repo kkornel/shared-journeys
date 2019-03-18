@@ -24,6 +24,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
 import com.put.miasi.utils.LatLon;
+import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
 
 import java.util.Arrays;
@@ -84,6 +85,9 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onPlaceSelected(Place place) {
                 mStartLatLng = place.getLatLng();
+
+                Logger.d("GEO", "FromActivity: place - " + place);
+                Logger.d("GEO", "FromActivity: start - " + place.getName());
 
                 mMap.addMarker(new MarkerOptions().position(mStartLatLng)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
