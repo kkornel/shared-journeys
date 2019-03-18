@@ -242,7 +242,15 @@ public class OffersListActivity extends AppCompatActivity {
         int startHourInMinutes = Integer.valueOf(startHour) * 60 + Integer.valueOf(startMin);
         int timePickedInMinutes = mHour *60 + mMin;
 
-        if (rideOfferDate.equals(date) && rideOfferStartPoint.equals(startCity) && rideOfferDestinationPoint.equals(destinationCity)
+        boolean start_x = startCity.contains(rideOfferStartPoint);
+        boolean start_y = rideOfferStartPoint.contains(startCity);
+        boolean start_z = start_x || start_y;
+
+        boolean dest_x = destinationCity.contains(rideOfferDestinationPoint);
+        boolean dest_y = rideOfferDestinationPoint.contains(destinationCity);
+        boolean dest_z = dest_x || dest_y;
+
+        if (rideOfferDate.equals(date) && start_z && dest_z
                 && rideOfferTime > currentTime && rideOfferSeats > 0  && startHourInMinutes > timePickedInMinutes
                 && !CurrentUserProfile.uid.equals(rideOffer.getDriverUid()))
         {

@@ -23,6 +23,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.put.miasi.R;
+import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.LatLon;
 import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.RideOffer;
@@ -74,7 +75,7 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS));
 
         autocompleteFragment.setCountry(SEARCH_COUNTRY);
         autocompleteFragment.setHint(SEARCH_HINT);
@@ -87,7 +88,10 @@ public class FromActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mStartLatLng = place.getLatLng();
 
                 Logger.d("GEO", "FromActivity: place - " + place);
+                Logger.d("GEO", "FromActivity: address - " + place.getAddress());
+                Logger.d("GEO", "FromActivity: address - " + place.getAddress());
                 Logger.d("GEO", "FromActivity: start - " + place.getName());
+                Logger.d("GEO", "FromActivity: start - " + GeoUtils.getCityFromLatLng(getApplicationContext(), mStartLatLng));
 
                 mMap.addMarker(new MarkerOptions().position(mStartLatLng)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
