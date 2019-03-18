@@ -143,7 +143,7 @@
     <string name="title_history">History</string>
     <string name="title_rides">Rides</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_options">Options</string>
+    <string name="title_options">Profile</string>
 
     <string name="title_activity_from">Location pickup</string>
     <string name="title_activity_destination">Destination</string>
