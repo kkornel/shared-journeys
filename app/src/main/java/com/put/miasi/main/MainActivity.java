@@ -29,6 +29,7 @@ import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.Logger;
+import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.User;
 
 import static com.put.miasi.main.notifications.NotificationUtils.NOTIFICATION_INTENT_EXTRA;
@@ -142,6 +143,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
+
+        // mRootRef.child(Database.NOTIFICATIONS).addListenerForSingleValueEvent(new ValueEventListener() {
+        //     @Override
+        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        //         Log.d(TAG, "dataSnapshot: " + dataSnapshot);
+        //         for (DataSnapshot userIdShot : dataSnapshot.getChildren()) {
+        //             Log.d(TAG, "userIdShot: " + userIdShot);
+        //             for (DataSnapshot notificationIdShot : userIdShot.getChildren()) {
+        //                 Log.d(TAG, "notificationIdShot: " + notificationIdShot);
+        //                 Notification notification = notificationIdShot.getValue(Notification.class);
+        //                 Log.d(TAG, "notification: " + notification);
+        //             }
+        //         }
+        //     }
+        //
+        //     @Override
+        //     public void onCancelled(@NonNull DatabaseError databaseError) {
+        //
+        //     }
+        // });
+
         getUserProfile();
     }
 

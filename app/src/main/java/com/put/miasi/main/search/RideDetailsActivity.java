@@ -292,14 +292,14 @@ public class RideDetailsActivity extends AppCompatActivity  {
                 mOffer.getKey(),
                 mNumOfSeatsPicked);
 
-        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
-        if (driverNotifications == null) {
-            driverNotifications = new HashMap<>();
-        }
-        driverNotifications.put(newNotificationUid, false);
+        // HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        // if (driverNotifications == null) {
+        //     driverNotifications = new HashMap<>();
+        // }
+        // driverNotifications.put(newNotificationUid, false);
 
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
-        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
+        // mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
     }
 
     private void firebaseInit() {

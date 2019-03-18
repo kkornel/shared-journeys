@@ -19,7 +19,7 @@ public class User implements Serializable {
 
     private HashMap<String, Boolean> offeredRides;      /* String - RideUid, Boolean - has passengers were rated, true if yes, and you cant rate them later */
     private HashMap<String, Boolean> participatedRides; /* String - RideUid, Boolean - has passengers were rated, true if yes, and you cant rate them later */
-    private HashMap<String, Boolean> notifications;     /* String - NotificationUid, Boolean - has notification was seen? true if yes (you have to open dialog and click OK to make it seen */
+    // private HashMap<String, Boolean> notifications;     /* String - NotificationUid, Boolean - has notification was seen? true if yes (you have to open dialog and click OK to make it seen */
 
     private float driverRating;
     private int numberOfDriverRatings;
@@ -89,13 +89,13 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public HashMap<String, Boolean> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(HashMap<String, Boolean> notifications) {
-        this.notifications = notifications;
-    }
+    // public HashMap<String, Boolean> getNotifications() {
+    //     return notifications;
+    // }
+    //
+    // public void setNotifications(HashMap<String, Boolean> notifications) {
+    //     this.notifications = notifications;
+    // }
 
     public HashMap<String, Boolean> getOfferedRides() {
         return offeredRides;
@@ -184,11 +184,11 @@ public class User implements Serializable {
         return avg;
     }
 
-    public String toStringy() {
-        return "User{" +
-                "\n, notifications=" + notifications +
-                '}';
-    }
+    // public String toStringy() {
+    //     return "User{" +
+    //             "\n, notifications=" + notifications +
+    //             '}';
+    // }
 
     @Override
     public String toString() {
@@ -199,7 +199,7 @@ public class User implements Serializable {
                 "\n, surname='" + surname + '\'' +
                 "\n, email='" + email + '\'' +
                 "\n, phone='" + phone + '\'' +
-                "\n, notifications=" + notifications +
+                // "\n, notifications=" + notifications +
                 "\n, offeredRides=" + offeredRides +
                 "\n, participatedRides=" + participatedRides +
                 "\n, driverRating=" + driverRating +

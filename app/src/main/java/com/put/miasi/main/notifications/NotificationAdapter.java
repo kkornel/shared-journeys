@@ -31,7 +31,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private final NotificationListItemClickListener mOnClickListener;
 
-    private HashMap<String, Boolean> mNotificationsFromProfile;
+    // private HashMap<String, Boolean> mNotificationsFromProfile;
     private List<Notification> mNotifications;
     private HashMap<String, User> mUsers;
     private HashMap<String,RideOffer> mRides;
@@ -84,7 +84,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     title = sender.getFullname() + " canceled ride to " + destinationFromCanceled;
                     break;
                 case RIDE_DECLINED:
-                    title = sender.getFullname() + " declined your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
+                    title = sender.getFullname() + " declined your ride to " + destinationFromCanceled;
                     break;
                 case PASSENGER_RESIGNED:
                     title = sender.getFullname() + " resigned from your ride to " + GeoUtils.getCityFromLatLng(mContext, ride.destinationPoint.toLatLng());
@@ -100,12 +100,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             viewHolder.mDateTextView.setText(DateUtils.getDate(notification.getTimeStamp(), DateUtils.STANDARD_DATE_FORMAT));
 
-            boolean wasRead = mNotificationsFromProfile.get(notification.getNotificationUid());
-            if (!wasRead) {
-                viewHolder.mNewNotificationTextView.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.mNewNotificationTextView.setVisibility(View.INVISIBLE);
-            }
+            viewHolder.mNewNotificationTextView.setVisibility(View.VISIBLE);
+
+            // boolean wasRead = mNotificationsFromProfile.get(notification.getNotificationUid());
+            // if (!wasRead) {
+            //     viewHolder.mNewNotificationTextView.setVisibility(View.VISIBLE);
+            // } else {
+            //     viewHolder.mNewNotificationTextView.setVisibility(View.INVISIBLE);
+            // }
         }
     }
 
@@ -114,13 +116,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return ((mNotifications != null) && (mNotifications.size() != 0) ? mNotifications.size() : 0);
     }
 
-    public void loadNewData(HashMap<String, Boolean> newNotificationsFromProfile, List<Notification> newNotifications, HashMap<String, User> user, HashMap<String, RideOffer> rides) {
-        mNotificationsFromProfile = newNotificationsFromProfile;
+    public void loadNewData(List<Notification> newNotifications, HashMap<String, User> user, HashMap<String, RideOffer> rides) {
         mNotifications = newNotifications;
         mUsers = user;
         mRides = rides;
         notifyDataSetChanged();
     }
+
+    // public void loadNewData(HashMap<String, Boolean> newNotificationsFromProfile, List<Notification> newNotifications, HashMap<String, User> user, HashMap<String, RideOffer> rides) {
+    //     mNotificationsFromProfile = newNotificationsFromProfile;
+    //     mNotifications = newNotifications;
+    //     mUsers = user;
+    //     mRides = rides;
+    //     notifyDataSetChanged();
+    // }
 
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mImageView;

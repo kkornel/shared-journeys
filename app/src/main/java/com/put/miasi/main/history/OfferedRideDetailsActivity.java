@@ -312,18 +312,17 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         Notification notification = new Notification(
                 Notification.NotificationType.RATED_AS_PASSENGER,
                 CurrentUserProfile.uid,
-                mRide.getKey(),
                 mRating);
 
-        HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-        if (passengerNotifications == null) {
-            passengerNotifications = new HashMap<>();
-        }
-        passengerNotifications.put(newNotificationUid, false);
+        // HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+        // if (passengerNotifications == null) {
+        //     passengerNotifications = new HashMap<>();
+        // }
+        // passengerNotifications.put(newNotificationUid, false);
 
         mUsersRef.child(user.getUid()).child(Database.PASSENGER_RATING).setValue(passengerRate);
         mUsersRef.child(user.getUid()).child(Database.NUMBER_OF_PASSENGER_RATING).setValue(numOfPassRatings);
-        mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+        // mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
 
         mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
 
@@ -412,15 +411,15 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         Notification notification = new Notification(
                 Notification.NotificationType.RIDE_DECLINED,
                 CurrentUserProfile.uid,
-                mRide.getKey());
+                GeoUtils.getCityFromLatLng(getApplicationContext(), mRide.destinationPoint.toLatLng()));
 
-        HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-        if (passengerNotifications == null) {
-            passengerNotifications = new HashMap<>();
-        }
-        passengerNotifications.put(newNotificationUid, false);
+        // HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+        // if (passengerNotifications == null) {
+        //     passengerNotifications = new HashMap<>();
+        // }
+        // passengerNotifications.put(newNotificationUid, false);
 
-        mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+        // mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
 
         mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
 
@@ -464,37 +463,56 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         final String rideUid = mRide.getKey();
         final String userUid = CurrentUserProfile.uid;
 
-        for (final Passenger passenger : mPassengersList) {
-            final User user = passenger.getUser();
-            mNotificationsRef.child(passenger.getUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        Notification notification1 = ds.getValue(Notification.class);
-                        String notification1Uid = ds.getKey();
+        // for (final Passenger passenger : mPassengersList) {
+        //     final User user = passenger.getUser();
+        //     mNotificationsRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        //         @Override
+        //         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        //             for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        //                 Notification notification1 = ds.getValue(Notification.class);
+        //                 String notification1Uid = ds.getKey();
+        //
+        //                 if (notification1.getRideUid().equals(rideUid)) {
+        //                     mNotificationsRef.child(passenger.getUser().getUid()).child(notification1Uid).removeValue();
+        //                 }
+        //             }
+        //         }
+        //
+        //         @Override
+        //         public void onCancelled(@NonNull DatabaseError databaseError) {
+        //             Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+        //         }
+        //     });
+        // }
+        //
+        // mNotificationsRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        //     @Override
+        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        //         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        //             Notification notification1 = ds.getValue(Notification.class);
+        //             String notification1Uid = ds.getKey();
+        //
+        //             if (notification1.getRideUid().equals(rideUid)) {
+        //                 mNotificationsRef.child(userUid).child(notification1Uid).removeValue();
+        //             }
+        //         }
+        //     }
+        //
+        //     @Override
+        //     public void onCancelled(@NonNull DatabaseError databaseError) {
+        //         Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+        //     }
+        // });
 
-                        if (notification1.getRideUid().equals(rideUid)) {
-                            mNotificationsRef.child(passenger.getUser().getUid()).child(notification1Uid).removeValue();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d(TAG, "onCancelled: " + databaseError.getMessage());
-                }
-            });
-        }
-
-        mNotificationsRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mNotificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Notification notification1 = ds.getValue(Notification.class);
-                    String notification1Uid = ds.getKey();
-
-                    if (notification1.getRideUid().equals(rideUid)) {
-                        mNotificationsRef.child(userUid).child(notification1Uid).removeValue();
+                for (DataSnapshot userIdShot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot notificationIdShot : userIdShot.getChildren()) {
+                        Notification notification = notificationIdShot.getValue(Notification.class);
+                        if (notification.getRideUid().equals(mRide.getKey())) {
+                            mNotificationsRef.child(userIdShot.getKey()).child(notificationIdShot.getKey()).removeValue();
+                        }
                     }
                 }
             }
@@ -518,23 +536,23 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
                             CurrentUserProfile.uid,
                             GeoUtils.getCityFromLatLng(getApplicationContext(), mRide.destinationPoint.toLatLng()));
 
-                    HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-                    if (passengerNotifications == null) {
-                        passengerNotifications = new HashMap<>();
-                    }
-                    passengerNotifications.put(newNotificationUid, false);
+                    // HashMap<String, Boolean> passengerNotifications = user.getNotifications();
+                    // if (passengerNotifications == null) {
+                    //     passengerNotifications = new HashMap<>();
+                    // }
+                    // passengerNotifications.put(newNotificationUid, false);
 
                     HashMap<String, Boolean> participatedRides = user.getParticipatedRides();
                     participatedRides.remove(rideUid);
                     mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
-                    mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
+                    // mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
                     mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
                 }
             }
         };
 
         // I'm doing this after delay, because ^up is a code which deletes notification with that Ride ID
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(runnable, 5000);
 
         HashMap<String, Boolean> offeredRides = CurrentUserProfile.offeredRidesMap;
 
@@ -549,6 +567,7 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mRidesRef.child(mRide.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Ride canceled", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -585,7 +604,12 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
 
         tv_luggage.setText("Luggage: " + mRide.getLuggage());
 
-        tv_message.setText(mRide.getMessage());
+        if (mRide.getMessage() == null || mRide.getMessage().equals("")) {
+            tv_message.setText("No additional message.");
+        } else {
+            tv_message.setText(mRide.getMessage());
+        }
+
     }
 
     private void dialPhoneNumber(String phoneNumber) {

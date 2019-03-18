@@ -230,19 +230,18 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         Notification notification = new Notification(
                 Notification.NotificationType.RATED_AS_DRIVER,
                 CurrentUserProfile.uid,
-                mRide.getKey(),
                 mRating);
 
-        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
-        if (driverNotifications == null) {
-            driverNotifications = new HashMap<>();
-        }
-        driverNotifications.put(newNotificationUid, false);
+        // HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        // if (driverNotifications == null) {
+        //     driverNotifications = new HashMap<>();
+        // }
+        // driverNotifications.put(newNotificationUid, false);
 
         mUsersRef.child(mDriver.getUid()).child(Database.DRIVER_RATING).setValue(driverRate);
         mUsersRef.child(mDriver.getUid()).child(Database.NUMBER_OF_DRIVER_RATING).setValue(numOfDriverRatings);
 
-        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
+        // mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
 
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
@@ -289,24 +288,24 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
                 CurrentUserProfile.uid,
                 mRide.getKey());
 
-        HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
-        if (driverNotifications == null) {
-            driverNotifications = new HashMap<>();
-        }
-        driverNotifications.put(newNotificationUid, false);
+        // HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
+        // if (driverNotifications == null) {
+        //     driverNotifications = new HashMap<>();
+        // }
+        // driverNotifications.put(newNotificationUid, false);
 
-        mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
+        // mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
         mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
 
-        int idx = 0;
-        for (String id : mRide.passengers.keySet()) {
-            if (id.equals(userUid)) {
-                break;
-            }
-            idx++;
-        }
+        // int idx = 0;
+        // for (String id : mRide.passengers.keySet()) {
+        //     if (id.equals(userUid)) {
+        //         break;
+        //     }
+        //     idx++;
+        // }
 
         int bookedSeats = mRide.passengers.get(userUid);
 
@@ -370,7 +369,11 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         tv_luggage.setText("Luggage: " + mRide.getLuggage());
 
-        tv_message.setText(mRide.getMessage());
+        if (mRide.getMessage() == null || mRide.getMessage().equals("")) {
+            tv_message.setText("No additional message.");
+        } else {
+            tv_message.setText(mRide.getMessage());
+        }
 
         int reservedRests = mRide.passengers.get(CurrentUserProfile.uid);
         tv_reservedSeats.setText(String.valueOf(reservedRests));

@@ -24,7 +24,7 @@ public class CurrentUserProfile {
     public static String surname;
     public static String email;
     public static String phone;
-    public static HashMap<String, Boolean> notificationsMap;
+    // public static HashMap<String, Boolean> notificationsMap;
     public static HashMap<String, Boolean> offeredRidesMap;
     public static List<String> offeredRidesList;
     public static HashMap<String, Boolean> participatedRidesMap;
@@ -51,7 +51,7 @@ public class CurrentUserProfile {
         numberOfDriverRatings = user.getNumberOfDriverRatings();
         passengerRating = user.getPassengerRating();
         numberOfPassengerRatings = user.getNumberOfPassengerRatings();
-        notificationsMap = user.getNotifications();
+        // notificationsMap = user.getNotifications();
 
         if (offeredRidesMap == null) {
             offeredRidesMap = new HashMap<>();
@@ -65,9 +65,9 @@ public class CurrentUserProfile {
         if (participatedRidesList == null) {
             participatedRidesList = new ArrayList<>();
         }
-        if (notificationsMap == null) {
-            notificationsMap = new HashMap<>();
-        }
+        // if (notificationsMap == null) {
+        //     notificationsMap = new HashMap<>();
+        // }
     }
 
     public static void getUserProfile() {
@@ -92,9 +92,9 @@ public class CurrentUserProfile {
         usersRef.addListenerForSingleValueEvent(userListener);
     }
 
-    public static String toStringy() {
-        return "CurrentUserProfile{" +
-                "\n, notifications=" + notificationsMap +
-                '}';
-    }
+    // public static String toStringy() {
+    //     return "CurrentUserProfile{" +
+    //             "\n, notifications=" + notificationsMap +
+    //             '}';
+    // }
 }

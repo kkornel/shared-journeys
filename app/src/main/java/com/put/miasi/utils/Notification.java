@@ -29,6 +29,13 @@ public class Notification implements Serializable {
 
     }
 
+    public Notification(NotificationType notificationType, String senderUid, float rate) {
+        this.notificationType = notificationType;
+        this.senderUid = senderUid;
+        this.rate = rate;
+        this.timeStamp = DateUtils.getTimeStamp();
+    }
+
     public Notification(NotificationType notificationType, String senderUid, String rideUid, float rate) {
         this.notificationType = notificationType;
         this.senderUid = senderUid;
@@ -48,7 +55,8 @@ public class Notification implements Serializable {
     public Notification(NotificationType notificationType, String senderUid, String s) {
         this.notificationType = notificationType;
         this.senderUid = senderUid;
-        if (notificationType == NotificationType.RIDE_CANCELED) {
+        if (notificationType == NotificationType.RIDE_CANCELED
+                || notificationType == NotificationType.RIDE_DECLINED) {
             this.destinationFromCanceled = s;
         } else {
             this.rideUid = s;
