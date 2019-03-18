@@ -50,7 +50,7 @@ import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 public class NotificationFragment extends Fragment implements NotificationListItemClickListener {
     private static final String TAG = "NotificationFragment";
 
-    private SwipeRefreshLayout mSwipeRefresh;
+    // private SwipeRefreshLayout mSwipeRefresh;
     private TextView mNoDataInfoTextView;
     private NotificationAdapter mNotificationAdapter;
     private RecyclerView mRecyclerView;
@@ -67,7 +67,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
 
     private int mIndex;
 
-    private boolean mHasDataChanged;
+    // private boolean mHasDataChanged;
 
     public NotificationFragment() {
 
@@ -90,17 +90,17 @@ public class NotificationFragment extends Fragment implements NotificationListIt
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        mSwipeRefresh = rootView.findViewById(R.id.swipeRefresh);
-        mSwipeRefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        mNoDataInfoTextView.setText(getString(R.string.loading));
-                        mNoDataInfoTextView.setVisibility(View.VISIBLE);
-                        getNotifications();
-                    }
-                }
-        );
+        // mSwipeRefresh = rootView.findViewById(R.id.swipeRefresh);
+        // mSwipeRefresh.setOnRefreshListener(
+        //         new SwipeRefreshLayout.OnRefreshListener() {
+        //             @Override
+        //             public void onRefresh() {
+        //                 mNoDataInfoTextView.setText(getString(R.string.loading));
+        //                 mNoDataInfoTextView.setVisibility(View.VISIBLE);
+        //                 getNotifications();
+        //             }
+        //         }
+        // );
 
         mNoDataInfoTextView.setText(getString(R.string.loading));
         mNoDataInfoTextView.setVisibility(View.VISIBLE);
@@ -124,7 +124,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         mSenders = new HashMap<>();
         mRides = new HashMap<>();
 
-        mHasDataChanged = false;
+        // mHasDataChanged = false;
 
         // getNotificationsFromProfile();
         getNotifications();
@@ -303,7 +303,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
         for (final String rideUid : mRides.keySet()) {
 
             if (rideUid == null && mRides.size() == 1) {
-                mSwipeRefresh.setRefreshing(false);
+                // mSwipeRefresh.setRefreshing(false);
                 loadNewData();
                 continue;
             }
@@ -327,7 +327,7 @@ public class NotificationFragment extends Fragment implements NotificationListIt
                     // Log.d(TAG, "onDataChange: mIndex = " + mIndex);
                     if (mIndex <= 0) {
                         // Log.d(TAG, "onDataChange: DONE RIDES ");
-                        mSwipeRefresh.setRefreshing(false);
+                        // mSwipeRefresh.setRefreshing(false);
                         loadNewData();
                     }
                 }
