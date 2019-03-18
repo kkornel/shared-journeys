@@ -262,6 +262,7 @@ public class OffersListActivity extends AppCompatActivity {
                 if (rideOffers.size() == 0)
                 {
                     Toast.makeText(OffersListActivity.this, "No ride offers available!", Toast.LENGTH_LONG).show();
+                    finish();
                 }
 
 
