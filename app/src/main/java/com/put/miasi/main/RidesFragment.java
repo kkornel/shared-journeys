@@ -1,6 +1,5 @@
 package com.put.miasi.main;
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,7 +30,6 @@ import com.put.miasi.utils.LocationUtils;
 import com.put.miasi.utils.Notification;
 
 import static com.put.miasi.utils.LocationUtils.REQUEST_CODE_FINE_LOCATION_PERMISSIONS;
-
 
 public class RidesFragment extends Fragment {
     private static final String TAG = "RidesFragment";

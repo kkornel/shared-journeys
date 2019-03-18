@@ -1,6 +1,5 @@
 package com.put.miasi.main.history;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -36,7 +35,6 @@ import com.put.miasi.utils.DateUtils;
 import com.put.miasi.utils.DialogUtils;
 import com.put.miasi.utils.GeoUtils;
 import com.put.miasi.utils.ListItemClickListener;
-import com.put.miasi.utils.Logger;
 import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.Passenger;
 import com.put.miasi.utils.RideOffer;
@@ -51,7 +49,6 @@ import java.util.List;
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
-
 
 public class OfferedRideDetailsActivity extends AppCompatActivity implements ListItemClickListener {
     private static final String TAG = "OfferedRideDetailsActiv";
@@ -263,12 +260,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         final TextView driverNameTextView = vView.findViewById(R.id.driverNameTextView);
         final RatingBar ratingBar = vView.findViewById(R.id.ratingBar);
 
-        // Picasso.get()
-        //         .load(user.getAvatarUrl())
-        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
-        //         .error(R.drawable.ic_error_red_24dp)
-        //         .into(avatarImageView);
-
         Picasso.get()
                 .load(user.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
@@ -316,20 +307,14 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         user.setNumberOfPassengerRatings(numOfPassRatings);
 
         String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+
         Notification notification = new Notification(
                 Notification.NotificationType.RATED_AS_PASSENGER,
                 CurrentUserProfile.uid,
                 mRating);
 
-        // HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-        // if (passengerNotifications == null) {
-        //     passengerNotifications = new HashMap<>();
-        // }
-        // passengerNotifications.put(newNotificationUid, false);
-
         mUsersRef.child(user.getUid()).child(Database.PASSENGER_RATING).setValue(passengerRate);
         mUsersRef.child(user.getUid()).child(Database.NUMBER_OF_PASSENGER_RATING).setValue(numOfPassRatings);
-        // mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
 
         mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
 
@@ -363,12 +348,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         final Button rejectButton = vView.findViewById(R.id.declineButton);
         final Button callButton = vView.findViewById(R.id.callButton);
 
-        // Picasso.get()
-        //         .load(user.getAvatarUrl())
-        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
-        //         .error(R.drawable.ic_error_red_24dp)
-        //         .into(avatarImageView);
-
         Picasso.get()
                 .load(user.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
@@ -380,7 +359,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         numPassRateTextView.setText(user.getNumberOfPassengerRatings() + "");
 
         final AlertDialog dialog;
-
 
         rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -398,7 +376,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
                 dialPhoneNumber(user.getPhone());
             }
         });
-
 
         builder.setView(vView)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -421,24 +398,16 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         mRide.getPassengers().remove(user.getUid());
 
         String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+
         Notification notification = new Notification(
                 Notification.NotificationType.RIDE_DECLINED,
                 CurrentUserProfile.uid,
                 GeoUtils.getCityFromLatLng(getApplicationContext(), mRide.destinationPoint.toLatLng()));
 
-        // HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-        // if (passengerNotifications == null) {
-        //     passengerNotifications = new HashMap<>();
-        // }
-        // passengerNotifications.put(newNotificationUid, false);
-
-        // mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
-
         mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
 
         mRidesRef.child(mRide.getKey()).child(Database.PASSENGERS).setValue(mRide.getPassengers());
         mRidesRef.child(mRide.getKey()).child(Database.SEATS).setValue(availableSeats);
-        // mRidesRef.child(mRide.getKey()).setValue(mRide);
 
         user.getParticipatedRides().remove(mRide.getKey());
         mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(user.getParticipatedRides());
@@ -476,47 +445,6 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
         final String rideUid = mRide.getKey();
         final String userUid = CurrentUserProfile.uid;
 
-        // for (final Passenger passenger : mPassengersList) {
-        //     final User user = passenger.getUser();
-        //     mNotificationsRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-        //         @Override
-        //         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        //             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-        //                 Notification notification1 = ds.getValue(Notification.class);
-        //                 String notification1Uid = ds.getKey();
-        //
-        //                 if (notification1.getRideUid().equals(rideUid)) {
-        //                     mNotificationsRef.child(passenger.getUser().getUid()).child(notification1Uid).removeValue();
-        //                 }
-        //             }
-        //         }
-        //
-        //         @Override
-        //         public void onCancelled(@NonNull DatabaseError databaseError) {
-        //             Log.d(TAG, "onCancelled: " + databaseError.getMessage());
-        //         }
-        //     });
-        // }
-        //
-        // mNotificationsRef.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
-        //     @Override
-        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        //         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-        //             Notification notification1 = ds.getValue(Notification.class);
-        //             String notification1Uid = ds.getKey();
-        //
-        //             if (notification1.getRideUid().equals(rideUid)) {
-        //                 mNotificationsRef.child(userUid).child(notification1Uid).removeValue();
-        //             }
-        //         }
-        //     }
-        //
-        //     @Override
-        //     public void onCancelled(@NonNull DatabaseError databaseError) {
-        //         Log.d(TAG, "onCancelled: " + databaseError.getMessage());
-        //     }
-        // });
-
         mNotificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -542,23 +470,16 @@ public class OfferedRideDetailsActivity extends AppCompatActivity implements Lis
                 for (final Passenger passenger : mPassengersList) {
                     final User user = passenger.getUser();
 
-
                     final String newNotificationUid = mNotificationsRef.child(user.getUid()).push().getKey();
+
                     Notification notification = new Notification(
                             Notification.NotificationType.RIDE_CANCELED,
                             CurrentUserProfile.uid,
                             GeoUtils.getCityFromLatLng(getApplicationContext(), mRide.destinationPoint.toLatLng()));
 
-                    // HashMap<String, Boolean> passengerNotifications = user.getNotifications();
-                    // if (passengerNotifications == null) {
-                    //     passengerNotifications = new HashMap<>();
-                    // }
-                    // passengerNotifications.put(newNotificationUid, false);
-
                     HashMap<String, Boolean> participatedRides = user.getParticipatedRides();
                     participatedRides.remove(rideUid);
                     mUsersRef.child(user.getUid()).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
-                    // mUsersRef.child(user.getUid()).child(Database.NOTIFICATIONS).setValue(passengerNotifications);
                     mNotificationsRef.child(user.getUid()).child(newNotificationUid).setValue(notification);
                 }
             }

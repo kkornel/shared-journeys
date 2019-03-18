@@ -218,7 +218,12 @@ public class RideDetailsActivity extends AppCompatActivity  {
 
     private void fillRideDetails()
     {
-        Picasso.get().load(rider.getAvatarUrl()).transform(new CircleTransform()).into(iv_avatar);
+        Picasso.get()
+                .load(rider.getAvatarUrl())
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_error_red_24dp)
+                .transform(new CircleTransform()).into(iv_avatar);
+
         tv_nick.setText(rider.getFirstName() + " " + rider.getSurname());
         tv_available_seats.setText("Available seats: " + offer.getSeats());
         tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");

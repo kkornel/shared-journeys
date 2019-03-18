@@ -1,6 +1,5 @@
 package com.put.miasi.main.history;
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
 
 public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAdapter.PassengersListViewHolder> {
     private static final String TAG = "PassengersListAdapter";
@@ -54,12 +52,6 @@ public class PassengersListAdapter extends RecyclerView.Adapter<PassengersListAd
         } else {
             Passenger passenger = mPassengersList.get(position);
             User user = passenger.getUser();
-
-            // Picasso.get()
-            //         .load(user.getAvatarUrl())
-            //         .placeholder(R.drawable.ic_account_circle_black_24dp)
-            //         .error(R.drawable.ic_error_red_24dp)
-            //         .into(viewHolder.mAvatarImageView);
 
             Picasso.get()
                     .load(user.getAvatarUrl())

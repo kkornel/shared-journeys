@@ -93,7 +93,7 @@ public class NotificationService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 CurrentUserProfile.loadUserData(userUid, user);
-                a(ds);
+                notifyUser(ds);
             }
 
             @Override
@@ -104,31 +104,7 @@ public class NotificationService extends Service {
         usersRef.addListenerForSingleValueEvent(userListener);
     }
 
-    private void a(DataSnapshot dataSnapshot) {
-        // String notificationUid = dataSnapshot.getKey();
-
-        // Log.d(TAG, "onChildAdded: dataSnapshot " + dataSnapshot);
-
-        // boolean hasBeenSeenByUser = false;
-
-        // Log.d(TAG, "onChildAdded: " + CurrentUserProfile.toStringy());
-
-        // if (CurrentUserProfile.notificationsMap != null && CurrentUserProfile.notificationsMap.size() != 0) {
-        //     Log.d(TAG, "onChildAdded: " + CurrentUserProfile.notificationsMap);
-        //     hasBeenSeenByUser = CurrentUserProfile.notificationsMap.get(notificationUid);
-        // }
-        // // Log.d(TAG, "onChildAdded: hasBeenSeenByUser = " + hasBeenSeenByUser);
-        //
-        // if (hasBeenSeenByUser) {
-        //     // Log.d(TAG, "onChildAdded: not new");
-        // } else {
-        //     // Log.d(TAG, "onChildAdded: new");
-        //
-        //     Notification notification = dataSnapshot.getValue(Notification.class);
-        //     Notification.NotificationType notificationType = notification.getNotificationType();
-        //     NotificationUtils.updateNotification(createTitle(notificationType));
-        // }
-
+    private void notifyUser(DataSnapshot dataSnapshot) {
         Notification notification = dataSnapshot.getValue(Notification.class);
         Notification.NotificationType notificationType = notification.getNotificationType();
         NotificationUtils.updateNotification(createTitle(notificationType));
@@ -138,8 +114,7 @@ public class NotificationService extends Service {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                // getUserProfile(dataSnapshot);
-                a(dataSnapshot);
+                notifyUser(dataSnapshot);
             }
 
             @Override

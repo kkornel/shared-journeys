@@ -180,7 +180,12 @@ public class OffersListActivity extends AppCompatActivity {
             }
             mainViewholder = (ViewHolder) convertView.getTag();
 
-            Picasso.get().load(getItem(position).avatar).transform(new CircleTransform()).into(mainViewholder.avatar);
+            Picasso.get()
+                    .load(getItem(position).avatar)
+                    .placeholder(R.drawable.ic_account_circle_black_24dp)
+                    .error(R.drawable.ic_error_red_24dp)
+                    .transform(new CircleTransform()).into(mainViewholder.avatar);
+
             mainViewholder.nick.setText(getItem(position).nick);
             mainViewholder.from.setText(getItem(position).from);
             mainViewholder.to.setText(getItem(position).to);
@@ -276,8 +281,6 @@ public class OffersListActivity extends AppCompatActivity {
                     Toast.makeText(OffersListActivity.this, "No ride offers available!", Toast.LENGTH_LONG).show();
                     finish();
                 }
-
-
             }
 
             @Override

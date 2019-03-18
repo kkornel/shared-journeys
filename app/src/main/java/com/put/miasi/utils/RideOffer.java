@@ -1,6 +1,5 @@
 package com.put.miasi.utils;
 
-
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;

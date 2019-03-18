@@ -1,6 +1,5 @@
 package com.put.miasi.main;
 
-
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -28,12 +27,9 @@ import com.put.miasi.main.notifications.NotificationService;
 import com.put.miasi.main.profile.EditProfileActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
-import com.put.miasi.utils.Logger;
-import com.put.miasi.utils.Notification;
 import com.put.miasi.utils.User;
 
 import static com.put.miasi.main.notifications.NotificationUtils.NOTIFICATION_INTENT_EXTRA;
-
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "EntryActivity";
@@ -108,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        // mNavigation.setSelectedItemId(R.id.navigation_rides);
 
         mAuth = FirebaseAuth.getInstance();
         mUserUid = mAuth.getCurrentUser().getUid();
@@ -143,26 +138,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
-
-        // mRootRef.child(Database.NOTIFICATIONS).addListenerForSingleValueEvent(new ValueEventListener() {
-        //     @Override
-        //     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        //         Log.d(TAG, "dataSnapshot: " + dataSnapshot);
-        //         for (DataSnapshot userIdShot : dataSnapshot.getChildren()) {
-        //             Log.d(TAG, "userIdShot: " + userIdShot);
-        //             for (DataSnapshot notificationIdShot : userIdShot.getChildren()) {
-        //                 Log.d(TAG, "notificationIdShot: " + notificationIdShot);
-        //                 Notification notification = notificationIdShot.getValue(Notification.class);
-        //                 Log.d(TAG, "notification: " + notification);
-        //             }
-        //         }
-        //     }
-        //
-        //     @Override
-        //     public void onCancelled(@NonNull DatabaseError databaseError) {
-        //
-        //     }
-        // });
 
         getUserProfile();
     }
@@ -199,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 String userUid = dataSnapshot.getKey();
-
-                // Logger.d("MA ul u " + user.toStringy());
 
                 CurrentUserProfile.loadUserData(userUid, user);
 

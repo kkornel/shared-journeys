@@ -1,6 +1,5 @@
 package com.put.miasi.main.history;
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -19,7 +18,6 @@ import com.put.miasi.utils.RideOffer;
 
 import java.util.Calendar;
 import java.util.List;
-
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private static final String TAG = "HistoryAdapter";

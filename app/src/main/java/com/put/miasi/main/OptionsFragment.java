@@ -1,6 +1,5 @@
 package com.put.miasi.main;
 
-
 import android.content.Intent;
 import android.media.Image;
 import android.os.Debug;
@@ -33,7 +32,6 @@ import com.put.miasi.utils.Database;
 import com.put.miasi.utils.RideOffer;
 import com.put.miasi.utils.User;
 import com.squareup.picasso.Picasso;
-
 
 public class OptionsFragment extends Fragment {
     private static final String TAG = "OptionsFragment";

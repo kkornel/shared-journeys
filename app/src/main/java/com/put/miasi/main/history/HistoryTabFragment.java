@@ -1,6 +1,5 @@
 package com.put.miasi.main.history;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import com.put.miasi.utils.RideOffer;
 
 import java.util.HashMap;
 import java.util.List;
-
 
 public class HistoryTabFragment extends Fragment implements RideListItemClickListener {
     private static final String TAG = "HistoryTabFragment";

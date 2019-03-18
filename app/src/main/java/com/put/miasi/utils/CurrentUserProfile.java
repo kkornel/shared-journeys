@@ -1,6 +1,5 @@
 package com.put.miasi.utils;
 
-
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class CurrentUserProfile {
     private static final String TAG = "CurrentUserProfile";
 
@@ -24,19 +22,18 @@ public class CurrentUserProfile {
     public static String surname;
     public static String email;
     public static String phone;
-    // public static HashMap<String, Boolean> notificationsMap;
+
     public static HashMap<String, Boolean> offeredRidesMap;
     public static List<String> offeredRidesList;
     public static HashMap<String, Boolean> participatedRidesMap;
     public static List<String> participatedRidesList;
+
     public static double driverRating;
     public static int numberOfDriverRatings;
     public static double passengerRating;
     public static int numberOfPassengerRatings;
 
     public static void loadUserData(String uids, User user) {
-        //Logger.d("CUP lud " + user.toString());
-
         uid = uids;
         avatarUrl = user.getAvatarUrl();
         firstName = user.getFirstName();
@@ -51,7 +48,6 @@ public class CurrentUserProfile {
         numberOfDriverRatings = user.getNumberOfDriverRatings();
         passengerRating = user.getPassengerRating();
         numberOfPassengerRatings = user.getNumberOfPassengerRatings();
-        // notificationsMap = user.getNotifications();
 
         if (offeredRidesMap == null) {
             offeredRidesMap = new HashMap<>();
@@ -65,9 +61,6 @@ public class CurrentUserProfile {
         if (participatedRidesList == null) {
             participatedRidesList = new ArrayList<>();
         }
-        // if (notificationsMap == null) {
-        //     notificationsMap = new HashMap<>();
-        // }
     }
 
     public static void getUserProfile() {
@@ -91,10 +84,4 @@ public class CurrentUserProfile {
         };
         usersRef.addListenerForSingleValueEvent(userListener);
     }
-
-    // public static String toStringy() {
-    //     return "CurrentUserProfile{" +
-    //             "\n, notifications=" + notificationsMap +
-    //             '}';
-    // }
 }

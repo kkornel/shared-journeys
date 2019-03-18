@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-
 public class Utils {
 
     public static void hideKeyboard(Activity activity) {

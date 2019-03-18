@@ -1,6 +1,5 @@
 package com.put.miasi.main.history;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,7 +40,6 @@ import java.util.HashMap;
 import static com.put.miasi.main.history.HistoryTabFragment.RATED_RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.history.HistoryTabFragment.RIDE_INTENT_EXTRA;
 import static com.put.miasi.main.offer.FromActivity.RIDE_OFFER_INTENT;
-
 
 public class ParticipatedRideDetailsActivity extends AppCompatActivity {
     private static final String TAG = "ParticipatedRideDetails";
@@ -181,12 +179,6 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         final TextView driverNameTextView = vView.findViewById(R.id.driverNameTextView);
         final RatingBar ratingBar = vView.findViewById(R.id.ratingBar);
 
-        // Picasso.get()
-        //         .load(mDriver.getAvatarUrl())
-        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
-        //         .error(R.drawable.ic_error_red_24dp)
-        //         .into(avatarImageView);
-
         Picasso.get()
                 .load(mDriver.getAvatarUrl())
                 .placeholder(R.drawable.ic_account_circle_black_24dp)
@@ -234,21 +226,14 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         mDriver.setNumberOfDriverRatings(numOfDriverRatings);
 
         String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
+
         Notification notification = new Notification(
                 Notification.NotificationType.RATED_AS_DRIVER,
                 CurrentUserProfile.uid,
                 mRating);
 
-        // HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
-        // if (driverNotifications == null) {
-        //     driverNotifications = new HashMap<>();
-        // }
-        // driverNotifications.put(newNotificationUid, false);
-
         mUsersRef.child(mDriver.getUid()).child(Database.DRIVER_RATING).setValue(driverRate);
         mUsersRef.child(mDriver.getUid()).child(Database.NUMBER_OF_DRIVER_RATING).setValue(numOfDriverRatings);
-
-        // mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
 
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
@@ -290,29 +275,15 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
         CurrentUserProfile.participatedRidesMap = participatedRides;
 
         String newNotificationUid = mNotificationsRef.child(mDriver.getUid()).push().getKey();
+
         Notification notification = new Notification(
                 Notification.NotificationType.PASSENGER_RESIGNED,
                 CurrentUserProfile.uid,
                 mRide.getKey());
 
-        // HashMap<String, Boolean> driverNotifications = mDriver.getNotifications();
-        // if (driverNotifications == null) {
-        //     driverNotifications = new HashMap<>();
-        // }
-        // driverNotifications.put(newNotificationUid, false);
-
-        // mUsersRef.child(mDriver.getUid()).child(Database.NOTIFICATIONS).setValue(driverNotifications);
         mNotificationsRef.child(mDriver.getUid()).child(newNotificationUid).setValue(notification);
 
         mUsersRef.child(userUid).child(Database.PARTICIPATED_RIDES).setValue(participatedRides);
-
-        // int idx = 0;
-        // for (String id : mRide.passengers.keySet()) {
-        //     if (id.equals(userUid)) {
-        //         break;
-        //     }
-        //     idx++;
-        // }
 
         int bookedSeats = mRide.passengers.get(userUid);
 
@@ -352,12 +323,6 @@ public class ParticipatedRideDetailsActivity extends AppCompatActivity {
 
         int distance = (int) mRide.getDistance() / 1000;
         tv_distance.setText("Distance: " + distance + " km");
-
-        // Picasso.get()
-        //         .load(mDriver.getAvatarUrl())
-        //         .placeholder(R.drawable.ic_account_circle_black_24dp)
-        //         .error(R.drawable.ic_error_red_24dp)
-        //         .into(iv_avatar);
 
         Picasso.get()
                 .load(mDriver.getAvatarUrl())
