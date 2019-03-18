@@ -262,6 +262,10 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     private void checkIfListIsEmpty() {
         if (mNotifications.size() == 0) {
             noNewNotifications();
+            if (CurrentUserProfile.areNewNotifications) {
+                MainActivity.removeBadge();
+                CurrentUserProfile.areNewNotifications = false;
+            }
         } else {
             mNoDataInfoTextView.setVisibility(View.GONE);
         }

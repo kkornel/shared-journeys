@@ -5,16 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mUsersRef;
 
     private BottomNavigationView mNavigation;
+
+    private static Context mContext;
+    private static BottomNavigationMenuView mBottomNavigationMenuView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -97,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d(TAG, "onCreate: ");
-        
+
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.title_rides));
@@ -123,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
             resetNavIcon();
             loadFragment(new RidesFragment());
         }
+        mBottomNavigationMenuView =
+                (BottomNavigationMenuView) mNavigation.getChildAt(0);
+
+        mContext = this;
     }
 
     private void startNotificationService() {
@@ -146,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
+
+        if (CurrentUserProfile.areNewNotifications) {
+            showNotificationBadge();
+        }
     }
 
     @Override
@@ -199,6 +215,28 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public static void showNotificationBadge() {
+        // BottomNavigationMenuView bottomNavigationMenuView =
+        //         (BottomNavigationMenuView) mNavigation.getChildAt(0);
+        // View v = bottomNavigationMenuView.getChildAt(2);
+        View v = mBottomNavigationMenuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+
+        View badge = LayoutInflater.from(mContext)
+                .inflate(R.layout.notification_badge, itemView, true);
+
+        ((TextView) badge.findViewById(R.id.noti_badge)).setText("!");
+    }
+
+    public static void removeBadge() {
+        // BottomNavigationMenuView bottomNavigationMenuView =
+        //         (BottomNavigationMenuView) mNavigation.getChildAt(0);
+        // View v = bottomNavigationMenuView.getChildAt(2);
+        View v = mBottomNavigationMenuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+        itemView.removeViewAt(itemView.getChildCount() - 1);
     }
 
     @Override

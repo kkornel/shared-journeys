@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/noti_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/notification_badge_circle"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="!"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+</merge>

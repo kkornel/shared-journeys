@@ -33,6 +33,8 @@ public class CurrentUserProfile {
     public static double passengerRating;
     public static int numberOfPassengerRatings;
 
+    public static boolean areNewNotifications;
+
     public static void loadUserData(String uids, User user) {
         uid = uids;
         avatarUrl = user.getAvatarUrl();

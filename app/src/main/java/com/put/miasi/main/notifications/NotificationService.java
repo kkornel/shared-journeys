@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.put.miasi.main.MainActivity;
 import com.put.miasi.utils.CurrentUserProfile;
 import com.put.miasi.utils.Database;
 import com.put.miasi.utils.Notification;
@@ -114,6 +115,8 @@ public class NotificationService extends Service {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                CurrentUserProfile.areNewNotifications = true;
+                MainActivity.showNotificationBadge();
                 notifyUser(dataSnapshot);
             }
 
