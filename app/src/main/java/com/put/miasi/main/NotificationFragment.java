@@ -116,6 +116,11 @@ public class NotificationFragment extends Fragment implements NotificationListIt
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: ");
+
+        if (mNotifications == null || mNotifications.size() == 0) {
+            CurrentUserProfile.areNewNotifications = false;
+            MainActivity.removeBadge();
+        }
     }
 
     @Override
