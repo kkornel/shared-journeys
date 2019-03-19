@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private static Context mContext;
     private static BottomNavigationMenuView mBottomNavigationMenuView;
 
+    private static boolean mIsBadgeActive =  false;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -218,25 +220,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void showNotificationBadge() {
-        // BottomNavigationMenuView bottomNavigationMenuView =
-        //         (BottomNavigationMenuView) mNavigation.getChildAt(0);
-        // View v = bottomNavigationMenuView.getChildAt(2);
-        View v = mBottomNavigationMenuView.getChildAt(2);
-        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+        if (!mIsBadgeActive) {
+            // BottomNavigationMenuView bottomNavigationMenuView =
+            //         (BottomNavigationMenuView) mNavigation.getChildAt(0);
+            // View v = bottomNavigationMenuView.getChildAt(2);
+            View v = mBottomNavigationMenuView.getChildAt(2);
+            BottomNavigationItemView itemView = (BottomNavigationItemView) v;
 
-        View badge = LayoutInflater.from(mContext)
-                .inflate(R.layout.notification_badge, itemView, true);
+            View badge = LayoutInflater.from(mContext)
+                    .inflate(R.layout.notification_badge, itemView, true);
 
-        ((TextView) badge.findViewById(R.id.noti_badge)).setText("!");
+            ((TextView) badge.findViewById(R.id.noti_badge)).setText("!");
+
+            mIsBadgeActive = true;
+        }
     }
 
     public static void removeBadge() {
-        // BottomNavigationMenuView bottomNavigationMenuView =
-        //         (BottomNavigationMenuView) mNavigation.getChildAt(0);
-        // View v = bottomNavigationMenuView.getChildAt(2);
-        View v = mBottomNavigationMenuView.getChildAt(2);
-        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
-        itemView.removeViewAt(itemView.getChildCount() - 1);
+        if (mIsBadgeActive) {
+            // BottomNavigationMenuView bottomNavigationMenuView =
+            //         (BottomNavigationMenuView) mNavigation.getChildAt(0);
+            // View v = bottomNavigationMenuView.getChildAt(2);
+            View v = mBottomNavigationMenuView.getChildAt(2);
+            BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+            itemView.removeViewAt(itemView.getChildCount() - 1);
+
+            mIsBadgeActive = false;
+        }
     }
 
     @Override
