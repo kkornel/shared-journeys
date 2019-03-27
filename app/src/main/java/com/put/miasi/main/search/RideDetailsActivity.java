@@ -228,7 +228,7 @@ public class RideDetailsActivity extends AppCompatActivity  {
         tv_available_seats.setText("Available seats: " + offer.getSeats());
         tv_distance.setText("Distance: " + offer.getDistance()/1000 + " km");
         tv_car_color.setText(offer.getCar().getColor());
-        String rating = "<b>" + String.format("%.1f", rider.getDriverRatingAvg()) + "</b> ";
+        String rating = "<b>" + String.format("%.1f", rider.getDriverRatingAvg()) + "</b>";
         tv_rating.setText(Html.fromHtml(rating));
         // kalendarz i data
         Calendar cal = DateUtils.getCalendarFromMilliSecs(offer.getDate());
@@ -250,7 +250,23 @@ public class RideDetailsActivity extends AppCompatActivity  {
 
         tv_car.setText(offer.getCar().getBrand() + " " + offer.getCar().getModel());
         tv_luggage.setText("Luggage: " + offer.getLuggage());
-        tv_message.setText(offer.getMessage());
+
+        if (offer.getMessage() != null)
+        {
+            if (!offer.getMessage().equals(""))
+            {
+                tv_message.setText(offer.getMessage());
+            }
+            else
+            {
+                tv_message.setText("No additional message");
+            }
+        }
+        else
+        {
+            tv_message.setText("No additional message");
+        }
+
         tv_price.setText(offer.getPrice() + " zł");
 
         tv_rating_quantity.setText(rider.getNumberOfDriverRatings() + " reviews");
