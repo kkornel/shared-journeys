@@ -1,6 +1,8 @@
-Shared journeys
+# Shared journeys
 
 Mobile application for searching and offering intercity rides.
+
+## Info
 
 Provides functionality for browsing existing offers of rides or creating new ones.
 
